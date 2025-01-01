@@ -1,13 +1,13 @@
 import React from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Stack } from 'expo-router'
-import { SpendingSummaryCard } from '../../src/compornents/cards/SpendingSummaryCard'
-import { TabView } from '../../src/compornents/common/TabView'
-import { MealTimeStats } from '../../src/compornents/stats/MealTimeStats'
-import { ExpenseHistory } from '../../src/compornents/stats/ExpenseHistory'
+import { SpendingSummaryCard } from '../../../src/compornents/cards/SpendingSummaryCard'
+import { TabView } from '../../../src/compornents/common/TabView'
+import { MealTimeStats } from '../../../src/compornents/stats/MealTimeStats'
+import { ExpenseHistory } from '../../../src/compornents/stats/ExpenseHistory'
 import { useState } from 'react'
-import { DailyReport } from '../../src/compornents/stats/DailyReport'
-import { CookingAnalysis } from '../../src/compornents/stats/CookingAnalysis'
+import { DailyReport } from '../../../src/compornents/stats/DailyReport'
+import { CookingAnalysis } from '../../../src/compornents/stats/CookingAnalysis'
 
 export default function Home(): React.JSX.Element {
   const [activeTab, setActiveTab] = useState('timeRange')
