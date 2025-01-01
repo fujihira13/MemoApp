@@ -11,25 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
-
-type ExpenseCategory =
-  | 'grocery'
-  | 'eating_out'
-  | 'snack'
-  | 'drinking'
-  | 'convenience'
-  | 'home_cooking'
-  | 'other'
-type MealTime = 'breakfast' | 'lunch' | 'dinner' | 'none'
-
-interface ExpenseFormData {
-  amount: string
-  category: ExpenseCategory
-  mealTime: MealTime
-  isHomeCooking: boolean
-  date: Date
-  note: string
-}
+import { ExpenseCategory, MealTime, ExpenseFormData } from '../../types/expense'
 
 export const ExpenseForm = (): React.JSX.Element => {
   const [formData, setFormData] = useState<ExpenseFormData>({

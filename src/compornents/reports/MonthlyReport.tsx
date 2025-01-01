@@ -2,35 +2,13 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Card } from '../common/Card'
-
-type IconName =
-  | 'cart'
-  | 'silverware-fork-knife'
-  | 'food'
-  | 'glass-wine'
-  | 'store'
-  | 'chevron-left'
-  | 'chevron-right'
-  | 'trending-up'
-  | 'trending-down'
-
-interface Category {
-  amount: number
-  label: string
-  icon: IconName
-}
+import { MonthlyReportData } from '../../types/expense'
 
 export const MonthlyReport = (): React.JSX.Element => {
   const [currentDate, setCurrentDate] = useState(new Date())
 
   // サンプルデータ
-  const monthlyData: {
-    total: number
-    previousMonth: number
-    averagePerDay: number
-    dailyBudget: number
-    categories: Record<string, Category>
-  } = {
+  const monthlyData: MonthlyReportData = {
     total: 85000,
     previousMonth: 92000,
     averagePerDay: 2833,

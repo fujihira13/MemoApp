@@ -1,16 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Card } from '../common/Card'
-
-interface ExpenseItem {
-  id: string
-  date: string
-  mealTime: string
-  category: string
-  amount: number
-  note: string
-  isHomeCooking?: boolean
-}
+import { ExpenseItem } from '../../types/expense'
 
 export const ExpenseHistory = (): React.JSX.Element => {
   // サンプルデータ
