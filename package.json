@@ -18,7 +18,8 @@
     "react-native-screens": "~4.4.0",
     "expo-linking": "~7.0.3",
     "expo-constants": "~17.0.3",
-    "react-native-gesture-handler": "~2.20.2"
+    "react-native-gesture-handler": "~2.20.2",
+    "@react-native-community/datetimepicker": "8.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

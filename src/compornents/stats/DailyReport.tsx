@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Platform, Pressable } from 'react-native'
 import { Card } from '../common/Card'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 
-export const DailyReport = () => {
+export const DailyReport = (): React.JSX.Element => {
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const [showDatePicker, setShowDatePicker] = useState(false)
 
   // サンプルデータ
   const dailyData = {
-    breakfast: { amount: 500 },
-    lunch: { amount: 1000 },
+    breakfast: { amount: 800 },
+    lunch: { amount: 1200 },
     dinner: { amount: 2500 }
   }
 
@@ -17,18 +20,51 @@ export const DailyReport = () => {
     0
   )
 
+  const onDateChange = (
+    event: DateTimePickerEvent,
+    selected: Date | undefined
+  ): void => {
+    setShowDatePicker(false)
+    if (selected) {
+      setSelectedDate(selected)
+    }
+  }
+
+  const formatDate = (date: Date): string => {
+    return date.toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+
   return (
     <View style={styles.container}>
       {/* 日付選択 */}
-      <View style={styles.dateSelector}>
-        <Text style={styles.dateText}>
-          {selectedDate.toLocaleDateString('ja-JP', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          })}
-        </Text>
+      <View style={styles.dateContainer}>
+        <Pressable
+          style={styles.datePicker}
+          onPress={() => setShowDatePicker(true)}
+        >
+          <Text style={styles.dateText}>{formatDate(selectedDate)}</Text>
+        </Pressable>
+        <Pressable
+          style={styles.calendarButton}
+          onPress={() => setShowDatePicker(true)}
+        >
+          <Text>カレンダー</Text>
+        </Pressable>
       </View>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={selectedDate}
+          mode="date"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          onChange={onDateChange}
+          locale="ja"
+        />
+      )}
 
       {/* 時間帯別支出カード */}
       <Card style={styles.expenseCard}>
@@ -73,15 +109,24 @@ const styles = StyleSheet.create({
   container: {
     gap: 16
   },
-  dateSelector: {
+  dateContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    padding: 8
+  },
+  datePicker: {
+    flex: 1,
     padding: 8
   },
   dateText: {
     fontSize: 16,
     fontWeight: '600'
+  },
+  calendarButton: {
+    backgroundColor: '#f0f0f0',
+    padding: 8,
+    borderRadius: 8
   },
   expenseCard: {
     padding: 16
