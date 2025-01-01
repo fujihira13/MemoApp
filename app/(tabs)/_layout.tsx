@@ -1,8 +1,9 @@
-import React from 'react'
-import { Tabs } from 'expo-router'
+// app/(tabs)/_layout.tsx
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Tabs } from 'expo-router'
+import React from 'react'
 
-export default function Layout(): React.JSX.Element {
+export default function TabsLayout(): React.JSX.Element {
   return (
     <Tabs
       screenOptions={{
@@ -14,7 +15,8 @@ export default function Layout(): React.JSX.Element {
         name="index"
         options={{
           title: 'ダッシュボード',
-          tabBarLabel: 'ダッシュボード', // ← 追加
+          tabBarLabel: 'ダッシュボード',
+          headerTitle: 'ダッシュボード',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="view-dashboard"
@@ -28,7 +30,8 @@ export default function Layout(): React.JSX.Element {
         name="report"
         options={{
           title: 'レポート',
-          tabBarLabel: 'レポート', // ← 追加
+          tabBarLabel: 'レポート',
+          headerTitle: 'レポート',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="chart-box" size={24} color={color} />
           )
@@ -38,7 +41,8 @@ export default function Layout(): React.JSX.Element {
         name="expense"
         options={{
           title: '支出を記録',
-          tabBarLabel: '支出を記録', // ← 追加
+          tabBarLabel: '支出を記録',
+          headerTitle: '支出を記録',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="plus-circle"
@@ -52,7 +56,8 @@ export default function Layout(): React.JSX.Element {
         name="settings"
         options={{
           title: '設定',
-          tabBarLabel: '設定', // ← 追加
+          tabBarLabel: '設定',
+          headerTitle: '設定',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="cog" size={24} color={color} />
           )
