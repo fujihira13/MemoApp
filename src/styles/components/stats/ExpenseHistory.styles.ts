@@ -59,5 +59,9 @@ export const styles = StyleSheet.create({
   deleteButton: {
     padding: 8,
     marginLeft: 8
+  },
+  editButton: {
+    padding: 8,
+    marginHorizontal: 4
   }
 })

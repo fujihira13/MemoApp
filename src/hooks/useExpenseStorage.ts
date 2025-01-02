@@ -8,6 +8,7 @@ interface UseExpenseStorageReturn {
   addExpense: (newExpense: Expense) => Promise<void>
   loadExpenses: () => Promise<void>
   deleteExpense: (expenseId: string) => Promise<void>
+  editExpense: (updatedExpense: Expense) => Promise<void>
 }
 
 export const useExpenseStorage = (): UseExpenseStorageReturn => {
@@ -46,7 +47,7 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
   }
 
   // 保存時
-  const saveExpense = async (expense: Expense) => {
+  const saveExpense = async (expense: Expense): Promise<void> => {
     try {
       // 日付をISO文字列として保存
       const expenseToSave = {
@@ -60,12 +61,14 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
   }
 
   // 取得時
-  const getExpenses = async () => {
+  const getExpenses = async (): Promise<Expense[]> => {
     try {
       const savedExpenses = await getData<Expense[]>(STORAGE_KEYS.EXPENSES)
       if (savedExpenses) {
         setExpenses(savedExpenses)
+        return savedExpenses
       }
+      return []
     } catch (error) {
       console.error('取得エラー:', error)
       return []
@@ -86,11 +89,26 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
     }
   }
 
+  // 支出データを編集する
+  const editExpense = async (updatedExpense: Expense): Promise<void> => {
+    try {
+      const updatedExpenses = expenses.map((expense) =>
+        expense.id === updatedExpense.id ? updatedExpense : expense
+      )
+      await storeData(STORAGE_KEYS.EXPENSES, updatedExpenses)
+      setExpenses(updatedExpenses)
+    } catch (error) {
+      console.error('支出の編集エラー:', error)
+      throw error
+    }
+  }
+
   return {
     expenses,
     loading,
     addExpense,
     loadExpenses,
-    deleteExpense
+    deleteExpense,
+    editExpense
   }
 }
