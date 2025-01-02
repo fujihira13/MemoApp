@@ -21,22 +21,24 @@ export const TabView = ({
 }: TabViewProps): React.JSX.Element => {
   return (
     <View style={styles.container}>
-      {tabs.map((tab) => (
-        <TouchableOpacity
-          key={tab.id}
-          style={[styles.tab, activeTab === tab.id && styles.activeTab]}
-          onPress={() => onTabChange(tab.id)}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === tab.id && styles.activeTabText
-            ]}
+      <View style={styles.tabsContainer}>
+        {tabs.map((tab) => (
+          <TouchableOpacity
+            key={tab.id}
+            style={[styles.tab, activeTab === tab.id && styles.activeTab]}
+            onPress={() => onTabChange(tab.id)}
           >
-            {tab.label}
-          </Text>
-        </TouchableOpacity>
-      ))}
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === tab.id && styles.activeTabText
+              ]}
+            >
+              {tab.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   )
 }

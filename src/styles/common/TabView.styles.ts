@@ -7,7 +7,8 @@ export const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background.card,
     borderRadius: 8,
-    padding: spacing.xs
+    padding: spacing.xs,
+    marginHorizontal: spacing.md
   },
   tabsContainer: {
     flexDirection: 'row',
@@ -20,7 +21,6 @@ export const styles = StyleSheet.create({
     borderRadius: 6
   },
   activeTab: {
-    // tabActive → activeTab
     backgroundColor: colors.primary
   },
   tabText: {
@@ -29,7 +29,6 @@ export const styles = StyleSheet.create({
     fontWeight: typography.fontWeight.medium
   },
   activeTabText: {
-    // tabTextActive → activeTabText
     color: colors.background.card
   }
 })
