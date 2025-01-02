@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text } from 'react-native'
 import { Card } from '../common/Card'
-
+import { styles } from '../../styles/components/stats/MealTimeStats.styles'
 // interface MealTimeStatsProps {
 //   // 必要に応じてpropsを追加
 // }
@@ -93,64 +93,3 @@ export const MealTimeStats = (): React.JSX.Element => {
     </View>
   )
 }
-const styles = StyleSheet.create({
-  container: {
-    gap: 12
-  },
-  statsCard: {
-    padding: 16,
-    backgroundColor: '#f5f5f5'
-  },
-  mealLabel: {
-    fontSize: 14,
-    color: '#000',
-    marginBottom: 4
-  },
-  amount: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 4
-  },
-  averageText: {
-    fontSize: 12,
-    color: '#666'
-  },
-  comparisonCard: {
-    padding: 16,
-    marginTop: 8
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 12
-  },
-  progressContainer: {
-    gap: 12
-  },
-  progressItem: {
-    gap: 4
-  },
-  progressHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4
-  },
-  progressLabel: {
-    fontSize: 12,
-    fontWeight: 'medium'
-  },
-  progressAmount: {
-    fontSize: 12,
-    fontWeight: 'medium'
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 4
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#0891b2',
-    borderRadius: 4
-  }
-})

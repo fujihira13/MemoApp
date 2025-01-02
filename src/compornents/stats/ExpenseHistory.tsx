@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text } from 'react-native'
 import { Card } from '../common/Card'
 import { ExpenseItem } from '../../types/expense'
-
+import { styles } from '../../styles/components/stats/ExpenseHistory.styles'
 export const ExpenseHistory = (): React.JSX.Element => {
   // サンプルデータ
   const expenses: ExpenseItem[] = [
@@ -62,56 +62,3 @@ export const ExpenseHistory = (): React.JSX.Element => {
     </Card>
   )
 }
-const styles = StyleSheet.create({
-  container: {
-    margin: 16,
-    padding: 16
-  },
-  header: {
-    marginBottom: 16
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold'
-  },
-  subtitle: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4
-  },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#f5f5f5',
-    padding: 8,
-    borderRadius: 4
-  },
-  headerCell: {
-    fontSize: 12,
-    color: '#666',
-    fontWeight: '500'
-  },
-  row: {
-    flexDirection: 'row',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0'
-  },
-  cell: {
-    fontSize: 12
-  },
-  dateCell: {
-    width: '15%'
-  },
-  mealTimeCell: {
-    width: '15%'
-  },
-  categoryCell: {
-    width: '20%'
-  },
-  amountCell: {
-    width: '20%'
-  },
-  noteCell: {
-    flex: 1
-  }
-})

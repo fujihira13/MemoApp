@@ -1,18 +1,11 @@
 import React, { useState } from 'react'
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Platform
-} from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Platform } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { ExpenseCategory, MealTime, ExpenseFormData } from '../../types/expense'
-
+import { styles } from '../../styles/components/forms/ExpenseForm.styles'
 export const ExpenseForm = (): React.JSX.Element => {
   const [formData, setFormData] = useState<ExpenseFormData>({
     amount: '',
@@ -220,129 +213,3 @@ export const ExpenseForm = (): React.JSX.Element => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 16
-  },
-  checkboxCard: {
-    padding: 16
-  },
-  checkbox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8
-  },
-  checkboxLabel: {
-    fontSize: 16,
-    fontWeight: '500'
-  },
-  checkboxDescription: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4,
-    marginLeft: 32
-  },
-  inputCard: {
-    padding: 16
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 8
-  },
-  amountContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8
-  },
-  currency: {
-    fontSize: 16,
-    color: '#666'
-  },
-  amountInput: {
-    flex: 1,
-    height: 44,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: 8,
-    fontSize: 16
-  },
-  categoryContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8
-  },
-  categoryButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    backgroundColor: '#f0f0f0'
-  },
-  categoryButtonActive: {
-    backgroundColor: '#0891b2'
-  },
-  categoryButtonText: {
-    fontSize: 14,
-    color: '#666'
-  },
-  categoryButtonTextActive: {
-    color: '#fff'
-  },
-  mealTimeContainer: {
-    flexDirection: 'row',
-    gap: 8
-  },
-  mealTimeButton: {
-    flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    backgroundColor: '#f0f0f0',
-    alignItems: 'center'
-  },
-  mealTimeButtonActive: {
-    backgroundColor: '#0891b2'
-  },
-  mealTimeButtonText: {
-    fontSize: 14,
-    color: '#666'
-  },
-  mealTimeButtonTextActive: {
-    color: '#fff'
-  },
-  dateButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 44,
-    paddingHorizontal: 12,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8
-  },
-  dateButtonText: {
-    fontSize: 16
-  },
-  noteInput: {
-    height: 100,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: 8,
-    fontSize: 16,
-    textAlignVertical: 'top'
-  },
-  submitButton: {
-    backgroundColor: '#0891b2',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center'
-  },
-  submitButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600'
-  }
-})
