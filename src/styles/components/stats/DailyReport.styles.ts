@@ -1,44 +1,36 @@
 import { StyleSheet } from 'react-native'
-import { colors } from '../../theme/colors'
-import { spacing } from '../../theme/spacing'
-import { typography } from '../../theme/typography'
 
 export const styles = StyleSheet.create({
   container: {
-    gap: spacing.md
+    padding: 16,
+    gap: 16
   },
-  dateContainer: {
+  dateCard: {
+    padding: 16
+  },
+  dateButton: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: spacing.sm
-  },
-  datePicker: {
-    flex: 1,
-    padding: spacing.sm
+    gap: 8
   },
   dateText: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.medium
-  },
-  calendarButton: {
-    backgroundColor: colors.background.main,
-    padding: spacing.sm,
-    borderRadius: 8
+    fontSize: 16,
+    color: '#333'
   },
   expenseCard: {
-    padding: spacing.md
+    padding: 16
   },
   cardTitle: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.bold,
-    marginBottom: spacing.md
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#333'
   },
   expenseList: {
-    gap: spacing.sm
+    gap: 16
   },
   expenseItem: {
-    gap: spacing.xs
+    gap: 8
   },
   expenseHeader: {
     flexDirection: 'row',
@@ -46,38 +38,41 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   mealTimeText: {
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.medium
+    fontSize: 16,
+    color: '#333'
   },
   amountText: {
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.medium
+    fontSize: 16,
+    color: '#333'
   },
   progressBar: {
-    height: 8,
-    backgroundColor: colors.background.main,
-    borderRadius: 4
+    height: 4,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 2,
+    overflow: 'hidden'
   },
   progressFill: {
     height: '100%',
-    backgroundColor: colors.primary,
-    borderRadius: 4
+    backgroundColor: '#2196F3',
+    borderRadius: 2
   },
   totalContainer: {
+    marginTop: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: spacing.md,
-    paddingTop: spacing.md,
+    paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: colors.border
+    borderTopColor: '#e0e0e0'
   },
   totalLabel: {
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.medium
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333'
   },
   totalAmount: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.bold
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2196F3'
   }
 })
