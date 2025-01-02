@@ -1,67 +1,94 @@
 import { StyleSheet } from 'react-native'
-import { colors } from '../../theme/colors'
-import { spacing } from '../../theme/spacing'
-import { typography } from '../../theme/typography'
 
 export const styles = StyleSheet.create({
   container: {
-    padding: spacing.md
+    flex: 1,
+    padding: 16
   },
   header: {
-    marginBottom: spacing.md
+    marginBottom: 24
   },
-  title: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.bold
+  monthSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16
   },
-  subtitle: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-    marginTop: spacing.xs
+  monthButton: {
+    padding: 8
+  },
+  monthText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginHorizontal: 16
+  },
+  totalContainer: {
+    alignItems: 'center',
+    marginBottom: 16
+  },
+  totalLabel: {
+    fontSize: 14,
+    color: '#666'
+  },
+  totalAmount: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#2196F3'
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: colors.background.main,
-    padding: spacing.sm,
-    borderRadius: 4
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    paddingBottom: 8,
+    marginBottom: 8
   },
   headerCell: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-    fontWeight: typography.fontWeight.medium
+    fontWeight: 'bold',
+    color: '#666'
   },
   row: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee'
+    borderBottomColor: '#eee',
+    paddingVertical: 12
   },
   cell: {
-    fontSize: typography.fontSize.sm
+    justifyContent: 'center'
   },
   dateCell: {
-    width: '15%'
+    flex: 2
   },
   mealTimeCell: {
-    width: '15%'
-  },
-  categoryCell: {
-    width: '20%'
-  },
-  amountCell: {
-    width: '20%'
-  },
-  noteCell: {
     flex: 1
   },
-  deleteButton: {
-    padding: 8,
-    marginLeft: 8
+  categoryCell: {
+    flex: 1.5
+  },
+  amountCell: {
+    flex: 1.5,
+    textAlign: 'right'
+  },
+  noteCell: {
+    flex: 2
+  },
+  actionCell: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   },
   editButton: {
     padding: 8,
-    marginHorizontal: 4
+    marginRight: 8
+  },
+  deleteButton: {
+    padding: 8
+  },
+  emptyState: {
+    padding: 32,
+    alignItems: 'center'
+  },
+  emptyStateText: {
+    fontSize: 16,
+    color: '#666'
   }
 })
