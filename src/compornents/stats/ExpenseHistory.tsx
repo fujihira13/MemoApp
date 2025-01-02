@@ -1,29 +1,26 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { Card } from '../common/Card'
-import { ExpenseItem } from '../../types/expense'
+import { Expense } from '../../types/expense'
 import { styles } from '../../styles/components/stats/ExpenseHistory.styles'
+import { useExpenseStorage } from '../../hooks/useExpenseStorage'
+
 export const ExpenseHistory = (): React.JSX.Element => {
-  // サンプルデータ
-  const expenses: ExpenseItem[] = [
-    {
-      id: '1',
-      date: '01/01',
-      mealTime: '夕食',
-      category: 'スーパー',
-      amount: 2500,
-      note: '週末の食材'
-    },
-    {
-      id: '2',
-      date: '01/01',
-      mealTime: '昼食',
-      category: '自炊',
-      amount: 0,
-      note: 'お弁当持参',
-      isHomeCooking: true
-    }
-  ]
+  const { expenses, loading } = useExpenseStorage()
+
+  if (loading) {
+    return <Text>読み込み中...</Text>
+  }
+
+  const formatDate = (date: Date | string): string => {
+    const dateObj = typeof date === 'string' ? new Date(date) : date
+
+    return dateObj.toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
 
   return (
     <Card style={styles.container}>
@@ -42,9 +39,11 @@ export const ExpenseHistory = (): React.JSX.Element => {
       </View>
 
       {/* 支出リスト */}
-      {expenses.map((expense) => (
-        <View key={expense.id} style={styles.row}>
-          <Text style={[styles.cell, styles.dateCell]}>{expense.date}</Text>
+      {expenses.map((expense, index) => (
+        <View key={index} style={styles.row}>
+          <Text style={[styles.cell, styles.dateCell]}>
+            {expense.date ? formatDate(expense.date) : '日付なし'}
+          </Text>
           <Text style={[styles.cell, styles.mealTimeCell]}>
             {expense.mealTime}
           </Text>

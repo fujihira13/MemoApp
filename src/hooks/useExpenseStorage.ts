@@ -44,5 +44,32 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
     }
   }
 
+  // 保存時
+  const saveExpense = async (expense: Expense) => {
+    try {
+      // 日付をISO文字列として保存
+      const expenseToSave = {
+        ...expense,
+        date: expense.date.toISOString()
+      }
+      await storeData(STORAGE_KEYS.EXPENSES, expenseToSave)
+    } catch (error) {
+      console.error('保存エラー:', error)
+    }
+  }
+
+  // 取得時
+  const getExpenses = async () => {
+    try {
+      const savedExpenses = await getData<Expense[]>(STORAGE_KEYS.EXPENSES)
+      if (savedExpenses) {
+        setExpenses(savedExpenses)
+      }
+    } catch (error) {
+      console.error('取得エラー:', error)
+      return []
+    }
+  }
+
   return { expenses, loading, addExpense, loadExpenses }
 }

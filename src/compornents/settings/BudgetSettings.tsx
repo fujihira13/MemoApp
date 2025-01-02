@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   Switch,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native'
 import { Card } from '../common/Card'
+import { useBudgetStorage } from '../../hooks/useBudgetStorage'
 
 interface BudgetFormData {
   monthlyBudget: string
@@ -17,6 +19,7 @@ interface BudgetFormData {
 }
 
 export const BudgetSettings = (): React.JSX.Element => {
+  const { budgetSettings, saveBudgetSettings } = useBudgetStorage()
   const [formData, setFormData] = useState<BudgetFormData>({
     monthlyBudget: '100000',
     dailyBudget: '3000',
@@ -24,9 +27,21 @@ export const BudgetSettings = (): React.JSX.Element => {
     warningThreshold: '80'
   })
 
-  const handleSubmit = (): void => {
-    // ここで設定を保存する処理を実装
-    console.log(formData)
+  // 初期データのロード
+  useEffect(() => {
+    if (budgetSettings) {
+      setFormData(budgetSettings)
+    }
+  }, [budgetSettings])
+
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      await saveBudgetSettings(formData)
+      Alert.alert('成功', '設定を保存しました')
+    } catch (error) {
+      console.error('設定の保存に失敗しました:', error)
+      Alert.alert('エラー', '設定の保存に失敗しました')
+    }
   }
 
   return (
@@ -105,7 +120,10 @@ export const BudgetSettings = (): React.JSX.Element => {
           />
         </View>
 
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={() => void handleSubmit()}
+        >
           <Text style={styles.submitButtonText}>設定を保存</Text>
         </TouchableOpacity>
       </Card>
