@@ -1,6 +1,7 @@
 // src/components/common/TabView.tsx
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
+import { styles } from '../../styles/common/TabView.styles'
 
 interface Tab {
   id: string
@@ -39,34 +40,3 @@ export const TabView = ({
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    padding: 4,
-    margin: 16,
-    borderRadius: 20,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 8,
-    alignItems: 'center',
-    borderRadius: 16
-  },
-  activeTab: {
-    backgroundColor: '#0891b2'
-  },
-  tabText: {
-    fontSize: 12,
-    color: '#666'
-  },
-  activeTabText: {
-    color: '#fff'
-  }
-})
