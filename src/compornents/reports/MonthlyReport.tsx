@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Platform } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Card } from '../common/Card'
 import { MonthlyReportData } from '../../types/expense'
 import { styles } from '../../styles/components/reports/MonthlyReport.styles'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 
 export const MonthlyReport = (): React.JSX.Element => {
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [showDatePicker, setShowDatePicker] = useState(false)
 
   // サンプルデータ
   const monthlyData: MonthlyReportData = {
@@ -40,6 +43,17 @@ export const MonthlyReport = (): React.JSX.Element => {
     setCurrentDate(newDate)
   }
 
+  // 日付選択時の処理
+  const onDateChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date
+  ): void => {
+    setShowDatePicker(false)
+    if (selectedDate) {
+      setCurrentDate(selectedDate)
+    }
+  }
+
   return (
     <View style={styles.container}>
       {/* 月選択ヘッダー */}
@@ -56,9 +70,16 @@ export const MonthlyReport = (): React.JSX.Element => {
               color="#666"
             />
           </TouchableOpacity>
-          <Text style={styles.monthText}>
-            {currentDate.getFullYear()}年{currentDate.getMonth() + 1}月
-          </Text>
+
+          <TouchableOpacity
+            onPress={() => setShowDatePicker(true)}
+            style={styles.monthText}
+          >
+            <Text style={styles.monthTextContent}>
+              {currentDate.getFullYear()}年{currentDate.getMonth() + 1}月
+            </Text>
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.monthButton}
             onPress={() => changeMonth(1)}
@@ -71,6 +92,17 @@ export const MonthlyReport = (): React.JSX.Element => {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* DatePicker */}
+      {showDatePicker && (
+        <DateTimePicker
+          value={currentDate}
+          mode="date"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          onChange={onDateChange}
+          locale="ja"
+        />
+      )}
 
       {/* 支出サマリーカード */}
       <View style={styles.summary}>

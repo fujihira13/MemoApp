@@ -27,12 +27,12 @@ export const styles = StyleSheet.create({
   monthButton: {
     padding: spacing.sm
   },
-  monthText: {
-    fontSize: typography.fontSize.lg,
-    minWidth: 120,
-    textAlign: 'center',
-    color: colors.text.primary
-  },
+  // monthText: {
+  //   fontSize: typography.fontSize.lg,
+  //   minWidth: 120,
+  //   textAlign: 'center',
+  //   color: colors.text.primary
+  // },
   summary: {
     flexDirection: 'row',
     gap: spacing.md
@@ -137,5 +137,16 @@ export const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.primary,
     borderRadius: 2
+  },
+  monthText: {
+    padding: spacing.sm,
+    borderRadius: 8,
+    backgroundColor: colors.background.main
+  },
+  monthTextContent: {
+    fontSize: typography.fontSize.lg,
+    minWidth: 120,
+    textAlign: 'center',
+    color: colors.text.primary
   }
 })
