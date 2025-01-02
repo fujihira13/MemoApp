@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text } from 'react-native'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { styles } from '../../styles/components/stats/CookingAnalysis.styles'
 
 export const CookingAnalysis = (): React.JSX.Element => {
   // サンプルデータ
@@ -115,66 +116,3 @@ export const CookingAnalysis = (): React.JSX.Element => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 16
-  },
-  statsCard: {
-    padding: 16
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8
-  },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#666'
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: 'bold'
-  },
-  subText: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4
-  },
-  breakdownCard: {
-    padding: 16
-  },
-  breakdownList: {
-    marginTop: 12,
-    gap: 12
-  },
-  breakdownItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  mealTimeLabel: {
-    fontSize: 12,
-    width: 40
-  },
-  countContainer: {
-    flex: 1,
-    marginLeft: 12
-  },
-  countValue: {
-    fontSize: 12,
-    marginBottom: 4
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 4
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#0891b2',
-    borderRadius: 4
-  }
-})
