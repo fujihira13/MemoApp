@@ -1,13 +1,30 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Platform } from 'react-native'
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+  Alert
+} from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
-import { ExpenseCategory, MealTime, ExpenseFormData } from '../../types/expense'
+import {
+  ExpenseCategory,
+  MealTime,
+  ExpenseFormData,
+  Expense
+} from '../../types/expense'
 import { styles } from '../../styles/components/forms/ExpenseForm.styles'
 import { Animated } from 'react-native'
+import { useExpenseStorage } from '../../hooks/useExpenseStorage'
+import { useRouter } from 'expo-router'
+
 export const ExpenseForm = (): React.JSX.Element => {
+  const router = useRouter()
+  const { addExpense } = useExpenseStorage()
   const [formData, setFormData] = useState<ExpenseFormData>({
     amount: '',
     category: 'grocery',
@@ -46,9 +63,56 @@ export const ExpenseForm = (): React.JSX.Element => {
     }
   }
 
-  const handleSubmit = (): void => {
-    // ここで支出データを保存する処理を実装
-    console.log(formData)
+  const resetForm = (): void => {
+    setFormData({
+      amount: '',
+      category: 'grocery',
+      mealTime: 'none',
+      isHomeCooking: false,
+      date: new Date(),
+      note: ''
+    })
+  }
+
+  const validateForm = (): boolean => {
+    if (
+      !formData.isHomeCooking &&
+      (!formData.amount || isNaN(Number(formData.amount)))
+    ) {
+      Alert.alert('エラー', '金額を正しく入力してください')
+      return false
+    }
+    return true
+  }
+
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      if (!validateForm()) return
+
+      const expenseData: Expense = {
+        id: Date.now().toString(),
+        amount: formData.isHomeCooking ? 0 : Number(formData.amount),
+        category: formData.category,
+        mealTime: formData.mealTime,
+        isHomeCooking: formData.isHomeCooking,
+        date: formData.date,
+        note: formData.note
+      }
+
+      await addExpense(expenseData)
+      Alert.alert('成功', '支出を記録しました', [
+        {
+          text: 'OK',
+          onPress: (): void => {
+            resetForm()
+            router.push('/(tabs)')
+          }
+        }
+      ])
+    } catch (error) {
+      console.error('支出の保存に失敗しました:', error)
+      Alert.alert('エラー', '支出の保存に失敗しました')
+    }
   }
 
   return (
@@ -215,7 +279,10 @@ export const ExpenseForm = (): React.JSX.Element => {
       </Card>
 
       {/* 送信ボタン */}
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={() => void handleSubmit()}
+      >
         <Text style={styles.submitButtonText}>支出を記録</Text>
       </TouchableOpacity>
     </View>
