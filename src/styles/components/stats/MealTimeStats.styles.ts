@@ -1,50 +1,42 @@
 import { StyleSheet } from 'react-native'
-import { colors } from '../../theme/colors'
-import { spacing } from '../../theme/spacing'
-import { typography } from '../../theme/typography'
 
 export const styles = StyleSheet.create({
   container: {
-    gap: spacing.md
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    gap: spacing.md
+    padding: 16,
+    gap: 16
   },
   statsCard: {
-    flex: 1,
-    padding: spacing.md,
-    backgroundColor: colors.background.card
+    padding: 16
   },
   mealLabel: {
-    fontSize: typography.fontSize.md,
-    color: colors.text.secondary,
-    marginBottom: spacing.xs
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#666',
+    marginBottom: 8
   },
   amount: {
-    fontSize: typography.fontSize.xl,
-    fontWeight: typography.fontWeight.bold,
-    color: colors.text.primary
+    fontSize: 24,
+    fontWeight: 'bold'
   },
   averageText: {
-    fontSize: typography.fontSize.xs,
-    color: colors.text.secondary,
-    marginTop: spacing.xs
+    fontSize: 12,
+    color: '#666',
+    marginTop: 4
   },
   comparisonCard: {
-    padding: spacing.md
+    padding: 16
   },
   cardTitle: {
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.medium,
-    color: colors.text.secondary,
-    marginBottom: spacing.md
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#666',
+    marginBottom: 16
   },
   progressContainer: {
-    gap: spacing.md
+    gap: 16
   },
   progressItem: {
-    gap: spacing.xs
+    gap: 8
   },
   progressHeader: {
     flexDirection: 'row',
@@ -52,21 +44,22 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   progressLabel: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.primary
+    fontSize: 14,
+    fontWeight: '600'
   },
   progressAmount: {
-    fontSize: typography.fontSize.sm,
-    fontWeight: typography.fontWeight.medium
+    fontSize: 14,
+    fontWeight: '600'
   },
   progressBar: {
-    height: 8,
-    backgroundColor: colors.background.main,
-    borderRadius: 4
+    height: 4,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 2,
+    overflow: 'hidden'
   },
   progressFill: {
     height: '100%',
-    backgroundColor: colors.primary,
-    borderRadius: 4
+    backgroundColor: '#2196F3',
+    borderRadius: 2
   }
 })
