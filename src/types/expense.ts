@@ -55,3 +55,15 @@ export interface MonthlyReportData {
   dailyBudget: number
   categories: Record<string, Category>
 }
+
+// カテゴリーごとの集計情報
+interface CategorySummary {
+  total: number
+  count: number
+  percentage: number
+}
+
+// カテゴリー別集計の型
+export type CategorySummaries = {
+  [key: string]: CategorySummary
+}
