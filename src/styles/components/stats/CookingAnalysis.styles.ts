@@ -1,67 +1,65 @@
 import { StyleSheet } from 'react-native'
-import { colors } from '../../theme/colors'
-import { spacing } from '../../theme/spacing'
-import { typography } from '../../theme/typography'
 
 export const styles = StyleSheet.create({
   container: {
-    gap: spacing.md
+    padding: 16,
+    gap: 16
   },
   statsCard: {
-    padding: spacing.md
+    padding: 16
   },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: spacing.sm
+    marginBottom: 8
   },
   cardTitle: {
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.medium,
-    color: colors.text.secondary
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#666'
   },
   statValue: {
-    fontSize: typography.fontSize.xl,
-    fontWeight: typography.fontWeight.bold
+    fontSize: 24,
+    fontWeight: 'bold'
   },
   subText: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-    marginTop: spacing.xs
+    fontSize: 12,
+    color: '#666',
+    marginTop: 4
   },
   breakdownCard: {
-    padding: spacing.md
+    padding: 16
   },
-  breakdownList: {
-    marginTop: spacing.sm,
-    gap: spacing.sm
+  mealTimeList: {
+    marginTop: 16,
+    gap: 16
   },
-  breakdownItem: {
+  mealTimeItem: {
+    gap: 8
+  },
+  mealTimeHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
   mealTimeLabel: {
-    fontSize: typography.fontSize.sm,
-    width: 40
+    fontSize: 16,
+    fontWeight: '600'
   },
-  countContainer: {
-    flex: 1,
-    marginLeft: spacing.sm
-  },
-  countValue: {
-    fontSize: typography.fontSize.sm,
-    marginBottom: spacing.xs
+  mealTimeCount: {
+    fontSize: 16,
+    fontWeight: '600'
   },
   progressBar: {
-    height: 8,
-    backgroundColor: colors.background.main,
-    borderRadius: 4
+    height: 4,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 2,
+    overflow: 'hidden'
   },
   progressFill: {
     height: '100%',
-    backgroundColor: colors.primary,
-    borderRadius: 4
+    backgroundColor: '#4caf50',
+    borderRadius: 2
   }
 })

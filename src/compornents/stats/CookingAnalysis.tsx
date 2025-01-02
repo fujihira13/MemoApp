@@ -1,19 +1,62 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View, Text } from 'react-native'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { styles } from '../../styles/components/stats/CookingAnalysis.styles'
+import { useExpenseStorage } from '../../hooks/useExpenseStorage'
+import { MealTime } from '../../types/expense'
 
 export const CookingAnalysis = (): React.JSX.Element => {
-  // サンプルデータ
-  const cookingStats = {
-    monthlyCount: 15,
-    estimatedSaving: 15000,
-    mealTimeBreakdown: {
-      breakfast: 3,
-      lunch: 5,
-      dinner: 7
+  const { expenses, loading } = useExpenseStorage()
+
+  // 今月の自炊データを計算（メモ化）
+  const cookingStats = useMemo(() => {
+    if (loading) return null
+
+    const today = new Date()
+    const currentMonth = today.getMonth()
+    const currentYear = today.getFullYear()
+
+    // 今月の自炊データをフィルタリング
+    const currentMonthCooking = expenses.filter((expense) => {
+      const expenseDate = new Date(expense.date)
+      return (
+        expense.isHomeCooking &&
+        expenseDate.getMonth() === currentMonth &&
+        expenseDate.getFullYear() === currentYear
+      )
+    })
+
+    // 時間帯別の集計
+    const mealTimeBreakdown = currentMonthCooking.reduce(
+      (acc, expense) => {
+        if (expense.mealTime !== 'none') {
+          acc[expense.mealTime]++
+        }
+        return acc
+      },
+      { breakfast: 0, lunch: 0, dinner: 0 } as Record<
+        Exclude<MealTime, 'none'>,
+        number
+      >
+    )
+
+    // 自炊による推定節約額を計算（1食あたり1000円で計算）
+    const estimatedSaving = currentMonthCooking.length * 1000
+
+    return {
+      monthlyCount: currentMonthCooking.length,
+      estimatedSaving,
+      mealTimeBreakdown
     }
+  }, [expenses, loading])
+
+  if (loading || !cookingStats) {
+    return (
+      <View style={styles.container}>
+        <Text>読み込み中...</Text>
+      </View>
+    )
   }
 
   return (
@@ -42,75 +85,33 @@ export const CookingAnalysis = (): React.JSX.Element => {
       {/* 時間帯別自炊回数 */}
       <Card style={styles.breakdownCard}>
         <Text style={styles.cardTitle}>時間帯別自炊回数</Text>
-        <View style={styles.breakdownList}>
-          <View style={styles.breakdownItem}>
-            <Text style={styles.mealTimeLabel}>朝食</Text>
-            <View style={styles.countContainer}>
-              <Text style={styles.countValue}>
-                {cookingStats.mealTimeBreakdown.breakfast}回
-              </Text>
-              <View style={styles.progressBar}>
-                <View
-                  style={[
-                    styles.progressFill,
-                    {
-                      width: `${
-                        (cookingStats.mealTimeBreakdown.breakfast /
-                          cookingStats.monthlyCount) *
-                        100
-                      }%`
-                    }
-                  ]}
-                />
+        <View style={styles.mealTimeList}>
+          {Object.entries(cookingStats.mealTimeBreakdown).map(
+            ([mealTime, count]) => (
+              <View key={mealTime} style={styles.mealTimeItem}>
+                <View style={styles.mealTimeHeader}>
+                  <Text style={styles.mealTimeLabel}>
+                    {mealTime === 'breakfast'
+                      ? '朝食'
+                      : mealTime === 'lunch'
+                      ? '昼食'
+                      : '夕食'}
+                  </Text>
+                  <Text style={styles.mealTimeCount}>{count}回</Text>
+                </View>
+                <View style={styles.progressBar}>
+                  <View
+                    style={[
+                      styles.progressFill,
+                      {
+                        width: `${(count / cookingStats.monthlyCount) * 100}%`
+                      }
+                    ]}
+                  />
+                </View>
               </View>
-            </View>
-          </View>
-
-          <View style={styles.breakdownItem}>
-            <Text style={styles.mealTimeLabel}>昼食</Text>
-            <View style={styles.countContainer}>
-              <Text style={styles.countValue}>
-                {cookingStats.mealTimeBreakdown.lunch}回
-              </Text>
-              <View style={styles.progressBar}>
-                <View
-                  style={[
-                    styles.progressFill,
-                    {
-                      width: `${
-                        (cookingStats.mealTimeBreakdown.lunch /
-                          cookingStats.monthlyCount) *
-                        100
-                      }%`
-                    }
-                  ]}
-                />
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.breakdownItem}>
-            <Text style={styles.mealTimeLabel}>夕食</Text>
-            <View style={styles.countContainer}>
-              <Text style={styles.countValue}>
-                {cookingStats.mealTimeBreakdown.dinner}回
-              </Text>
-              <View style={styles.progressBar}>
-                <View
-                  style={[
-                    styles.progressFill,
-                    {
-                      width: `${
-                        (cookingStats.mealTimeBreakdown.dinner /
-                          cookingStats.monthlyCount) *
-                        100
-                      }%`
-                    }
-                  ]}
-                />
-              </View>
-            </View>
-          </View>
+            )
+          )}
         </View>
       </Card>
     </View>
