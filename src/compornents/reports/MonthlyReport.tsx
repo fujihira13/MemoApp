@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Card } from '../common/Card'
 import { MonthlyReportData } from '../../types/expense'
+import { styles } from '../../styles/components/reports/MonthlyReport.styles'
 
 export const MonthlyReport = (): React.JSX.Element => {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -45,23 +46,29 @@ export const MonthlyReport = (): React.JSX.Element => {
       <View style={styles.header}>
         <Text style={styles.title}>月次レポート</Text>
         <View style={styles.monthSelector}>
-          <Pressable style={styles.monthButton} onPress={() => changeMonth(-1)}>
+          <TouchableOpacity
+            style={styles.monthButton}
+            onPress={() => changeMonth(-1)}
+          >
             <MaterialCommunityIcons
               name="chevron-left"
               size={24}
               color="#666"
             />
-          </Pressable>
+          </TouchableOpacity>
           <Text style={styles.monthText}>
             {currentDate.getFullYear()}年{currentDate.getMonth() + 1}月
           </Text>
-          <Pressable style={styles.monthButton} onPress={() => changeMonth(1)}>
+          <TouchableOpacity
+            style={styles.monthButton}
+            onPress={() => changeMonth(1)}
+          >
             <MaterialCommunityIcons
               name="chevron-right"
               size={24}
               color="#666"
             />
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -134,113 +141,3 @@ export const MonthlyReport = (): React.JSX.Element => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    gap: 16
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  monthSelector: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8
-  },
-  monthButton: {
-    padding: 8
-  },
-  monthText: {
-    fontSize: 16,
-    minWidth: 120,
-    textAlign: 'center'
-  },
-  summary: {
-    flexDirection: 'row',
-    gap: 12
-  },
-  summaryCard: {
-    flex: 1,
-    padding: 16
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8
-  },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
-    marginBottom: 8
-  },
-  amount: {
-    fontSize: 24,
-    fontWeight: 'bold'
-  },
-  changeText: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4
-  },
-  budgetText: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4
-  },
-  categoryCard: {
-    padding: 16
-  },
-  categoryList: {
-    gap: 16
-  },
-  categoryItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12
-  },
-  categoryIcon: {
-    width: 36,
-    height: 36,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  categoryContent: {
-    flex: 1
-  },
-  categoryHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4
-  },
-  categoryLabel: {
-    fontSize: 14,
-    fontWeight: '500'
-  },
-  categoryAmount: {
-    fontSize: 14,
-    fontWeight: '500'
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 4
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#0891b2',
-    borderRadius: 4
-  }
-})

@@ -1,3 +1,7 @@
+import type { MaterialCommunityIcons } from '@expo/vector-icons'
+
+export type IconName = keyof typeof MaterialCommunityIcons.glyphMap
+
 export type ExpenseCategory =
   | 'grocery'
   | 'eating_out'
@@ -51,14 +55,3 @@ export interface MonthlyReportData {
   dailyBudget: number
   categories: Record<string, Category>
 }
-
-export type IconName =
-  | 'cart'
-  | 'silverware-fork-knife'
-  | 'food'
-  | 'glass-wine'
-  | 'store'
-  | 'chevron-left'
-  | 'chevron-right'
-  | 'trending-up'
-  | 'trending-down'
