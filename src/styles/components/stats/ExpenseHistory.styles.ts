@@ -32,9 +32,11 @@ export const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    paddingVertical: spacing.sm,
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border
+    borderBottomColor: '#eee'
   },
   cell: {
     fontSize: typography.fontSize.sm
@@ -53,5 +55,9 @@ export const styles = StyleSheet.create({
   },
   noteCell: {
     flex: 1
+  },
+  deleteButton: {
+    padding: 8,
+    marginLeft: 8
   }
 })

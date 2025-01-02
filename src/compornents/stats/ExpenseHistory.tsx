@@ -1,12 +1,13 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Alert, TouchableOpacity } from 'react-native'
 import { Card } from '../common/Card'
 import { Expense } from '../../types/expense'
 import { styles } from '../../styles/components/stats/ExpenseHistory.styles'
 import { useExpenseStorage } from '../../hooks/useExpenseStorage'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export const ExpenseHistory = (): React.JSX.Element => {
-  const { expenses, loading } = useExpenseStorage()
+  const { expenses, loading, deleteExpense } = useExpenseStorage()
 
   if (loading) {
     return <Text>読み込み中...</Text>
@@ -20,6 +21,29 @@ export const ExpenseHistory = (): React.JSX.Element => {
       month: 'long',
       day: 'numeric'
     })
+  }
+
+  const handleDelete = (expenseId: string): void => {
+    Alert.alert('削除の確認', 'この支出記録を削除してもよろしいですか？', [
+      {
+        text: 'キャンセル',
+        style: 'cancel'
+      },
+      {
+        text: '削除',
+        style: 'destructive',
+        onPress: (): void => {
+          deleteExpense(expenseId)
+            .then(() => {
+              Alert.alert('成功', '支出記録を削除しました')
+            })
+            .catch((error) => {
+              Alert.alert('エラー', '削除に失敗しました')
+              console.error(error)
+            })
+        }
+      }
+    ])
   }
 
   return (
@@ -39,8 +63,8 @@ export const ExpenseHistory = (): React.JSX.Element => {
       </View>
 
       {/* 支出リスト */}
-      {expenses.map((expense, index) => (
-        <View key={index} style={styles.row}>
+      {expenses.map((expense) => (
+        <View key={expense.id} style={styles.row}>
           <Text style={[styles.cell, styles.dateCell]}>
             {expense.date ? formatDate(expense.date) : '日付なし'}
           </Text>
@@ -56,6 +80,17 @@ export const ExpenseHistory = (): React.JSX.Element => {
               : `¥${expense.amount.toLocaleString()}`}
           </Text>
           <Text style={[styles.cell, styles.noteCell]}>{expense.note}</Text>
+
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => void handleDelete(expense.id)}
+          >
+            <MaterialCommunityIcons
+              name="delete-outline"
+              size={20}
+              color="#ff4444"
+            />
+          </TouchableOpacity>
         </View>
       ))}
     </Card>

@@ -7,6 +7,7 @@ interface UseExpenseStorageReturn {
   loading: boolean
   addExpense: (newExpense: Expense) => Promise<void>
   loadExpenses: () => Promise<void>
+  deleteExpense: (expenseId: string) => Promise<void>
 }
 
 export const useExpenseStorage = (): UseExpenseStorageReturn => {
@@ -71,5 +72,25 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
     }
   }
 
-  return { expenses, loading, addExpense, loadExpenses }
+  // 支出データを削除する
+  const deleteExpense = async (expenseId: string): Promise<void> => {
+    try {
+      const updatedExpenses = expenses.filter(
+        (expense) => expense.id !== expenseId
+      )
+      await storeData(STORAGE_KEYS.EXPENSES, updatedExpenses)
+      setExpenses(updatedExpenses)
+    } catch (error) {
+      console.error('支出の削除エラー:', error)
+      throw error
+    }
+  }
+
+  return {
+    expenses,
+    loading,
+    addExpense,
+    loadExpenses,
+    deleteExpense
+  }
 }
