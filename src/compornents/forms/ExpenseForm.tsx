@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { ExpenseCategory, MealTime, ExpenseFormData } from '../../types/expense'
 import { styles } from '../../styles/components/forms/ExpenseForm.styles'
+import { Animated } from 'react-native'
 export const ExpenseForm = (): React.JSX.Element => {
   const [formData, setFormData] = useState<ExpenseFormData>({
     amount: '',
@@ -54,30 +55,37 @@ export const ExpenseForm = (): React.JSX.Element => {
     <View style={styles.container}>
       {/* 自炊チェックボックス */}
       <Card style={styles.checkboxCard}>
-        <TouchableOpacity
-          style={styles.checkbox}
-          onPress={() =>
-            setFormData((prev) => ({
-              ...prev,
-              isHomeCooking: !prev.isHomeCooking,
-              amount: !prev.isHomeCooking ? '0' : prev.amount
-            }))
-          }
-        >
-          <MaterialCommunityIcons
-            name={
-              formData.isHomeCooking
-                ? 'checkbox-marked'
-                : 'checkbox-blank-outline'
+        <View style={styles.toggleContainer}>
+          <View>
+            <Text style={styles.toggleLabel}>自炊した</Text>
+            <Text style={styles.toggleDescription}>
+              自炊した場合はオンにしてください
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() =>
+              setFormData((prev) => ({
+                ...prev,
+                isHomeCooking: !prev.isHomeCooking,
+                amount: !prev.isHomeCooking ? '0' : prev.amount
+              }))
             }
-            size={24}
-            color="#0891b2"
-          />
-          <Text style={styles.checkboxLabel}>自炊した</Text>
-        </TouchableOpacity>
-        <Text style={styles.checkboxDescription}>
-          自炊した場合はチェックを入れてください
-        </Text>
+          >
+            <View
+              style={[
+                styles.toggle,
+                formData.isHomeCooking && styles.toggleActive
+              ]}
+            >
+              <Animated.View
+                style={[
+                  styles.toggleKnob,
+                  formData.isHomeCooking && styles.toggleKnobActive
+                ]}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
       </Card>
 
       {/* 金額入力 */}

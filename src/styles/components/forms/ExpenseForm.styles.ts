@@ -181,5 +181,45 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm
+  },
+  toggleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16
+  },
+  toggleLabel: {
+    fontSize: 16,
+    fontWeight: '500'
+  },
+  toggleDescription: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 4
+  },
+  toggle: {
+    width: 51,
+    height: 31,
+    borderRadius: 15.5,
+    backgroundColor: '#e0e0e0',
+    justifyContent: 'center',
+    padding: 2
+  },
+  toggleActive: {
+    backgroundColor: '#0891b2'
+  },
+  toggleKnob: {
+    width: 27,
+    height: 27,
+    borderRadius: 13.5,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3
+  },
+  toggleKnobActive: {
+    transform: [{ translateX: 20 }]
   }
 })
