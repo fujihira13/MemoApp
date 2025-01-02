@@ -6,6 +6,7 @@ import { styles } from '../../styles/components/stats/ExpenseHistory.styles'
 import { useExpenseStorage } from '../../hooks/useExpenseStorage'
 import { ExpenseEditModal } from '../modals/ExpenseEditModal'
 import { Expense } from '../../types/expense'
+import { ExpenseSummary } from './ExpenseSummary'
 
 export const ExpenseHistory = (): React.JSX.Element => {
   const { expenses, loading, deleteExpense, editExpense } = useExpenseStorage()
@@ -70,129 +71,137 @@ export const ExpenseHistory = (): React.JSX.Element => {
   }
 
   return (
-    <Card style={styles.container}>
-      {/* 月選択ヘッダー */}
-      <View style={styles.header}>
-        <View style={styles.monthSelector}>
-          <TouchableOpacity
-            onPress={() => changeMonth(-1)}
-            style={styles.monthButton}
-          >
-            <MaterialCommunityIcons
-              name="chevron-left"
-              size={24}
-              color="#666"
-            />
-          </TouchableOpacity>
+    <View style={styles.pageContainer}>
+      <ExpenseSummary
+        expenses={filteredExpenses}
+        selectedMonth={selectedMonth}
+      />
+      <Card style={styles.container}>
+        {/* 月選択ヘッダー */}
+        <View style={styles.header}>
+          <View style={styles.monthSelector}>
+            <TouchableOpacity
+              onPress={() => changeMonth(-1)}
+              style={styles.monthButton}
+            >
+              <MaterialCommunityIcons
+                name="chevron-left"
+                size={24}
+                color="#666"
+              />
+            </TouchableOpacity>
 
-          <Text style={styles.monthText}>
-            {selectedMonth.toLocaleDateString('ja-JP', {
-              year: 'numeric',
-              month: 'long'
-            })}
-          </Text>
-
-          <TouchableOpacity
-            onPress={() => changeMonth(1)}
-            style={styles.monthButton}
-          >
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={24}
-              color="#666"
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* 月間合計 */}
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalLabel}>月間合計</Text>
-          <Text style={styles.totalAmount}>
-            ¥{monthlyTotal.toLocaleString()}
-          </Text>
-        </View>
-      </View>
-
-      {/* テーブルヘッダー */}
-      <View style={styles.tableHeader}>
-        <Text style={[styles.headerCell, styles.dateCell]}>日付</Text>
-        <Text style={[styles.headerCell, styles.mealTimeCell]}>時間帯</Text>
-        <Text style={[styles.headerCell, styles.categoryCell]}>カテゴリー</Text>
-        <Text style={[styles.headerCell, styles.amountCell]}>金額</Text>
-        <Text style={[styles.headerCell, styles.noteCell]}>メモ</Text>
-        <Text style={[styles.headerCell, styles.actionCell]}>操作</Text>
-      </View>
-
-      {/* 支出リスト */}
-      {filteredExpenses.length === 0 ? (
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyStateText}>
-            この月の支出記録はありません
-          </Text>
-        </View>
-      ) : (
-        filteredExpenses.map((expense) => (
-          <View key={expense.id} style={styles.row}>
-            <Text style={[styles.cell, styles.dateCell]}>
-              {new Date(expense.date).toLocaleDateString('ja-JP')}
+            <Text style={styles.monthText}>
+              {selectedMonth.toLocaleDateString('ja-JP', {
+                year: 'numeric',
+                month: 'long'
+              })}
             </Text>
-            <Text style={[styles.cell, styles.mealTimeCell]}>
-              {expense.mealTime}
-            </Text>
-            <Text style={[styles.cell, styles.categoryCell]}>
-              {expense.category}
-            </Text>
-            <Text style={[styles.cell, styles.amountCell]}>
-              {expense.isHomeCooking
-                ? '-'
-                : `¥${expense.amount.toLocaleString()}`}
-            </Text>
-            <Text style={[styles.cell, styles.noteCell]}>{expense.note}</Text>
-            <View style={[styles.cell, styles.actionCell]}>
-              <TouchableOpacity
-                style={styles.editButton}
-                onPress={() => handleEdit(expense)}
-              >
-                <MaterialCommunityIcons
-                  name="pencil-outline"
-                  size={20}
-                  color="#2196F3"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => void handleDelete(expense.id)}
-              >
-                <MaterialCommunityIcons
-                  name="delete-outline"
-                  size={20}
-                  color="#ff4444"
-                />
-              </TouchableOpacity>
-            </View>
+
+            <TouchableOpacity
+              onPress={() => changeMonth(1)}
+              style={styles.monthButton}
+            >
+              <MaterialCommunityIcons
+                name="chevron-right"
+                size={24}
+                color="#666"
+              />
+            </TouchableOpacity>
           </View>
-        ))
-      )}
 
-      {/* 編集モーダル */}
-      <ExpenseEditModal
-        visible={isEditModalVisible}
-        expense={selectedExpense}
-        onClose={() => {
-          setIsEditModalVisible(false)
-          setSelectedExpense(null)
-        }}
-        onSave={async (updatedExpense: Expense): Promise<void> => {
-          try {
-            await editExpense(updatedExpense)
+          {/* 月間合計 */}
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalLabel}>月間合計</Text>
+            <Text style={styles.totalAmount}>
+              ¥{monthlyTotal.toLocaleString()}
+            </Text>
+          </View>
+        </View>
+
+        {/* テーブルヘッダー */}
+        <View style={styles.tableHeader}>
+          <Text style={[styles.headerCell, styles.dateCell]}>日付</Text>
+          <Text style={[styles.headerCell, styles.mealTimeCell]}>時間帯</Text>
+          <Text style={[styles.headerCell, styles.categoryCell]}>
+            カテゴリー
+          </Text>
+          <Text style={[styles.headerCell, styles.amountCell]}>金額</Text>
+          <Text style={[styles.headerCell, styles.noteCell]}>メモ</Text>
+          <Text style={[styles.headerCell, styles.actionCell]}>操作</Text>
+        </View>
+
+        {/* 支出リスト */}
+        {filteredExpenses.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyStateText}>
+              この月の支出記録はありません
+            </Text>
+          </View>
+        ) : (
+          filteredExpenses.map((expense) => (
+            <View key={expense.id} style={styles.row}>
+              <Text style={[styles.cell, styles.dateCell]}>
+                {new Date(expense.date).toLocaleDateString('ja-JP')}
+              </Text>
+              <Text style={[styles.cell, styles.mealTimeCell]}>
+                {expense.mealTime}
+              </Text>
+              <Text style={[styles.cell, styles.categoryCell]}>
+                {expense.category}
+              </Text>
+              <Text style={[styles.cell, styles.amountCell]}>
+                {expense.isHomeCooking
+                  ? '-'
+                  : `¥${expense.amount.toLocaleString()}`}
+              </Text>
+              <Text style={[styles.cell, styles.noteCell]}>{expense.note}</Text>
+              <View style={[styles.cell, styles.actionCell]}>
+                <TouchableOpacity
+                  style={styles.editButton}
+                  onPress={() => handleEdit(expense)}
+                >
+                  <MaterialCommunityIcons
+                    name="pencil-outline"
+                    size={20}
+                    color="#2196F3"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => void handleDelete(expense.id)}
+                >
+                  <MaterialCommunityIcons
+                    name="delete-outline"
+                    size={20}
+                    color="#ff4444"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))
+        )}
+
+        {/* 編集モーダル */}
+        <ExpenseEditModal
+          visible={isEditModalVisible}
+          expense={selectedExpense}
+          onClose={() => {
             setIsEditModalVisible(false)
             setSelectedExpense(null)
-          } catch (error) {
-            console.error('編集エラー:', error)
-            Alert.alert('エラー', '支出の編集に失敗しました')
-          }
-        }}
-      />
-    </Card>
+          }}
+          onSave={async (updatedExpense: Expense): Promise<void> => {
+            try {
+              await editExpense(updatedExpense)
+              setIsEditModalVisible(false)
+              setSelectedExpense(null)
+            } catch (error) {
+              console.error('編集エラー:', error)
+              Alert.alert('エラー', '支出の編集に失敗しました')
+            }
+          }}
+        />
+      </Card>
+    </View>
   )
 }
