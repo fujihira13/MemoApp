@@ -8,15 +8,51 @@ import { ExpenseHistory } from '../../../src/compornents/stats/ExpenseHistory'
 import { useState } from 'react'
 import { DailyReport } from '../../../src/compornents/stats/DailyReport'
 import { CookingAnalysis } from '../../../src/compornents/stats/CookingAnalysis'
+import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage'
 
 export default function Home(): React.JSX.Element {
   const [activeTab, setActiveTab] = useState('timeRange')
+  const { expenses, loading } = useExpenseStorage()
 
-  // サンプルデータ
-  const summaryData = {
-    totalExpense: 85000,
-    wasteExpense: 35000
+  // 今月の支出データを計算
+  const calculateMonthlyData = (): {
+    totalExpense: number
+    wasteExpense: number
+  } => {
+    if (loading) return { totalExpense: 0, wasteExpense: 0 }
+
+    const today = new Date()
+    const currentMonth = today.getMonth()
+    const currentYear = today.getFullYear()
+
+    // 今月の支出をフィルタリング
+    const currentMonthExpenses = expenses.filter((expense) => {
+      const expenseDate = new Date(expense.date)
+      return (
+        expenseDate.getMonth() === currentMonth &&
+        expenseDate.getFullYear() === currentYear
+      )
+    })
+
+    // 総支出を計算（自炊以外）
+    const totalExpense = currentMonthExpenses.reduce(
+      (sum, expense) => sum + (expense.isHomeCooking ? 0 : expense.amount),
+      0
+    )
+
+    // 浪費を計算（外食、間食、飲み会、コンビニ）
+    const wasteCategories = ['eating_out', 'snack', 'drinking', 'convenience']
+    const wasteExpense = currentMonthExpenses.reduce((sum, expense) => {
+      if (wasteCategories.includes(expense.category)) {
+        return sum + expense.amount
+      }
+      return sum
+    }, 0)
+
+    return { totalExpense, wasteExpense }
   }
+
+  const summaryData = calculateMonthlyData()
 
   const tabs = [
     { id: 'timeRange', label: '時間帯別' },
@@ -66,6 +102,6 @@ const styles = StyleSheet.create({
     padding: 16
   },
   contentContainer: {
-    padding: 16
+    marginBottom: 16
   }
 })
