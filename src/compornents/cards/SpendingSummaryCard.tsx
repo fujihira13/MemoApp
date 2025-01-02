@@ -1,7 +1,7 @@
 // src/components/cards/SpendingSummaryCard.tsx
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-
+import { View, Text } from 'react-native'
+import { styles } from '../../styles/components/cards/SpendingSummaryCard.styles'
 interface SpendingSummaryCardProps {
   data: {
     totalExpense: number
@@ -31,38 +31,3 @@ export const SpendingSummaryCard = ({
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    gap: 12
-  },
-  card: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 8,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2
-  },
-  label: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8
-  },
-  amount: {
-    fontSize: 24,
-    fontWeight: 'bold'
-  },
-  wasteAmount: {
-    color: '#ff4444'
-  },
-  subText: {
-    fontSize: 10,
-    color: '#666',
-    marginTop: 4
-  }
-})
