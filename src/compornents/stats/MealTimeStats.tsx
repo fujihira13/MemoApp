@@ -46,14 +46,13 @@ export const MealTimeStats = ({
     const currentMonth = selectedDate.getMonth()
     const currentYear = selectedDate.getFullYear()
 
-    const currentDayExpenses = expenses.filter((expense) => {
+    const currentMonthExpenses = expenses.filter((expense) => {
       const expenseDate = new Date(expense.date)
-      const isMatch =
-        expenseDate.getDate() === selectedDate.getDate() &&
+      return (
         expenseDate.getMonth() === currentMonth &&
         expenseDate.getFullYear() === currentYear &&
         !expense.isHomeCooking
-      return isMatch
+      )
     })
 
     // 初期データ構造
@@ -65,7 +64,7 @@ export const MealTimeStats = ({
     }
 
     // データの集計
-    return currentDayExpenses.reduce((acc: StatsData, expense) => {
+    return currentMonthExpenses.reduce((acc: StatsData, expense) => {
       const mealTime = expense.mealTime as keyof StatsData
 
       if (acc[mealTime]) {
