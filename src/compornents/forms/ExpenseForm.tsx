@@ -265,7 +265,7 @@ export const ExpenseForm = (): React.JSX.Element => {
       </Card>
 
       {/* メモ入力 */}
-      <Card style={styles.inputCard}>
+      {/* <Card style={styles.inputCard}>
         <Text style={styles.label}>メモ</Text>
         <TextInput
           style={styles.noteInput}
@@ -276,7 +276,7 @@ export const ExpenseForm = (): React.JSX.Element => {
           placeholder="メモを入力（任意）"
           multiline
         />
-      </Card>
+      </Card> */}
 
       {/* 送信ボタン */}
       <TouchableOpacity

@@ -16,6 +16,13 @@ interface StatsData {
   dinner: MealTimeData
 }
 
+// 時間帯の日本語マッピング
+const mealTimeLabels: { [key: string]: string } = {
+  breakfast: '朝食',
+  lunch: '昼食',
+  dinner: '夕食'
+}
+
 export const MealTimeStats = (): React.JSX.Element => {
   const { expenses, loading } = useExpenseStorage()
 
@@ -84,7 +91,7 @@ export const MealTimeStats = (): React.JSX.Element => {
     <View style={styles.container}>
       {/* 朝食の統計 */}
       <Card style={styles.statsCard}>
-        <Text style={styles.mealLabel}>朝食</Text>
+        <Text style={styles.mealLabel}>{mealTimeLabels.breakfast}</Text>
         <Text style={styles.amount}>
           ¥{statsData.breakfast.amount.toLocaleString()}
         </Text>
@@ -95,7 +102,7 @@ export const MealTimeStats = (): React.JSX.Element => {
 
       {/* 昼食の統計 */}
       <Card style={styles.statsCard}>
-        <Text style={styles.mealLabel}>昼食</Text>
+        <Text style={styles.mealLabel}>{mealTimeLabels.lunch}</Text>
         <Text style={styles.amount}>
           ¥{statsData.lunch.amount.toLocaleString()}
         </Text>
@@ -106,7 +113,7 @@ export const MealTimeStats = (): React.JSX.Element => {
 
       {/* 夕食の統計 */}
       <Card style={styles.statsCard}>
-        <Text style={styles.mealLabel}>夕食</Text>
+        <Text style={styles.mealLabel}>{mealTimeLabels.dinner}</Text>
         <Text style={styles.amount}>
           ¥{statsData.dinner.amount.toLocaleString()}
         </Text>
@@ -119,16 +126,12 @@ export const MealTimeStats = (): React.JSX.Element => {
       <Card style={styles.comparisonCard}>
         <Text style={styles.cardTitle}>時間帯別支出比較</Text>
         <View style={styles.progressContainer}>
-          {Object.entries(statsData).map(
-            ([meal, data]: [string, MealTimeData]) => (
+          {(Object.entries(statsData) as [keyof StatsData, MealTimeData][]).map(
+            ([meal, data]) => (
               <View key={meal} style={styles.progressItem}>
                 <View style={styles.progressHeader}>
                   <Text style={styles.progressLabel}>
-                    {meal === 'breakfast'
-                      ? '朝食'
-                      : meal === 'lunch'
-                      ? '昼食'
-                      : '夕食'}
+                    {mealTimeLabels[meal]}
                   </Text>
                   <Text style={styles.progressAmount}>
                     ¥{data.amount.toLocaleString()}

@@ -8,6 +8,24 @@ import { ExpenseEditModal } from '../modals/ExpenseEditModal'
 import { Expense } from '../../types/expense'
 import { ExpenseSummary } from './ExpenseSummary'
 
+// カテゴリーの日本語マッピング
+const categoryLabels: { [key: string]: string } = {
+  grocery: 'スーパー',
+  eating_out: '外食',
+  snack: '間食',
+  drinking: '飲み会',
+  convenience: 'コンビニ',
+  home_cooking: '自炊',
+  other: 'その他'
+}
+
+// 時間帯の日本語マッピング
+const mealTimeLabels: { [key: string]: string } = {
+  breakfast: '朝食',
+  lunch: '昼食',
+  dinner: '夕食'
+}
+
 export const ExpenseHistory = (): React.JSX.Element => {
   const { expenses, loading, deleteExpense, editExpense } = useExpenseStorage()
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null)
@@ -127,7 +145,7 @@ export const ExpenseHistory = (): React.JSX.Element => {
             カテゴリー
           </Text>
           <Text style={[styles.headerCell, styles.amountCell]}>金額</Text>
-          <Text style={[styles.headerCell, styles.noteCell]}>メモ</Text>
+          {/* <Text style={[styles.headerCell, styles.noteCell]}>メモ</Text> */}
           <Text style={[styles.headerCell, styles.actionCell]}>操作</Text>
         </View>
 
@@ -145,36 +163,33 @@ export const ExpenseHistory = (): React.JSX.Element => {
                 {new Date(expense.date).toLocaleDateString('ja-JP')}
               </Text>
               <Text style={[styles.cell, styles.mealTimeCell]}>
-                {expense.mealTime}
+                {mealTimeLabels[expense.mealTime]}
               </Text>
               <Text style={[styles.cell, styles.categoryCell]}>
-                {expense.category}
+                {categoryLabels[expense.category]}
               </Text>
               <Text style={[styles.cell, styles.amountCell]}>
-                {expense.isHomeCooking
-                  ? '-'
-                  : `¥${expense.amount.toLocaleString()}`}
+                ¥{expense.amount.toLocaleString()}
               </Text>
-              <Text style={[styles.cell, styles.noteCell]}>{expense.note}</Text>
               <View style={[styles.cell, styles.actionCell]}>
                 <TouchableOpacity
-                  style={styles.editButton}
+                  style={styles.iconButton}
                   onPress={() => handleEdit(expense)}
                 >
                   <MaterialCommunityIcons
-                    name="pencil-outline"
+                    name="pencil"
                     size={20}
                     color="#2196F3"
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.deleteButton}
+                  style={styles.iconButton}
                   onPress={() => void handleDelete(expense.id)}
                 >
                   <MaterialCommunityIcons
-                    name="delete-outline"
+                    name="delete"
                     size={20}
-                    color="#ff4444"
+                    color="#FF4444"
                   />
                 </TouchableOpacity>
               </View>
