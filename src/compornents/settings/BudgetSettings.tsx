@@ -90,7 +90,8 @@ export const BudgetSettings = (): React.JSX.Element => {
           </Text>
         </View>
 
-        <View style={styles.formGroup}>
+        {/* 警告しきい値の機能をコメントアウト */}
+        {/* <View style={styles.formGroup}>
           <Text style={styles.label}>警告しきい値 (%)</Text>
           <TextInput
             style={styles.input}
@@ -104,9 +105,10 @@ export const BudgetSettings = (): React.JSX.Element => {
           <Text style={styles.helperText}>
             予算の何%を超えたら警告を表示するかを設定します
           </Text>
-        </View>
+        </View> */}
 
-        <View style={styles.switchContainer}>
+        {/* 通知機能をコメントアウト */}
+        {/* <View style={styles.switchContainer}>
           <View>
             <Text style={styles.switchLabel}>通知</Text>
             <Text style={styles.helperText}>予算の警告通知を受け取ります</Text>
@@ -118,7 +120,7 @@ export const BudgetSettings = (): React.JSX.Element => {
             }
             trackColor={{ false: '#e0e0e0', true: '#0891b2' }}
           />
-        </View>
+        </View> */}
 
         <TouchableOpacity
           style={styles.submitButton}

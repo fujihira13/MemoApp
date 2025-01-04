@@ -20,8 +20,9 @@ export default function Home(): React.JSX.Element {
   const calculateMonthlyData = (): {
     totalExpense: number
     wasteExpense: number
+    monthlyBudget: number
   } => {
-    if (loading) return { totalExpense: 0, wasteExpense: 0 }
+    if (loading) return { totalExpense: 0, wasteExpense: 0, monthlyBudget: 0 }
 
     // 選択された月の支出をフィルタリング
     const selectedMonthExpenses = expenses.filter((expense) => {
@@ -50,7 +51,10 @@ export default function Home(): React.JSX.Element {
       return sum
     }, 0)
 
-    return { totalExpense, wasteExpense }
+    // 月間予算を取得（例として100000を使用）
+    const monthlyBudget = 100000
+
+    return { totalExpense, wasteExpense, monthlyBudget }
   }
 
   const summaryData = useMemo(

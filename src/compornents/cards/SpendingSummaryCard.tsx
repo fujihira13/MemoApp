@@ -6,6 +6,7 @@ interface SpendingSummaryCardProps {
   data: {
     totalExpense: number
     wasteExpense: number
+    monthlyBudget: number
   }
   selectedMonth: Date
 }
@@ -20,6 +21,15 @@ export const SpendingSummaryCard = ({
       <View style={styles.card}>
         <Text style={styles.label}>今月の総支出</Text>
         <Text style={styles.amount}>¥{data.totalExpense.toLocaleString()}</Text>
+
+        {/* 月間予算を表示 */}
+        {data.monthlyBudget ? (
+          <Text style={styles.budgetText}>
+            月間予算: ¥{data.monthlyBudget.toLocaleString()}
+          </Text>
+        ) : (
+          <Text style={styles.budgetText}>月間予算が設定されていません</Text>
+        )}
       </View>
 
       {/* 浪費カード */}
