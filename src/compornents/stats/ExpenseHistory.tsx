@@ -23,7 +23,9 @@ const categoryLabels: { [key: string]: string } = {
 const mealTimeLabels: { [key: string]: string } = {
   breakfast: '朝食',
   lunch: '昼食',
-  dinner: '夕食'
+  dinner: '夕食',
+  snack: '間食',
+  none: 'なし'
 }
 
 export const ExpenseHistory = (): React.JSX.Element => {
