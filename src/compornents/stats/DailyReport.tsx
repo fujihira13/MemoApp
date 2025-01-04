@@ -39,7 +39,8 @@ export const DailyReport = (): React.JSX.Element => {
       {
         breakfast: { amount: 0 },
         lunch: { amount: 0 },
-        dinner: { amount: 0 }
+        dinner: { amount: 0 },
+        snack: { amount: 0 }
       }
     )
 
@@ -111,7 +112,9 @@ export const DailyReport = (): React.JSX.Element => {
                     ? '朝食'
                     : mealTime === 'lunch'
                     ? '昼食'
-                    : '夕食'}
+                    : mealTime === 'dinner'
+                    ? '夕食'
+                    : '間食'}
                 </Text>
                 <Text style={styles.amountText}>
                   ¥{data.amount.toLocaleString()}

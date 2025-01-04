@@ -47,10 +47,11 @@ export const ExpenseForm = (): React.JSX.Element => {
   ]
 
   const mealTimes = [
-    { value: 'breakfast', label: '朝食' },
-    { value: 'lunch', label: '昼食' },
-    { value: 'dinner', label: '夕食' },
-    { value: 'none', label: '該当なし' }
+    { label: '朝食', value: 'breakfast' },
+    { label: '昼食', value: 'lunch' },
+    { label: '夕食', value: 'dinner' },
+    { label: '間食', value: 'snack' },
+    { label: 'なし', value: 'none' }
   ]
 
   const onDateChange = (

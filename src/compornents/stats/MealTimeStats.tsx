@@ -14,13 +14,15 @@ interface StatsData {
   breakfast: MealTimeData
   lunch: MealTimeData
   dinner: MealTimeData
+  snack: MealTimeData
 }
 
 // 時間帯の日本語マッピング
 const mealTimeLabels: { [key: string]: string } = {
   breakfast: '朝食',
   lunch: '昼食',
-  dinner: '夕食'
+  dinner: '夕食',
+  snack: '間食'
 }
 
 export const MealTimeStats = (): React.JSX.Element => {
@@ -51,7 +53,8 @@ export const MealTimeStats = (): React.JSX.Element => {
     const initialData: StatsData = {
       breakfast: { amount: 0, count: 0, average: 0 },
       lunch: { amount: 0, count: 0, average: 0 },
-      dinner: { amount: 0, count: 0, average: 0 }
+      dinner: { amount: 0, count: 0, average: 0 },
+      snack: { amount: 0, count: 0, average: 0 }
     }
 
     // データの集計
@@ -88,70 +91,42 @@ export const MealTimeStats = (): React.JSX.Element => {
   )
 
   return (
-    <View style={styles.container}>
-      {/* 朝食の統計 */}
-      <Card style={styles.statsCard}>
-        <Text style={styles.mealLabel}>{mealTimeLabels.breakfast}</Text>
-        <Text style={styles.amount}>
-          ¥{statsData.breakfast.amount.toLocaleString()}
-        </Text>
-        <Text style={styles.averageText}>
-          1日平均: ¥{statsData.breakfast.average.toLocaleString()}
-        </Text>
-      </Card>
-
-      {/* 昼食の統計 */}
-      <Card style={styles.statsCard}>
-        <Text style={styles.mealLabel}>{mealTimeLabels.lunch}</Text>
-        <Text style={styles.amount}>
-          ¥{statsData.lunch.amount.toLocaleString()}
-        </Text>
-        <Text style={styles.averageText}>
-          1日平均: ¥{statsData.lunch.average.toLocaleString()}
-        </Text>
-      </Card>
-
-      {/* 夕食の統計 */}
-      <Card style={styles.statsCard}>
-        <Text style={styles.mealLabel}>{mealTimeLabels.dinner}</Text>
-        <Text style={styles.amount}>
-          ¥{statsData.dinner.amount.toLocaleString()}
-        </Text>
-        <Text style={styles.averageText}>
-          1日平均: ¥{statsData.dinner.average.toLocaleString()}
-        </Text>
-      </Card>
-
-      {/* 時間帯別支出比較グラフ */}
-      <Card style={styles.comparisonCard}>
-        <Text style={styles.cardTitle}>時間帯別支出比較</Text>
-        <View style={styles.progressContainer}>
-          {(Object.entries(statsData) as [keyof StatsData, MealTimeData][]).map(
-            ([meal, data]) => (
-              <View key={meal} style={styles.progressItem}>
-                <View style={styles.progressHeader}>
-                  <Text style={styles.progressLabel}>
-                    {mealTimeLabels[meal]}
-                  </Text>
-                  <Text style={styles.progressAmount}>
-                    ¥{data.amount.toLocaleString()}
-                  </Text>
-                </View>
-                <View style={styles.progressBar}>
-                  <View
-                    style={[
-                      styles.progressFill,
-                      {
-                        width: `${(data.amount / maxAmount) * 100}%`
-                      }
-                    ]}
-                  />
-                </View>
-              </View>
-            )
-          )}
+    <Card style={styles.container}>
+      <Text style={styles.title}>時間帯別支出比較</Text>
+      {Object.entries(statsData || {}).map(([mealTime, data]) => (
+        <View key={mealTime} style={styles.statRow}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.mealTimeLabel}>
+              {mealTimeLabels[mealTime as keyof typeof mealTimeLabels]}
+            </Text>
+            <View style={styles.statInfo}>
+              <Text style={styles.amount}>¥{data.amount.toLocaleString()}</Text>
+              <Text style={styles.average}>
+                平均: ¥{data.average.toLocaleString()}/日
+              </Text>
+            </View>
+          </View>
+          <View style={styles.progressBar}>
+            <View
+              style={[
+                styles.progressFill,
+                {
+                  width: `${
+                    statsData
+                      ? (data.amount /
+                          Object.values(statsData).reduce(
+                            (sum, stat) => sum + stat.amount,
+                            0
+                          )) *
+                        100
+                      : 0
+                  }%`
+                }
+              ]}
+            />
+          </View>
         </View>
-      </Card>
-    </View>
+      ))}
+    </Card>
   )
 }

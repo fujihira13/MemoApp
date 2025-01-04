@@ -11,7 +11,7 @@ export type ExpenseCategory =
   | 'home_cooking'
   | 'other'
 
-export type MealTime = 'breakfast' | 'lunch' | 'dinner' | 'none'
+export type MealTime = 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'none'
 
 export interface Expense {
   id: string
