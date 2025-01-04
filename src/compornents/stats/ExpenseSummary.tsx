@@ -61,7 +61,9 @@ export const ExpenseSummary = ({
   }
 
   // カテゴリーアイコンのマッピング
-  const categoryIcons: { [key: string]: string } = {
+  const categoryIcons: {
+    [key: string]: keyof typeof MaterialCommunityIcons.glyphMap
+  } = {
     grocery: 'cart',
     eating_out: 'silverware-fork-knife',
     snack: 'cookie',

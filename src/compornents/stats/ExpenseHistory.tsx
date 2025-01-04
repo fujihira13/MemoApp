@@ -205,15 +205,17 @@ export const ExpenseHistory = (): React.JSX.Element => {
             setIsEditModalVisible(false)
             setSelectedExpense(null)
           }}
-          onSave={async (updatedExpense: Expense): Promise<void> => {
-            try {
-              await editExpense(updatedExpense)
-              setIsEditModalVisible(false)
-              setSelectedExpense(null)
-            } catch (error) {
-              console.error('編集エラー:', error)
-              Alert.alert('エラー', '支出の編集に失敗しました')
-            }
+          onSave={(updatedExpense: Expense): void => {
+            void (async (): Promise<void> => {
+              try {
+                await editExpense(updatedExpense)
+                setIsEditModalVisible(false)
+                setSelectedExpense(null)
+              } catch (error) {
+                console.error('編集エラー:', error)
+                Alert.alert('エラー', '支出の編集に失敗しました')
+              }
+            })()
           }}
         />
       </Card>

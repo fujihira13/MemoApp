@@ -29,7 +29,7 @@ export const MealTimeStats = (): React.JSX.Element => {
   const { expenses, loading } = useExpenseStorage()
 
   // 時間帯別の統計データを計算（メモ化）
-  const statsData = useMemo(() => {
+  const statsData: StatsData | null = useMemo(() => {
     if (loading) return null
 
     const today = new Date()
