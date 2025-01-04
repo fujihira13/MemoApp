@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Stack } from 'expo-router'
 import { SpendingSummaryCard } from '../../../src/compornents/cards/SpendingSummaryCard'
@@ -23,28 +23,24 @@ export default function Home(): React.JSX.Element {
   } => {
     if (loading) return { totalExpense: 0, wasteExpense: 0 }
 
-    const today = new Date()
-    const currentMonth = today.getMonth()
-    const currentYear = today.getFullYear()
-
-    // 今月の支出をフィルタリング
-    const currentMonthExpenses = expenses.filter((expense) => {
+    // 選択された月の支出をフィルタリング
+    const selectedMonthExpenses = expenses.filter((expense) => {
       const expenseDate = new Date(expense.date)
       return (
-        expenseDate.getMonth() === currentMonth &&
-        expenseDate.getFullYear() === currentYear
+        expenseDate.getMonth() === selectedMonth.getMonth() &&
+        expenseDate.getFullYear() === selectedMonth.getFullYear()
       )
     })
 
     // 総支出を計算（自炊以外）
-    const totalExpense = currentMonthExpenses.reduce(
+    const totalExpense = selectedMonthExpenses.reduce(
       (sum, expense) => sum + (expense.isHomeCooking ? 0 : expense.amount),
       0
     )
 
     // 浪費を計算（外食、間食、飲み会、コンビニ）
     const wasteCategories = ['eating_out', 'snack', 'drinking', 'convenience']
-    const wasteExpense = currentMonthExpenses.reduce((sum, expense) => {
+    const wasteExpense = selectedMonthExpenses.reduce((sum, expense) => {
       if (
         wasteCategories.includes(expense.category) &&
         !expense.isHomeCooking
@@ -57,7 +53,10 @@ export default function Home(): React.JSX.Element {
     return { totalExpense, wasteExpense }
   }
 
-  const summaryData = calculateMonthlyData()
+  const summaryData = useMemo(
+    () => calculateMonthlyData(),
+    [expenses, loading, selectedMonth]
+  )
 
   const tabs = [
     { id: 'timeRange', label: '時間帯別' },
