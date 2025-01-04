@@ -55,8 +55,7 @@ export const ExpenseEditModal = ({
     { label: '朝食', value: 'breakfast' },
     { label: '昼食', value: 'lunch' },
     { label: '夕食', value: 'dinner' },
-    { label: '間食', value: 'snack' },
-    { label: 'なし', value: 'none' }
+    { label: '間食', value: 'snack' }
   ]
 
   return (

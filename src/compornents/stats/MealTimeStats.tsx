@@ -35,7 +35,6 @@ export const MealTimeStats = ({
 
   const statsData: StatsData = useMemo(() => {
     if (loading) {
-      console.log('Loading...')
       return {
         breakfast: { amount: 0, count: 0, average: 0 },
         lunch: { amount: 0, count: 0, average: 0 },
@@ -43,9 +42,6 @@ export const MealTimeStats = ({
         snack: { amount: 0, count: 0, average: 0 }
       }
     }
-
-    // フィルタリング前の支出データを確認
-    console.log('All expenses:', expenses)
 
     const currentMonth = selectedDate.getMonth()
     const currentYear = selectedDate.getFullYear()
@@ -60,10 +56,6 @@ export const MealTimeStats = ({
       return isMatch
     })
 
-    // フィルタリング後の支出データを確認
-    console.log('Filtered expenses:', currentDayExpenses)
-    console.log('Selected date:', selectedDate)
-
     // 初期データ構造
     const initialData: StatsData = {
       breakfast: { amount: 0, count: 0, average: 0 },
@@ -74,12 +66,7 @@ export const MealTimeStats = ({
 
     // データの集計
     return currentDayExpenses.reduce((acc: StatsData, expense) => {
-      console.log('Processing expense:', expense)
-      console.log('Current mealTime:', expense.mealTime)
-
       const mealTime = expense.mealTime as keyof StatsData
-
-      console.log('Mapped mealTime:', mealTime)
 
       if (acc[mealTime]) {
         acc[mealTime].amount += expense.amount
@@ -87,18 +74,15 @@ export const MealTimeStats = ({
         acc[mealTime].average = Math.round(
           acc[mealTime].amount / acc[mealTime].count
         )
-      } else if (expense.mealTime === 'none') {
+      } else if (expense.mealTime === ('none' as const)) {
         // 'none' の場合は何もしない
       } else {
         // 未知の mealTime の場合はエラーを throw するなどの処理を行う
-        console.error('Unknown mealTime:', expense.mealTime)
+        throw new Error(`Unknown mealTime: ${expense.mealTime}`)
       }
       return acc
     }, initialData)
   }, [expenses, loading, selectedDate])
-
-  // 最終的なstatsDataの値を確認
-  console.log('Final statsData:', statsData)
 
   if (loading) {
     return (
@@ -118,7 +102,6 @@ export const MealTimeStats = ({
       <Text style={styles.title}>時間帯別支出比較</Text>
       {(Object.entries(statsData) as [keyof StatsData, MealTimeData][]).map(
         ([mealTime, data]) => {
-          console.log('Rendering mealTime:', mealTime, 'data:', data)
           const barWidth =
             totalAmount > 0 ? (data.amount / totalAmount) * 100 : 0
 
