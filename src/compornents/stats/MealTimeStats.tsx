@@ -96,7 +96,7 @@ export const MealTimeStats = ({
     <Card style={styles.container}>
       <Text style={styles.title}>時間帯別支出比較</Text>
       {Object.entries(statsData).map(([mealTime, data]) => {
-        const mealTimeKey = mealTime as keyof StatsData
+        const mealTimeKey = mealTime as keyof typeof mealTimeLabels
         const barWidth = totalAmount > 0 ? (data.amount / totalAmount) * 100 : 0
 
         return (

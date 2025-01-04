@@ -91,5 +91,26 @@ export const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: colors.background.card
+  },
+  mealTimeContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8
+  },
+  mealTimeButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    backgroundColor: '#f0f0f0'
+  },
+  mealTimeButtonActive: {
+    backgroundColor: '#007AFF'
+  },
+  mealTimeButtonText: {
+    fontSize: 14,
+    color: '#333'
+  },
+  mealTimeButtonTextActive: {
+    color: '#ffffff'
   }
 })

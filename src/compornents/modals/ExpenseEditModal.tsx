@@ -35,11 +35,24 @@ export const ExpenseEditModal = ({
   if (!formData) return null
 
   const handleSave = (): void => {
-    if (formData) {
-      onSave(formData)
+    if (formData && expense) {
+      const updatedExpense: Expense = {
+        ...formData,
+        amount: Number(formData.amount.toString()),
+        date: new Date(formData.date).toISOString()
+      }
+      onSave(updatedExpense)
       onClose()
     }
   }
+
+  // 時間帯の選択肢を追加
+  const mealTimes = [
+    { label: '朝食', value: 'breakfast' },
+    { label: '昼食', value: 'lunch' },
+    { label: '夕食', value: 'dinner' },
+    { label: '間食', value: 'snack' }
+  ]
 
   return (
     <Modal
@@ -104,6 +117,40 @@ export const ExpenseEditModal = ({
                 </TouchableOpacity>
               ))}
             </ScrollView>
+          </View>
+
+          {/* 食事の時間帯選択 */}
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>食事の時間帯</Text>
+            <View style={styles.mealTimeContainer}>
+              {mealTimes.map((mealTime) => (
+                <TouchableOpacity
+                  key={mealTime.value}
+                  style={[
+                    styles.mealTimeButton,
+                    formData.mealTime === mealTime.value &&
+                      styles.mealTimeButtonActive
+                  ]}
+                  onPress={() =>
+                    setFormData((prev) =>
+                      prev
+                        ? { ...prev, mealTime: mealTime.value as MealTime }
+                        : null
+                    )
+                  }
+                >
+                  <Text
+                    style={[
+                      styles.mealTimeButtonText,
+                      formData.mealTime === mealTime.value &&
+                        styles.mealTimeButtonTextActive
+                    ]}
+                  >
+                    {mealTime.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
 
           {/* ボタン */}
