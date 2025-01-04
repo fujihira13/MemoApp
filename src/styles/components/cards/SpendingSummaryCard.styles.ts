@@ -35,5 +35,9 @@ export const styles = StyleSheet.create({
     fontSize: typography.fontSize.xs,
     color: colors.text.secondary,
     marginTop: spacing.xs
+  },
+  budgetText: {
+    fontSize: 16,
+    color: '#000'
   }
 })
