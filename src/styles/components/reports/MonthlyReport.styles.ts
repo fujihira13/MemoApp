@@ -1,59 +1,53 @@
 import { StyleSheet } from 'react-native'
+import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
+import { typography } from '../../theme/typography'
 
 export const styles = StyleSheet.create({
   container: {
-    padding: 16
+    flex: 1,
+    padding: spacing.md
   },
+  // サマリーカード関連
   summary: {
-    flexDirection: 'row',
-    gap: 16,
-    marginBottom: 16
+    marginBottom: spacing.lg
   },
   summaryCard: {
-    flex: 1,
-    padding: 16
+    padding: spacing.md,
+    marginBottom: spacing.md
   },
   cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8
+    marginBottom: spacing.md
   },
   cardTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#666',
-    marginBottom: 8
+    fontSize: typography.fontSize.lg,
+    fontWeight: typography.fontWeight.bold,
+    marginBottom: spacing.md
   },
-  amount: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 4
-  },
-  changeText: {
-    fontSize: 14,
-    color: '#666'
-  },
-  budgetText: {
-    fontSize: 14,
-    color: '#666'
-  },
-  categoryCard: {
-    padding: 16
-  },
-  categoryList: {
-    gap: 16
-  },
-  categoryItem: {
+  // トレンド表示関連
+  trendContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12
+    justifyContent: 'space-between'
   },
+  totalAmount: {
+    fontSize: typography.fontSize.xl,
+    fontWeight: typography.fontWeight.bold
+  },
+  trendIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  percentageText: {
+    fontSize: typography.fontSize.md,
+    marginLeft: spacing.xs
+  },
+  // カテゴリー別支出関連
   categoryIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.background.main,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -64,25 +58,25 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 4
+    marginBottom: spacing.xs
   },
   categoryLabel: {
-    fontSize: 16,
-    fontWeight: '600'
+    fontSize: typography.fontSize.md,
+    color: colors.text.primary
   },
   categoryAmount: {
-    fontSize: 16,
-    fontWeight: '600'
+    fontSize: typography.fontSize.md,
+    fontWeight: typography.fontWeight.medium
   },
   progressBar: {
     height: 4,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: colors.background.main,
     borderRadius: 2,
     overflow: 'hidden'
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#2196F3',
+    backgroundColor: colors.primary,
     borderRadius: 2
   }
 })

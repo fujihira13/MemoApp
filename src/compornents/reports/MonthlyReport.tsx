@@ -143,15 +143,33 @@ export const MonthlyReport = (): React.JSX.Element => {
         <Card style={styles.summaryCard}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>月間支出の推移</Text>
-            <MaterialCommunityIcons
-              name={
-                monthlyData.percentageChange > 0
-                  ? 'trending-up'
-                  : 'trending-down'
-              }
-              size={20}
-              color={monthlyData.percentageChange > 0 ? '#ff4444' : '#4caf50'}
-            />
+            <View style={styles.trendContainer}>
+              <Text style={styles.totalAmount}>
+                ¥{monthlyData.total.toLocaleString()}
+              </Text>
+              <View style={styles.trendIndicator}>
+                <MaterialCommunityIcons
+                  name={
+                    monthlyData.percentageChange < 0 ? 'arrow-down' : 'arrow-up'
+                  }
+                  size={24}
+                  color={
+                    monthlyData.percentageChange < 0 ? '#4CAF50' : '#FF4444'
+                  }
+                />
+                <Text
+                  style={[
+                    styles.percentageText,
+                    {
+                      color:
+                        monthlyData.percentageChange < 0 ? '#4CAF50' : '#FF4444'
+                    }
+                  ]}
+                >
+                  先月比 {Math.abs(monthlyData.percentageChange).toFixed(1)}%
+                </Text>
+              </View>
+            </View>
           </View>
           <Text style={styles.amount}>
             ¥{monthlyData.total.toLocaleString()}
