@@ -1,4 +1,7 @@
 import { StyleSheet } from 'react-native'
+import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
+import { typography } from '../../theme/typography'
 
 export const styles = StyleSheet.create({
   modalContainer: {
@@ -8,72 +11,85 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: colors.background.card,
     borderRadius: 10,
-    padding: 20,
+    padding: spacing.md,
     width: '90%',
     maxWidth: 400
   },
   modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontSize: typography.fontSize.xl,
+    fontWeight: typography.fontWeight.bold,
+    marginBottom: spacing.md,
     textAlign: 'center'
   },
   inputContainer: {
-    marginBottom: 20
+    marginBottom: spacing.md
   },
   label: {
-    fontSize: 16,
-    marginBottom: 8
+    fontSize: typography.fontSize.md,
+    marginBottom: spacing.sm
   },
   amountContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 5,
+    paddingHorizontal: spacing.sm
   },
   currency: {
-    fontSize: 18,
-    marginRight: 8
+    fontSize: typography.fontSize.lg,
+    marginRight: spacing.sm
   },
   amountInput: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
-    padding: 8,
-    fontSize: 16
+    padding: spacing.sm,
+    fontSize: typography.fontSize.lg
   },
-  noteInput: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
-    padding: 8,
-    fontSize: 16,
-    minHeight: 100,
-    textAlignVertical: 'top'
+  categoryContainer: {
+    flexDirection: 'row',
+    marginHorizontal: -spacing.sm
+  },
+  categoryButton: {
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: 20,
+    backgroundColor: colors.background.main,
+    marginRight: spacing.sm
+  },
+  categoryButtonActive: {
+    backgroundColor: colors.primary
+  },
+  categoryButtonText: {
+    fontSize: typography.fontSize.md,
+    color: colors.text.secondary
+  },
+  categoryButtonTextActive: {
+    color: colors.background.card
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20
+    marginTop: spacing.md
   },
   button: {
     flex: 1,
-    padding: 12,
+    padding: spacing.md,
     borderRadius: 5,
-    marginHorizontal: 5
+    marginHorizontal: spacing.xs
   },
   cancelButton: {
-    backgroundColor: '#f0f0f0'
+    backgroundColor: colors.background.main
   },
   saveButton: {
-    backgroundColor: '#007AFF'
+    backgroundColor: colors.primary
   },
   buttonText: {
     textAlign: 'center',
-    fontSize: 16
+    fontSize: typography.fontSize.md
   },
   saveButtonText: {
-    color: 'white'
+    color: colors.background.card
   }
 })
