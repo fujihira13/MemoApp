@@ -116,32 +116,36 @@ export const MealTimeStats = ({
   return (
     <Card style={styles.container}>
       <Text style={styles.title}>時間帯別支出比較</Text>
-      {Object.entries(statsData).map(([mealTime, data]) => {
-        console.log('Rendering mealTime:', mealTime, 'data:', data)
-        const mealTimeKey = mealTime as keyof StatsData
-        const barWidth = totalAmount > 0 ? (data.amount / totalAmount) * 100 : 0
+      {(Object.entries(statsData) as [keyof StatsData, MealTimeData][]).map(
+        ([mealTime, data]) => {
+          console.log('Rendering mealTime:', mealTime, 'data:', data)
+          const barWidth =
+            totalAmount > 0 ? (data.amount / totalAmount) * 100 : 0
 
-        return (
-          <View key={mealTimeKey} style={styles.statRow}>
-            <View style={styles.headerContainer}>
-              <Text style={styles.mealTimeLabel}>
-                {mealTimeLabels[mealTimeKey]}
-              </Text>
-              <View style={styles.statInfo}>
-                <Text style={styles.amount}>
-                  ¥{data.amount.toLocaleString()}
+          return (
+            <View key={mealTime} style={styles.statRow}>
+              <View style={styles.headerContainer}>
+                <Text style={styles.mealTimeLabel}>
+                  {mealTimeLabels[mealTime]}
                 </Text>
-                <Text style={styles.average}>
-                  平均: ¥{data.average.toLocaleString()}/食
-                </Text>
+                <View style={styles.statInfo}>
+                  <Text style={styles.amount}>
+                    ¥{data.amount.toLocaleString()}
+                  </Text>
+                  <Text style={styles.average}>
+                    平均: ¥{data.average.toLocaleString()}/食
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.progressBar}>
+                <View
+                  style={[styles.progressFill, { width: `${barWidth}%` }]}
+                />
               </View>
             </View>
-            <View style={styles.progressBar}>
-              <View style={[styles.progressFill, { width: `${barWidth}%` }]} />
-            </View>
-          </View>
-        )
-      })}
+          )
+        }
+      )}
     </Card>
   )
 }

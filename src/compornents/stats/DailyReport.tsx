@@ -32,9 +32,7 @@ export const DailyReport = (): React.JSX.Element => {
     const data = filteredExpenses.reduce(
       (acc, expense) => {
         if (expense.mealTime !== 'none') {
-          acc[
-            expense.mealTime as 'breakfast' | 'lunch' | 'dinner' | 'snack'
-          ].amount += expense.amount
+          acc[expense.mealTime].amount += expense.amount
         }
         return acc
       },

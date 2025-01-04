@@ -27,7 +27,7 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
       if (savedExpenses) {
         setExpenses(savedExpenses)
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('支出データの読み込みエラー:', error)
     } finally {
       setLoading(false)
@@ -49,13 +49,15 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
   // 保存時
   const saveExpense = async (expense: Expense): Promise<void> => {
     try {
-      // 日付をISO文字列として保存
-      const expenseToSave = {
+      const expenseToSave: Expense = {
         ...expense,
-        date: expense.date.toISOString()
+        date:
+          expense.date instanceof Date
+            ? expense.date.toISOString()
+            : expense.date
       }
       await storeData(STORAGE_KEYS.EXPENSES, expenseToSave)
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('保存エラー:', error)
     }
   }

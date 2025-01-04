@@ -19,7 +19,7 @@ export interface Expense {
   category: ExpenseCategory
   mealTime: MealTime
   isHomeCooking: boolean
-  date: string
+  date: string | Date
   note?: string
 }
 
