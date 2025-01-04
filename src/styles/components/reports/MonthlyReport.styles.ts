@@ -78,5 +78,30 @@ export const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.primary,
     borderRadius: 2
+  },
+  lastMonthText: {
+    fontSize: 14,
+    color: '#666'
+  },
+  amount: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 8
+  },
+  budgetText: {
+    fontSize: 14,
+    color: '#666'
+  },
+  categoryCard: {
+    padding: 16,
+    marginBottom: 16
+  },
+  categoryList: {
+    marginTop: 16
+  },
+  categoryItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16
   }
 })

@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { styles } from '../../styles/components/stats/ExpenseHistory.styles'
 import { useExpenseStorage } from '../../hooks/useExpenseStorage'
 import { ExpenseEditModal } from '../modals/ExpenseEditModal'
-import { Expense } from '../../types/expense'
+import { Expense, CategorySummaries } from '../../types/expense'
 import { ExpenseSummary } from './ExpenseSummary'
 
 // カテゴリーの日本語マッピング

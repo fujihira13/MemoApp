@@ -96,7 +96,7 @@ export const ExpenseForm = (): React.JSX.Element => {
         category: formData.category,
         mealTime: formData.mealTime,
         isHomeCooking: formData.isHomeCooking,
-        date: formData.date,
+        date: formData.date.toISOString(),
         note: formData.note
       }
 

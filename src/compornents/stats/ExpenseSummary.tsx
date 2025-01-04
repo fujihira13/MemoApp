@@ -2,22 +2,12 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import { Card } from '../common/Card'
 import { styles } from '../../styles/components/stats/ExpenseSummary.styles'
-import { Expense } from '../../types/expense'
+import { CategorySummaries, Expense } from '../../types/expense'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 interface ExpenseSummaryProps {
   expenses: Expense[]
   selectedMonth: Date
-}
-
-interface CategorySummary {
-  total: number
-  count: number
-  percentage: number
-}
-
-type CategorySummaries = {
-  [key: string]: CategorySummary
 }
 
 export const ExpenseSummary = ({

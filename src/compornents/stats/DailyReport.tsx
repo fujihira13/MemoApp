@@ -32,7 +32,9 @@ export const DailyReport = (): React.JSX.Element => {
     const data = filteredExpenses.reduce(
       (acc, expense) => {
         if (expense.mealTime !== 'none') {
-          acc[expense.mealTime].amount += expense.amount
+          acc[
+            expense.mealTime as 'breakfast' | 'lunch' | 'dinner' | 'snack'
+          ].amount += expense.amount
         }
         return acc
       },
@@ -41,7 +43,10 @@ export const DailyReport = (): React.JSX.Element => {
         lunch: { amount: 0 },
         dinner: { amount: 0 },
         snack: { amount: 0 }
-      }
+      } as Record<
+        'breakfast' | 'lunch' | 'dinner' | 'snack',
+        { amount: number }
+      >
     )
 
     return data

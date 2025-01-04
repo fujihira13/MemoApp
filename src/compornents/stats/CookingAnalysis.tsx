@@ -30,13 +30,13 @@ export const CookingAnalysis = (): React.JSX.Element => {
     // 時間帯別の集計
     const mealTimeBreakdown = currentMonthCooking.reduce(
       (acc, expense) => {
-        if (expense.mealTime !== 'none') {
-          acc[expense.mealTime]++
+        if (expense.mealTime !== 'none' && expense.mealTime !== 'snack') {
+          acc[expense.mealTime as 'breakfast' | 'lunch' | 'dinner']++
         }
         return acc
       },
       { breakfast: 0, lunch: 0, dinner: 0 } as Record<
-        Exclude<MealTime, 'none'>,
+        'breakfast' | 'lunch' | 'dinner',
         number
       >
     )

@@ -17,10 +17,10 @@ export interface Expense {
   id: string
   amount: number
   category: ExpenseCategory
-  mealTime: MealTime
+  mealTime: string
   isHomeCooking: boolean
-  date: Date
-  note: string
+  date: string
+  note?: string
 }
 
 export interface ExpenseFormData {
@@ -57,13 +57,13 @@ export interface MonthlyReportData {
 }
 
 // カテゴリーごとの集計情報
-interface CategorySummary {
+export interface CategorySummary {
   total: number
   count: number
   percentage: number
 }
 
 // カテゴリー別集計の型
-export type CategorySummaries = {
-  [key: string]: CategorySummary
+export interface CategorySummaries {
+  [category: string]: CategorySummary
 }
