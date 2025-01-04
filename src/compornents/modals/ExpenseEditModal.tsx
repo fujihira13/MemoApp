@@ -30,7 +30,7 @@ export const ExpenseEditModal = ({
     if (expense) {
       setFormData({
         ...expense,
-        mealTime: (expense.mealTime || 'none') as MealTime
+        mealTime: expense.mealTime || 'none'
       })
     }
   }, [expense])

@@ -31,14 +31,11 @@ export const CookingAnalysis = (): React.JSX.Element => {
     const mealTimeBreakdown = currentMonthCooking.reduce(
       (acc, expense) => {
         if (expense.mealTime !== 'none' && expense.mealTime !== 'snack') {
-          acc[expense.mealTime as 'breakfast' | 'lunch' | 'dinner']++
+          acc[expense.mealTime] = (acc[expense.mealTime] ?? 0) + 1
         }
         return acc
       },
-      { breakfast: 0, lunch: 0, dinner: 0 } as Record<
-        'breakfast' | 'lunch' | 'dinner',
-        number
-      >
+      { breakfast: 0, lunch: 0, dinner: 0 } as Record<MealTime, number>
     )
 
     // 自炊による推定節約額を計算（1食あたり1000円で計算）
