@@ -58,12 +58,15 @@ export const MealTimeStats = (): React.JSX.Element => {
     }
 
     // データの集計
-    const data = currentMonthExpenses.reduce((acc, expense) => {
-      const mealTime = expense.mealTime as keyof StatsData
-      acc[mealTime].amount += expense.amount
-      acc[mealTime].count++
-      return acc
-    }, initialData)
+    const data: StatsData = currentMonthExpenses.reduce(
+      (acc: StatsData, expense) => {
+        const mealTime = expense.mealTime as keyof StatsData
+        acc[mealTime].amount += expense.amount
+        acc[mealTime].count++
+        return acc
+      },
+      initialData
+    )
 
     // 平均を計算
     Object.keys(data).forEach((mealTime) => {
@@ -93,40 +96,47 @@ export const MealTimeStats = (): React.JSX.Element => {
   return (
     <Card style={styles.container}>
       <Text style={styles.title}>時間帯別支出比較</Text>
-      {Object.entries(statsData || {}).map(([mealTime, data]) => (
-        <View key={mealTime} style={styles.statRow}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.mealTimeLabel}>
-              {mealTimeLabels[mealTime as keyof typeof mealTimeLabels]}
-            </Text>
-            <View style={styles.statInfo}>
-              <Text style={styles.amount}>¥{data.amount.toLocaleString()}</Text>
-              <Text style={styles.average}>
-                平均: ¥{data.average.toLocaleString()}/日
+      {Object.entries(statsData).map(([mealTime, data]) => {
+        const mealTimeKey = mealTime as keyof StatsData
+        const mealTimeData = data as MealTimeData
+        return (
+          <View key={mealTimeKey} style={styles.statRow}>
+            <View style={styles.headerContainer}>
+              <Text style={styles.mealTimeLabel}>
+                {mealTimeLabels[mealTimeKey]}
               </Text>
+              <View style={styles.statInfo}>
+                <Text style={styles.amount}>
+                  ¥{mealTimeData.amount.toLocaleString()}
+                </Text>
+                <Text style={styles.average}>
+                  平均: ¥{mealTimeData.average.toLocaleString()}/日
+                </Text>
+              </View>
+            </View>
+            <View style={styles.progressBar}>
+              <View
+                style={[
+                  styles.progressFill,
+                  {
+                    width: `${
+                      statsData
+                        ? (mealTimeData.amount /
+                            Object.values(statsData).reduce(
+                              (sum: number, stat: MealTimeData) =>
+                                sum + stat.amount,
+                              0
+                            )) *
+                          100
+                        : 0
+                    }%`
+                  }
+                ]}
+              />
             </View>
           </View>
-          <View style={styles.progressBar}>
-            <View
-              style={[
-                styles.progressFill,
-                {
-                  width: `${
-                    statsData
-                      ? (data.amount /
-                          Object.values(statsData).reduce(
-                            (sum, stat) => sum + stat.amount,
-                            0
-                          )) *
-                        100
-                      : 0
-                  }%`
-                }
-              ]}
-            />
-          </View>
-        </View>
-      ))}
+        )
+      })}
     </Card>
   )
 }
