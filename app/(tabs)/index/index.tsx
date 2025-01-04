@@ -91,7 +91,9 @@ export default function Home(): React.JSX.Element {
 
         {/* タブコンテンツ */}
         <View style={styles.contentContainer}>
-          {activeTab === 'timeRange' && <MealTimeStats />}
+          {activeTab === 'timeRange' && (
+            <MealTimeStats selectedDate={selectedMonth} />
+          )}
           {activeTab === 'daily' && <DailyReport />}
           {activeTab === 'analysis' && <CookingAnalysis />}
         </View>

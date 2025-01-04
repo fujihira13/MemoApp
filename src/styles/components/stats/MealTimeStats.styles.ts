@@ -1,65 +1,49 @@
 import { StyleSheet } from 'react-native'
+import { colors } from '../../theme/colors'
 
 export const styles = StyleSheet.create({
   container: {
     padding: 16,
     gap: 16
   },
-  statsCard: {
-    padding: 16
-  },
-  mealLabel: {
-    fontSize: 16,
+  title: {
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#666',
-    marginBottom: 8
-  },
-  amount: {
-    fontSize: 24,
-    fontWeight: 'bold'
-  },
-  averageText: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4
-  },
-  comparisonCard: {
-    padding: 16
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#666',
     marginBottom: 16
   },
-  progressContainer: {
-    gap: 16
+  statRow: {
+    marginBottom: 16
   },
-  progressItem: {
-    gap: 8
-  },
-  progressHeader: {
+  headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  progressLabel: {
-    fontSize: 14,
+  mealTimeLabel: {
+    fontSize: 16,
     fontWeight: '600'
   },
-  progressAmount: {
-    fontSize: 14,
+  statInfo: {
+    alignItems: 'flex-end'
+  },
+  amount: {
+    fontSize: 16,
     fontWeight: '600'
+  },
+  average: {
+    fontSize: 12,
+    color: '#666'
   },
   progressBar: {
-    height: 4,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 2,
-    overflow: 'hidden'
+    height: 8,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginTop: 4
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#2196F3',
-    borderRadius: 2
+    backgroundColor: colors.primary,
+    borderRadius: 4
   }
 })

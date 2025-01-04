@@ -17,7 +17,6 @@ interface StatsData {
   snack: MealTimeData
 }
 
-// 時間帯の日本語マッピング
 const mealTimeLabels: { [key: string]: string } = {
   breakfast: '朝食',
   lunch: '昼食',
@@ -25,31 +24,32 @@ const mealTimeLabels: { [key: string]: string } = {
   snack: '間食'
 }
 
-export const MealTimeStats = (): React.JSX.Element => {
+interface MealTimeStatsProps {
+  selectedDate: Date
+}
+
+export const MealTimeStats = ({
+  selectedDate
+}: MealTimeStatsProps): React.JSX.Element => {
   const { expenses, loading } = useExpenseStorage()
 
-  // 時間帯別の統計データを計算（メモ化）
   const statsData: StatsData | null = useMemo(() => {
     if (loading) return null
 
-    const today = new Date()
-    const currentMonth = today.getMonth()
-    const currentYear = today.getFullYear()
+    const currentMonth = selectedDate.getMonth()
+    const currentYear = selectedDate.getFullYear()
 
-    // 今月の支出をフィルタリング
-    const currentMonthExpenses = expenses.filter((expense) => {
+    // 選択された日付の支出をフィルタリング
+    const currentDayExpenses = expenses.filter((expense) => {
       const expenseDate = new Date(expense.date)
       return (
+        expenseDate.getDate() === selectedDate.getDate() &&
         expenseDate.getMonth() === currentMonth &&
         expenseDate.getFullYear() === currentYear &&
-        !expense.isHomeCooking // 自炊は除外
+        !expense.isHomeCooking
       )
     })
 
-    // 月の日数を取得
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
-
-    // 初期データ構造
     const initialData: StatsData = {
       breakfast: { amount: 0, count: 0, average: 0 },
       lunch: { amount: 0, count: 0, average: 0 },
@@ -58,7 +58,7 @@ export const MealTimeStats = (): React.JSX.Element => {
     }
 
     // データの集計
-    const data: StatsData = currentMonthExpenses.reduce(
+    const data: StatsData = currentDayExpenses.reduce(
       (acc: StatsData, expense) => {
         const mealTime = expense.mealTime as keyof StatsData
         acc[mealTime].amount += expense.amount
@@ -72,11 +72,11 @@ export const MealTimeStats = (): React.JSX.Element => {
     Object.keys(data).forEach((mealTime) => {
       const key = mealTime as keyof StatsData
       data[key].average =
-        data[key].count > 0 ? Math.round(data[key].amount / daysInMonth) : 0
+        data[key].count > 0 ? Math.round(data[key].amount / data[key].count) : 0
     })
 
     return data
-  }, [expenses, loading])
+  }, [expenses, loading, selectedDate])
 
   if (loading || !statsData) {
     return (
@@ -86,11 +86,10 @@ export const MealTimeStats = (): React.JSX.Element => {
     )
   }
 
-  // 最大支出額を取得（プログレスバーの計算用）
-  const maxAmount = Math.max(
-    statsData.breakfast.amount,
-    statsData.lunch.amount,
-    statsData.dinner.amount
+  // 総支出を計算
+  const totalAmount = Object.values(statsData).reduce(
+    (sum, data) => sum + data.amount,
+    0
   )
 
   return (
@@ -98,7 +97,8 @@ export const MealTimeStats = (): React.JSX.Element => {
       <Text style={styles.title}>時間帯別支出比較</Text>
       {Object.entries(statsData).map(([mealTime, data]) => {
         const mealTimeKey = mealTime as keyof StatsData
-        const mealTimeData = data as MealTimeData
+        const barWidth = totalAmount > 0 ? (data.amount / totalAmount) * 100 : 0
+
         return (
           <View key={mealTimeKey} style={styles.statRow}>
             <View style={styles.headerContainer}>
@@ -107,32 +107,15 @@ export const MealTimeStats = (): React.JSX.Element => {
               </Text>
               <View style={styles.statInfo}>
                 <Text style={styles.amount}>
-                  ¥{mealTimeData.amount.toLocaleString()}
+                  ¥{data.amount.toLocaleString()}
                 </Text>
                 <Text style={styles.average}>
-                  平均: ¥{mealTimeData.average.toLocaleString()}/日
+                  平均: ¥{data.average.toLocaleString()}/食
                 </Text>
               </View>
             </View>
             <View style={styles.progressBar}>
-              <View
-                style={[
-                  styles.progressFill,
-                  {
-                    width: `${
-                      statsData
-                        ? (mealTimeData.amount /
-                            Object.values(statsData).reduce(
-                              (sum: number, stat: MealTimeData) =>
-                                sum + stat.amount,
-                              0
-                            )) *
-                          100
-                        : 0
-                    }%`
-                  }
-                ]}
-              />
+              <View style={[styles.progressFill, { width: `${barWidth}%` }]} />
             </View>
           </View>
         )
