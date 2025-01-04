@@ -43,7 +43,10 @@ export default function Home(): React.JSX.Element {
     // 浪費を計算（外食、間食、飲み会、コンビニ）
     const wasteCategories = ['eating_out', 'snack', 'drinking', 'convenience']
     const wasteExpense = currentMonthExpenses.reduce((sum, expense) => {
-      if (wasteCategories.includes(expense.category)) {
+      if (
+        wasteCategories.includes(expense.category) &&
+        !expense.isHomeCooking
+      ) {
         return sum + expense.amount
       }
       return sum
