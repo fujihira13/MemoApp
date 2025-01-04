@@ -8,7 +8,7 @@ import {
   ScrollView
 } from 'react-native'
 import { styles } from '../../styles/components/modals/ExpenseEditModal.styles'
-import { Expense, ExpenseCategory } from '../../types/expense'
+import { Expense, ExpenseCategory, MealTime } from '../../types/expense'
 import { EXPENSE_CATEGORIES } from '../../constants/categories'
 
 interface ExpenseEditModalProps {
@@ -28,7 +28,10 @@ export const ExpenseEditModal = ({
 
   useEffect(() => {
     if (expense) {
-      setFormData(expense)
+      setFormData({
+        ...expense,
+        mealTime: (expense.mealTime || 'none') as MealTime
+      })
     }
   }, [expense])
 
@@ -39,7 +42,8 @@ export const ExpenseEditModal = ({
       const updatedExpense: Expense = {
         ...formData,
         amount: Number(formData.amount.toString()),
-        date: new Date(formData.date).toISOString()
+        date: new Date(formData.date).toISOString(),
+        mealTime: formData.mealTime
       }
       onSave(updatedExpense)
       onClose()
@@ -47,11 +51,12 @@ export const ExpenseEditModal = ({
   }
 
   // 時間帯の選択肢を追加
-  const mealTimes = [
+  const mealTimes: Array<{ label: string; value: MealTime }> = [
     { label: '朝食', value: 'breakfast' },
     { label: '昼食', value: 'lunch' },
     { label: '夕食', value: 'dinner' },
-    { label: '間食', value: 'snack' }
+    { label: '間食', value: 'snack' },
+    { label: 'なし', value: 'none' }
   ]
 
   return (
@@ -134,7 +139,10 @@ export const ExpenseEditModal = ({
                   onPress={() =>
                     setFormData((prev) =>
                       prev
-                        ? { ...prev, mealTime: mealTime.value as MealTime }
+                        ? {
+                            ...prev,
+                            mealTime: mealTime.value
+                          }
                         : null
                     )
                   }

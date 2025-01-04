@@ -17,7 +17,7 @@ interface StatsData {
   snack: MealTimeData
 }
 
-const mealTimeLabels: { [key: string]: string } = {
+const mealTimeLabels: Record<keyof StatsData, string> = {
   breakfast: '朝食',
   lunch: '昼食',
   dinner: '夕食',
@@ -33,23 +33,38 @@ export const MealTimeStats = ({
 }: MealTimeStatsProps): React.JSX.Element => {
   const { expenses, loading } = useExpenseStorage()
 
-  const statsData: StatsData | null = useMemo(() => {
-    if (loading) return null
+  const statsData: StatsData = useMemo(() => {
+    if (loading) {
+      console.log('Loading...')
+      return {
+        breakfast: { amount: 0, count: 0, average: 0 },
+        lunch: { amount: 0, count: 0, average: 0 },
+        dinner: { amount: 0, count: 0, average: 0 },
+        snack: { amount: 0, count: 0, average: 0 }
+      }
+    }
+
+    // フィルタリング前の支出データを確認
+    console.log('All expenses:', expenses)
 
     const currentMonth = selectedDate.getMonth()
     const currentYear = selectedDate.getFullYear()
 
-    // 選択された日付の支出をフィルタリング
     const currentDayExpenses = expenses.filter((expense) => {
       const expenseDate = new Date(expense.date)
-      return (
+      const isMatch =
         expenseDate.getDate() === selectedDate.getDate() &&
         expenseDate.getMonth() === currentMonth &&
         expenseDate.getFullYear() === currentYear &&
         !expense.isHomeCooking
-      )
+      return isMatch
     })
 
+    // フィルタリング後の支出データを確認
+    console.log('Filtered expenses:', currentDayExpenses)
+    console.log('Selected date:', selectedDate)
+
+    // 初期データ構造
     const initialData: StatsData = {
       breakfast: { amount: 0, count: 0, average: 0 },
       lunch: { amount: 0, count: 0, average: 0 },
@@ -58,27 +73,34 @@ export const MealTimeStats = ({
     }
 
     // データの集計
-    const data: StatsData = currentDayExpenses.reduce(
-      (acc: StatsData, expense) => {
-        const mealTime = expense.mealTime as keyof StatsData
+    return currentDayExpenses.reduce((acc: StatsData, expense) => {
+      console.log('Processing expense:', expense)
+      console.log('Current mealTime:', expense.mealTime)
+
+      const mealTime = expense.mealTime as keyof StatsData
+
+      console.log('Mapped mealTime:', mealTime)
+
+      if (acc[mealTime]) {
         acc[mealTime].amount += expense.amount
         acc[mealTime].count++
-        return acc
-      },
-      initialData
-    )
-
-    // 平均を計算
-    Object.keys(data).forEach((mealTime) => {
-      const key = mealTime as keyof StatsData
-      data[key].average =
-        data[key].count > 0 ? Math.round(data[key].amount / data[key].count) : 0
-    })
-
-    return data
+        acc[mealTime].average = Math.round(
+          acc[mealTime].amount / acc[mealTime].count
+        )
+      } else if (expense.mealTime === 'none') {
+        // 'none' の場合は何もしない
+      } else {
+        // 未知の mealTime の場合はエラーを throw するなどの処理を行う
+        console.error('Unknown mealTime:', expense.mealTime)
+      }
+      return acc
+    }, initialData)
   }, [expenses, loading, selectedDate])
 
-  if (loading || !statsData) {
+  // 最終的なstatsDataの値を確認
+  console.log('Final statsData:', statsData)
+
+  if (loading) {
     return (
       <View style={styles.container}>
         <Text>読み込み中...</Text>
@@ -87,39 +109,44 @@ export const MealTimeStats = ({
   }
 
   // 総支出を計算
-  const totalAmount = Object.values(statsData).reduce(
-    (sum, data) => sum + data.amount,
-    0
-  )
+  const totalAmount = (
+    Object.values(statsData) as MealTimeData[]
+  ).reduce<number>((sum, data) => sum + data.amount, 0)
 
   return (
     <Card style={styles.container}>
       <Text style={styles.title}>時間帯別支出比較</Text>
-      {Object.entries(statsData).map(([mealTime, data]) => {
-        const mealTimeKey = mealTime as keyof typeof mealTimeLabels
-        const barWidth = totalAmount > 0 ? (data.amount / totalAmount) * 100 : 0
+      {(Object.entries(statsData) as [keyof StatsData, MealTimeData][]).map(
+        ([mealTime, data]) => {
+          console.log('Rendering mealTime:', mealTime, 'data:', data)
+          const mealTimeKey = mealTime
+          const barWidth =
+            totalAmount > 0 ? (data.amount / totalAmount) * 100 : 0
 
-        return (
-          <View key={mealTimeKey} style={styles.statRow}>
-            <View style={styles.headerContainer}>
-              <Text style={styles.mealTimeLabel}>
-                {mealTimeLabels[mealTimeKey]}
-              </Text>
-              <View style={styles.statInfo}>
-                <Text style={styles.amount}>
-                  ¥{data.amount.toLocaleString()}
+          return (
+            <View key={mealTimeKey} style={styles.statRow}>
+              <View style={styles.headerContainer}>
+                <Text style={styles.mealTimeLabel}>
+                  {mealTimeLabels[mealTimeKey]}
                 </Text>
-                <Text style={styles.average}>
-                  平均: ¥{data.average.toLocaleString()}/食
-                </Text>
+                <View style={styles.statInfo}>
+                  <Text style={styles.amount}>
+                    ¥{data.amount.toLocaleString()}
+                  </Text>
+                  <Text style={styles.average}>
+                    平均: ¥{data.average.toLocaleString()}/食
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.progressBar}>
+                <View
+                  style={[styles.progressFill, { width: `${barWidth}%` }]}
+                />
               </View>
             </View>
-            <View style={styles.progressBar}>
-              <View style={[styles.progressFill, { width: `${barWidth}%` }]} />
-            </View>
-          </View>
-        )
-      })}
+          )
+        }
+      )}
     </Card>
   )
 }

@@ -17,7 +17,7 @@ export interface Expense {
   id: string
   amount: number
   category: ExpenseCategory
-  mealTime: string
+  mealTime: MealTime
   isHomeCooking: boolean
   date: string
   note?: string
@@ -35,7 +35,7 @@ export interface ExpenseFormData {
 export interface ExpenseItem {
   id: string
   date: string
-  mealTime: string
+  mealTime: MealTime
   category: string
   amount: number
   note: string
