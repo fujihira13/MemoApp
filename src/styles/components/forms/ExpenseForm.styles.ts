@@ -60,26 +60,25 @@ export const styles = StyleSheet.create({
   categoryContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.sm
+    paddingVertical: 8,
+    justifyContent: 'space-between'
   },
   categoryButton: {
-    paddingVertical: spacing.xs,
-    paddingHorizontal: spacing.sm,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.background.main
+    padding: 8,
+    margin: 4,
+    borderRadius: 20,
+    backgroundColor: '#f0f0f0',
+    flexBasis: '48%',
+    minWidth: 100
   },
   categoryButtonActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary
+    backgroundColor: '#2196F3'
   },
   categoryButtonText: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.primary
+    color: '#666'
   },
   categoryButtonTextActive: {
-    color: colors.background.card
+    color: '#fff'
   },
   mealTimeContainer: {
     flexDirection: 'row',

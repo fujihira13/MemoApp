@@ -5,7 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
-  Alert
+  Alert,
+  ScrollView
 } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Card } from '../common/Card'
@@ -42,7 +43,6 @@ export const ExpenseForm = (): React.JSX.Element => {
     { value: 'snack', label: '間食' },
     { value: 'drinking', label: '飲み会' },
     { value: 'convenience', label: 'コンビニ' },
-    { value: 'home_cooking', label: '自炊' },
     { value: 'other', label: 'その他' }
   ]
 
@@ -50,8 +50,7 @@ export const ExpenseForm = (): React.JSX.Element => {
     { label: '朝食', value: 'breakfast' },
     { label: '昼食', value: 'lunch' },
     { label: '夕食', value: 'dinner' },
-    { label: '間食', value: 'snack' },
-    { label: 'なし', value: 'none' }
+    { label: '間食', value: 'snack' }
   ]
 
   const onDateChange = (
@@ -173,37 +172,43 @@ export const ExpenseForm = (): React.JSX.Element => {
       )}
 
       {/* カテゴリー選択 */}
-      <Card style={styles.inputCard}>
-        <Text style={styles.label}>カテゴリー</Text>
-        <View style={styles.categoryContainer}>
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category.value}
-              style={[
-                styles.categoryButton,
-                formData.category === category.value &&
-                  styles.categoryButtonActive
-              ]}
-              onPress={() =>
-                setFormData((prev) => ({
-                  ...prev,
-                  category: category.value as ExpenseCategory
-                }))
-              }
-            >
-              <Text
+      {!formData.isHomeCooking && (
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>カテゴリー</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoryContainer}
+          >
+            {categories.map((category) => (
+              <TouchableOpacity
+                key={category.value}
                 style={[
-                  styles.categoryButtonText,
+                  styles.categoryButton,
                   formData.category === category.value &&
-                    styles.categoryButtonTextActive
+                    styles.categoryButtonActive
                 ]}
+                onPress={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    category: category.value as ExpenseCategory
+                  }))
+                }
               >
-                {category.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
+                <Text
+                  style={[
+                    styles.categoryButtonText,
+                    formData.category === category.value &&
+                      styles.categoryButtonTextActive
+                  ]}
+                >
+                  {category.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
-      </Card>
+      )}
 
       {/* 食事の時間帯 */}
       <Card style={styles.inputCard}>

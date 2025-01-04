@@ -78,7 +78,7 @@ export const MonthlyReport = (): React.JSX.Element => {
       selectedMonth.getMonth() + 1,
       0
     ).getDate()
-    const averagePerDay = total / daysInMonth
+    const averagePerDay = Math.ceil(total / daysInMonth)
 
     // 前月比の変化率を計算
     const percentageChange =
@@ -133,6 +133,8 @@ export const MonthlyReport = (): React.JSX.Element => {
 
     return summaries
   }, [expenses, selectedMonth, loading])
+
+  const monthlyBudget = budgetSettings?.monthlyBudget || 100000
 
   if (loading || !monthlyData) {
     return <Text>読み込み中...</Text>
