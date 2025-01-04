@@ -89,7 +89,8 @@ export const MonthlyReport = (): React.JSX.Element => {
       total,
       averagePerDay,
       percentageChange,
-      dailyBudget: budgetSettings?.dailyBudget || 3000
+      dailyBudget: budgetSettings?.dailyBudget || 3000,
+      lastMonthTotal
     }
   }, [expenses, selectedMonth, loading, budgetSettings])
 
@@ -166,17 +167,13 @@ export const MonthlyReport = (): React.JSX.Element => {
                     }
                   ]}
                 >
-                  先月比 {Math.abs(monthlyData.percentageChange).toFixed(1)}%
+                  {monthlyData.percentageChange.toFixed(1)}%
                 </Text>
               </View>
             </View>
           </View>
-          <Text style={styles.amount}>
-            ¥{monthlyData.total.toLocaleString()}
-          </Text>
-          <Text style={styles.changeText}>
-            先月比 {monthlyData.percentageChange > 0 ? '+' : ''}
-            {monthlyData.percentageChange.toFixed(1)}%
+          <Text style={styles.lastMonthText}>
+            先月: ¥{monthlyData.lastMonthTotal.toLocaleString()}
           </Text>
         </Card>
 
