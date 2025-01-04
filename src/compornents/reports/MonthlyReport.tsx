@@ -6,11 +6,12 @@ import { styles } from '../../styles/components/reports/MonthlyReport.styles'
 import { useExpenseStorage } from '../../hooks/useExpenseStorage'
 import { useBudgetStorage } from '../../hooks/useBudgetStorage'
 import { CategorySummaries } from '../../types/expense'
+import { MonthPicker } from '../common/MonthPicker'
 
 export const MonthlyReport = (): React.JSX.Element => {
   const { expenses, loading } = useExpenseStorage()
   const { budgetSettings } = useBudgetStorage()
-  const [selectedMonth] = useState(new Date()) // 現在の月をデフォルトに
+  const [selectedMonth, setSelectedMonth] = useState(new Date())
 
   // カテゴリー名の日本語マッピング
   const categoryLabels: { [key: string]: string } = {
@@ -139,6 +140,10 @@ export const MonthlyReport = (): React.JSX.Element => {
 
   return (
     <View style={styles.container}>
+      <MonthPicker
+        selectedMonth={selectedMonth}
+        onMonthChange={setSelectedMonth}
+      />
       {/* 支出サマリーカード */}
       <View style={styles.summary}>
         <Card style={styles.summaryCard}>

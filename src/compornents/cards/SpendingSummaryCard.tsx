@@ -7,10 +7,12 @@ interface SpendingSummaryCardProps {
     totalExpense: number
     wasteExpense: number
   }
+  selectedMonth: Date
 }
 
 export const SpendingSummaryCard = ({
-  data
+  data,
+  selectedMonth
 }: SpendingSummaryCardProps): React.JSX.Element => {
   return (
     <View style={styles.container}>

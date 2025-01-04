@@ -9,9 +9,11 @@ import { useState } from 'react'
 import { DailyReport } from '../../../src/compornents/stats/DailyReport'
 import { CookingAnalysis } from '../../../src/compornents/stats/CookingAnalysis'
 import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage'
+import { MonthPicker } from '../../../src/compornents/common/MonthPicker'
 
 export default function Home(): React.JSX.Element {
   const [activeTab, setActiveTab] = useState('timeRange')
+  const [selectedMonth, setSelectedMonth] = useState(new Date())
   const { expenses, loading } = useExpenseStorage()
 
   // 今月の支出データを計算
@@ -74,9 +76,15 @@ export default function Home(): React.JSX.Element {
       />
 
       <ScrollView style={styles.container}>
-        {/* 支出サマリーカード */}
+        <MonthPicker
+          selectedMonth={selectedMonth}
+          onMonthChange={setSelectedMonth}
+        />
         <View style={styles.summaryContainer}>
-          <SpendingSummaryCard data={summaryData} />
+          <SpendingSummaryCard
+            data={summaryData}
+            selectedMonth={selectedMonth}
+          />
         </View>
 
         {/* タブビュー */}
