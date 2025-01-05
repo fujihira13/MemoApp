@@ -69,14 +69,14 @@ export const SpendingSummaryCard = ({
           ¥{calculatedData.totalExpense.toLocaleString()}
         </Text>
 
-        {/* 月間予算を表示 */}
-        {monthlyBudget ? (
+        {/* 月間予算をコメントアウト */}
+        {/* {monthlyBudget ? (
           <Text style={styles.budgetText}>
             月間予算: ¥{monthlyBudget.toLocaleString()}
           </Text>
         ) : (
           <Text style={styles.budgetText}>月間予算が設定されていません</Text>
-        )}
+        )} */}
       </View>
 
       {/* 浪費カード */}

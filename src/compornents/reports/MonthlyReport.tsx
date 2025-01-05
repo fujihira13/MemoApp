@@ -19,7 +19,7 @@ export const MonthlyReport = (): React.JSX.Element => {
     const unsubscribe = subscribe(() => {
       setUpdateTrigger((prev) => prev + 1)
     })
-    return () => {
+    return (): void => {
       unsubscribe()
     }
   }, [subscribe])
@@ -203,6 +203,11 @@ export const MonthlyReport = (): React.JSX.Element => {
           <Text style={styles.budgetText}>
             目標: ¥{monthlyData.dailyBudget.toLocaleString()}/日
           </Text>
+        </Card>
+
+        <Card style={styles.summaryCard}>
+          <Text style={styles.cardTitle}>月間予算</Text>
+          <Text style={styles.amount}>¥{monthlyBudget.toLocaleString()}</Text>
         </Card>
       </View>
 
