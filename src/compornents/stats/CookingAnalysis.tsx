@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { View, Text } from 'react-native'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -6,19 +6,24 @@ import { styles } from '../../styles/components/stats/CookingAnalysis.styles'
 import { useExpenseStorage } from '../../hooks/useExpenseStorage'
 import { MealTime } from '../../types/expense'
 
-export const CookingAnalysis = (): React.JSX.Element => {
+interface CookingAnalysisProps {
+  selectedMonth: Date
+}
+
+export const CookingAnalysis = ({
+  selectedMonth
+}: CookingAnalysisProps): React.JSX.Element => {
   const { expenses, loading } = useExpenseStorage()
 
-  // 今月の自炊データを計算（メモ化）
+  // 選択された月の自炊データを計算（メモ化）
   const cookingStats = useMemo(() => {
     if (loading) return null
 
-    const today = new Date()
-    const currentMonth = today.getMonth()
-    const currentYear = today.getFullYear()
+    const currentMonth = selectedMonth.getMonth()
+    const currentYear = selectedMonth.getFullYear()
 
-    // 今月の自炊データをフィルタリング
-    const currentMonthCooking = expenses.filter((expense) => {
+    // 選択された月の自炊データをフィルタリング
+    const selectedMonthCooking = expenses.filter((expense) => {
       const expenseDate = new Date(expense.date)
       return (
         expense.isHomeCooking &&
@@ -28,7 +33,7 @@ export const CookingAnalysis = (): React.JSX.Element => {
     })
 
     // 時間帯別の集計
-    const mealTimeBreakdown = currentMonthCooking.reduce(
+    const mealTimeBreakdown = selectedMonthCooking.reduce(
       (acc, expense) => {
         if (expense.mealTime !== 'none' && expense.mealTime !== 'snack') {
           acc[expense.mealTime] = (acc[expense.mealTime] ?? 0) + 1
@@ -39,14 +44,14 @@ export const CookingAnalysis = (): React.JSX.Element => {
     )
 
     // 自炊による推定節約額を計算（1食あたり1000円で計算）
-    const estimatedSaving = currentMonthCooking.length * 1000
+    const estimatedSaving = selectedMonthCooking.length * 1000
 
     return {
-      monthlyCount: currentMonthCooking.length,
+      monthlyCount: selectedMonthCooking.length,
       estimatedSaving,
       mealTimeBreakdown
     }
-  }, [expenses, loading])
+  }, [expenses, loading, selectedMonth])
 
   if (loading || !cookingStats) {
     return (

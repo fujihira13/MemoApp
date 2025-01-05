@@ -81,7 +81,7 @@ export default function Home(): React.JSX.Element {
       <ScrollView style={styles.container}>
         <MonthPicker
           selectedMonth={selectedMonth}
-          onMonthChange={setSelectedMonth}
+          onMonthChange={(newMonth) => setSelectedMonth(newMonth)}
         />
         <View style={styles.summaryContainer}>
           <SpendingSummaryCard
@@ -99,7 +99,9 @@ export default function Home(): React.JSX.Element {
             <MealTimeStats selectedDate={selectedMonth} />
           )}
           {activeTab === 'daily' && <DailyReport />}
-          {activeTab === 'analysis' && <CookingAnalysis />}
+          {activeTab === 'analysis' && (
+            <CookingAnalysis selectedMonth={selectedMonth} />
+          )}
         </View>
 
         {/* 支出履歴 */}
