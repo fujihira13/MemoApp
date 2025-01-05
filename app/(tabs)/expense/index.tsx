@@ -1,9 +1,22 @@
+import React, { useState, useEffect } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Stack } from 'expo-router'
 import { ExpenseForm } from '../../../src/compornents/forms/ExpenseForm'
-import React from 'react'
+import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage'
 
 export default function ExpenseScreen(): React.JSX.Element {
+  const { subscribe } = useExpenseStorage()
+  const [updateTrigger, setUpdateTrigger] = useState(0)
+
+  useEffect(() => {
+    const unsubscribe = subscribe(() => {
+      setUpdateTrigger((prev) => prev + 1)
+    })
+    return (): void => {
+      unsubscribe()
+    }
+  }, [subscribe])
+
   return (
     <>
       <Stack.Screen
@@ -16,7 +29,7 @@ export default function ExpenseScreen(): React.JSX.Element {
 
       <ScrollView style={styles.container}>
         <View style={styles.formContainer}>
-          <ExpenseForm />
+          <ExpenseForm key={updateTrigger} />
         </View>
       </ScrollView>
     </>
@@ -30,7 +43,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     padding: 16,
-    maxWidth: 600, // タブレット対応
+    maxWidth: 600,
     width: '100%',
     alignSelf: 'center'
   }
