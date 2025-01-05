@@ -10,11 +10,13 @@ import { DailyReport } from '../../../src/compornents/stats/DailyReport'
 import { CookingAnalysis } from '../../../src/compornents/stats/CookingAnalysis'
 import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage'
 import { MonthPicker } from '../../../src/compornents/common/MonthPicker'
+import { useBudgetStorage } from '../../../src/hooks/useBudgetStorage'
 
 export default function Home(): React.JSX.Element {
   const [activeTab, setActiveTab] = useState('timeRange')
   const [selectedMonth, setSelectedMonth] = useState(new Date())
   const { expenses, loading } = useExpenseStorage()
+  const { budgetSettings } = useBudgetStorage()
 
   // 今月の支出データを計算
   const calculateMonthlyData = (): {
@@ -51,8 +53,8 @@ export default function Home(): React.JSX.Element {
       return sum
     }, 0)
 
-    // 月間予算を取得（例として100000を使用）
-    const monthlyBudget = 100000
+    // 月間予算を取得
+    const monthlyBudget = Number(budgetSettings?.monthlyBudget) || 0
 
     return { totalExpense, wasteExpense, monthlyBudget }
   }

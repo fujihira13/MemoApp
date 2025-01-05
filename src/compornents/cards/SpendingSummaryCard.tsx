@@ -2,6 +2,8 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { styles } from '../../styles/components/cards/SpendingSummaryCard.styles'
+import { useBudgetStorage } from '../../hooks/useBudgetStorage'
+
 interface SpendingSummaryCardProps {
   data: {
     totalExpense: number
@@ -15,6 +17,9 @@ export const SpendingSummaryCard = ({
   data,
   selectedMonth
 }: SpendingSummaryCardProps): React.JSX.Element => {
+  const { budgetSettings } = useBudgetStorage()
+  const monthlyBudget = budgetSettings?.monthlyBudget || 0
+
   return (
     <View style={styles.container}>
       {/* 総支出カード */}
@@ -23,9 +28,9 @@ export const SpendingSummaryCard = ({
         <Text style={styles.amount}>¥{data.totalExpense.toLocaleString()}</Text>
 
         {/* 月間予算を表示 */}
-        {data.monthlyBudget ? (
+        {monthlyBudget ? (
           <Text style={styles.budgetText}>
-            月間予算: ¥{data.monthlyBudget.toLocaleString()}
+            月間予算: ¥{monthlyBudget.toLocaleString()}
           </Text>
         ) : (
           <Text style={styles.budgetText}>月間予算が設定されていません</Text>
