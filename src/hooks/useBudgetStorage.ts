@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { storeData, getData, STORAGE_KEYS } from '../utils/storage'
 import { BudgetFormData } from '../types/budget'
+
+// 更新イベントを管理するためのイベントエミッター
+const subscribers = new Set<() => void>()
 
 interface UseBudgetStorageReturn {
   budgetSettings: BudgetFormData | null
   loading: boolean
   saveBudgetSettings: (settings: BudgetFormData) => Promise<void>
+  subscribe: (callback: () => void) => () => void
 }
 
 export const useBudgetStorage = (): UseBudgetStorageReturn => {
@@ -17,6 +21,19 @@ export const useBudgetStorage = (): UseBudgetStorageReturn => {
   // 予算設定の読み込み
   useEffect(() => {
     void loadBudgetSettings()
+  }, [])
+
+  // サブスクライブ関数
+  const subscribe = useCallback((callback: () => void): (() => void) => {
+    subscribers.add(callback)
+    return () => {
+      subscribers.delete(callback)
+    }
+  }, [])
+
+  // 全てのサブスクライバーに通知
+  const notifySubscribers = useCallback(() => {
+    subscribers.forEach((callback) => callback())
   }, [])
 
   // 予算設定を読み込む
@@ -42,11 +59,12 @@ export const useBudgetStorage = (): UseBudgetStorageReturn => {
     try {
       await storeData(STORAGE_KEYS.BUDGET_SETTINGS, settings)
       setBudgetSettings(settings)
+      notifySubscribers() // 更新を通知
     } catch (error) {
       console.error('予算設定の保存エラー:', error)
       throw error
     }
   }
 
-  return { budgetSettings, loading, saveBudgetSettings }
+  return { budgetSettings, loading, saveBudgetSettings, subscribe }
 }

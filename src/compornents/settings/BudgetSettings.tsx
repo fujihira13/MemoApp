@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Switch,
   TouchableOpacity,
   Alert
 } from 'react-native'
@@ -19,13 +18,14 @@ interface BudgetFormData {
 }
 
 export const BudgetSettings = (): React.JSX.Element => {
-  const { budgetSettings, saveBudgetSettings } = useBudgetStorage()
+  const { budgetSettings, saveBudgetSettings, subscribe } = useBudgetStorage()
   const [formData, setFormData] = useState<BudgetFormData>({
     monthlyBudget: '100000',
     dailyBudget: '3000',
     enableNotifications: true,
     warningThreshold: '80'
   })
+  const [updateTrigger, setUpdateTrigger] = useState(0)
 
   // 初期データのロード
   useEffect(() => {
@@ -33,6 +33,16 @@ export const BudgetSettings = (): React.JSX.Element => {
       setFormData(budgetSettings)
     }
   }, [budgetSettings])
+
+  // データ更新を検知するためのサブスクリプション
+  useEffect(() => {
+    const unsubscribe = subscribe(() => {
+      setUpdateTrigger((prev) => prev + 1)
+    })
+    return (): void => {
+      unsubscribe()
+    }
+  }, [subscribe])
 
   const handleSubmit = async (): Promise<void> => {
     try {
