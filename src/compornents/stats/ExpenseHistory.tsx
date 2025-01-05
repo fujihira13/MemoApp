@@ -51,7 +51,7 @@ export const ExpenseHistory = (): React.JSX.Element => {
   })
 
   // 月間合計の計算から自炊を除外
-  const monthlyTotal = expenses
+  const monthlyTotal = filteredExpenses
     .filter((expense) => !expense.isHomeCooking)
     .reduce((sum, expense) => sum + expense.amount, 0)
 
