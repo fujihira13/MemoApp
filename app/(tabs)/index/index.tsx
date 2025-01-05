@@ -14,14 +14,12 @@ import { useBudgetStorage } from '../../../src/hooks/useBudgetStorage'
 const Home = (): React.JSX.Element => {
   const [activeTab, setActiveTab] = useState('timeRange')
   const [selectedMonth, setSelectedMonth] = useState(new Date())
-  const { expenses, loading, subscribe } = useExpenseStorage()
-  const { budgetSettings } = useBudgetStorage()
+  const { subscribe } = useExpenseStorage() // loadingとexpensesを削除
   const [updateTrigger, setUpdateTrigger] = useState(0)
 
   // データ更新を検知するためのサブスクリプション
   useEffect(() => {
     const unsubscribe = subscribe(() => {
-      // 更新トリガーを変更して再レンダリングを強制
       setUpdateTrigger((prev) => prev + 1)
     })
     return (): void => {
@@ -29,7 +27,7 @@ const Home = (): React.JSX.Element => {
     }
   }, [subscribe])
 
-  // タブコンテンツのメモ化（updateTriggerの変更で再計算）
+  // タブコンテンツのメモ化
   const renderTabContent = useMemo((): Record<string, React.JSX.Element> => {
     return {
       timeRange: (
@@ -42,44 +40,7 @@ const Home = (): React.JSX.Element => {
     }
   }, [selectedMonth, updateTrigger])
 
-  // 残りのコードは変更なし
-  const calculateMonthlyData = useMemo((): {
-    totalExpense: number
-    wasteExpense: number
-    monthlyBudget: number
-  } => {
-    if (loading) return { totalExpense: 0, wasteExpense: 0, monthlyBudget: 0 }
-
-    const currentMonthExpenses = expenses.filter((expense) => {
-      const expenseDate = new Date(expense.date)
-      return (
-        expenseDate.getMonth() === selectedMonth.getMonth() &&
-        expenseDate.getFullYear() === selectedMonth.getFullYear()
-      )
-    })
-
-    const totalExpense = currentMonthExpenses.reduce(
-      (sum, expense) => sum + (expense.isHomeCooking ? 0 : expense.amount),
-      0
-    )
-
-    const wasteCategories = ['eating_out', 'snack', 'drinking', 'convenience']
-    const wasteExpense = currentMonthExpenses.reduce((sum, expense) => {
-      if (
-        wasteCategories.includes(expense.category) &&
-        !expense.isHomeCooking
-      ) {
-        return sum + expense.amount
-      }
-      return sum
-    }, 0)
-
-    return {
-      totalExpense,
-      wasteExpense,
-      monthlyBudget: Number(budgetSettings?.monthlyBudget) || 0
-    }
-  }, [expenses, loading, selectedMonth, budgetSettings])
+  // calculateMonthlyDataを削除
 
   const tabs = [
     { id: 'timeRange', label: '時間帯別' },
@@ -104,8 +65,8 @@ const Home = (): React.JSX.Element => {
         />
         <View style={styles.summaryContainer}>
           <SpendingSummaryCard
-            data={calculateMonthlyData}
             selectedMonth={selectedMonth}
+            key={updateTrigger} // keyを追加
           />
         </View>
 
