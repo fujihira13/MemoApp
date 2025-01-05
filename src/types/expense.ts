@@ -9,6 +9,7 @@ export type ExpenseCategory =
   | 'drinking'
   | 'convenience'
   | 'other'
+  | 'home_cooking'
 
 export type MealTime = 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'none'
 

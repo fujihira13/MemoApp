@@ -19,12 +19,21 @@ export const ExpenseSummary = ({
     const summaries: CategorySummaries = {}
     let grandTotal = 0
 
-    // 各支出をカテゴリー別に集計（自炊は除外）
     expenses.forEach((expense) => {
-      if (!expense.isHomeCooking) {
-        const amount = expense.amount
-        grandTotal += amount
+      const amount = expense.amount
+      grandTotal += amount
 
+      if (expense.isHomeCooking) {
+        if (!summaries['home_cooking']) {
+          summaries['home_cooking'] = {
+            total: 0,
+            count: 0,
+            percentage: 0
+          }
+        }
+        summaries['home_cooking'].total += amount
+        summaries['home_cooking'].count++
+      } else {
         if (!summaries[expense.category]) {
           summaries[expense.category] = {
             total: 0,
@@ -32,7 +41,6 @@ export const ExpenseSummary = ({
             percentage: 0
           }
         }
-
         summaries[expense.category].total += amount
         summaries[expense.category].count++
       }
