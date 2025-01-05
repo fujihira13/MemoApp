@@ -47,10 +47,12 @@ export const ExpenseForm = (): React.JSX.Element => {
   ]
 
   const mealTimes = [
-    { label: '朝食', value: 'breakfast' },
-    { label: '昼食', value: 'lunch' },
-    { label: '夕食', value: 'dinner' },
-    { label: '間食', value: 'snack' }
+    { label: '朝食', value: 'breakfast' as const },
+    { label: '昼食', value: 'lunch' as const },
+    { label: '夕食', value: 'dinner' as const },
+    ...(formData.isHomeCooking
+      ? []
+      : [{ label: '間食', value: 'snack' as const }])
   ]
 
   const onDateChange = (
@@ -75,6 +77,11 @@ export const ExpenseForm = (): React.JSX.Element => {
   }
 
   const validateForm = (): boolean => {
+    if (!formData.mealTime || formData.mealTime === 'none') {
+      Alert.alert('エラー', '食事の時間帯を選択してください')
+      return false
+    }
+
     if (
       !formData.isHomeCooking &&
       (!formData.amount || isNaN(Number(formData.amount)))
@@ -82,6 +89,7 @@ export const ExpenseForm = (): React.JSX.Element => {
       Alert.alert('エラー', '金額を正しく入力してください')
       return false
     }
+
     return true
   }
 
@@ -225,7 +233,7 @@ export const ExpenseForm = (): React.JSX.Element => {
               onPress={() =>
                 setFormData((prev) => ({
                   ...prev,
-                  mealTime: mealTime.value as MealTime
+                  mealTime: mealTime.value
                 }))
               }
             >

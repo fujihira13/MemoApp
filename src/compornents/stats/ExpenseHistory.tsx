@@ -50,10 +50,10 @@ export const ExpenseHistory = (): React.JSX.Element => {
     )
   })
 
-  // 月の合計金額を計算
-  const monthlyTotal = filteredExpenses.reduce((total, expense) => {
-    return total + (expense.isHomeCooking ? 0 : expense.amount)
-  }, 0)
+  // 月間合計の計算から自炊を除外
+  const monthlyTotal = expenses
+    .filter((expense) => !expense.isHomeCooking)
+    .reduce((sum, expense) => sum + expense.amount, 0)
 
   // 編集ハンドラー
   const handleEdit = (expense: Expense): void => {

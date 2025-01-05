@@ -19,7 +19,7 @@ export const ExpenseSummary = ({
     const summaries: CategorySummaries = {}
     let grandTotal = 0
 
-    // 各支出をカテゴリー別に集計
+    // 各支出をカテゴリー別に集計（自炊は除外）
     expenses.forEach((expense) => {
       if (!expense.isHomeCooking) {
         const amount = expense.amount
