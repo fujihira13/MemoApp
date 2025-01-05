@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { View, Text } from 'react-native'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -9,9 +9,20 @@ import { CategorySummaries } from '../../types/expense'
 import { MonthPicker } from '../common/MonthPicker'
 
 export const MonthlyReport = (): React.JSX.Element => {
-  const { expenses, loading } = useExpenseStorage()
+  const { expenses, loading, subscribe } = useExpenseStorage() // subscribe を追加
   const { budgetSettings } = useBudgetStorage()
   const [selectedMonth, setSelectedMonth] = useState(new Date())
+  const [updateTrigger, setUpdateTrigger] = useState(0) // 追加
+
+  // 更新検知の追加
+  useEffect(() => {
+    const unsubscribe = subscribe(() => {
+      setUpdateTrigger((prev) => prev + 1)
+    })
+    return () => {
+      unsubscribe()
+    }
+  }, [subscribe])
 
   // カテゴリー名の日本語マッピング
   const categoryLabels: { [key: string]: string } = {
@@ -93,7 +104,7 @@ export const MonthlyReport = (): React.JSX.Element => {
       dailyBudget: budgetSettings?.dailyBudget || 3000,
       lastMonthTotal
     }
-  }, [expenses, selectedMonth, loading, budgetSettings])
+  }, [expenses, selectedMonth, loading, budgetSettings, updateTrigger])
 
   // カテゴリー別集計の計算（メモ化）
   const categorySummaries = useMemo(() => {

@@ -1,9 +1,23 @@
 import { ScrollView, StyleSheet } from 'react-native'
 import { MonthlyReport } from '../../../src/compornents/reports/MonthlyReport'
 import { Stack } from 'expo-router'
-import React from 'react'
+import React, { useState, useEffect } from 'react' // useState, useEffect を追加
+import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage' // 追加
 
 export default function ReportScreen(): React.JSX.Element {
+  const { subscribe } = useExpenseStorage() // 追加
+  const [updateTrigger, setUpdateTrigger] = useState(0) // 追加
+
+  // データ更新検知の追加
+  useEffect(() => {
+    const unsubscribe = subscribe(() => {
+      setUpdateTrigger((prev) => prev + 1)
+    })
+    return (): void => {
+      unsubscribe()
+    }
+  }, [subscribe])
+
   return (
     <>
       <Stack.Screen
@@ -15,7 +29,7 @@ export default function ReportScreen(): React.JSX.Element {
       />
 
       <ScrollView style={styles.container}>
-        <MonthlyReport />
+        <MonthlyReport key={updateTrigger} />
       </ScrollView>
     </>
   )
