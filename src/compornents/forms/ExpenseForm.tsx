@@ -122,7 +122,6 @@ export const ExpenseForm = (): React.JSX.Element => {
       Alert.alert('エラー', '支出の保存に失敗しました')
     }
   }
-
   return (
     <View style={styles.container}>
       {/* 自炊チェックボックス */}

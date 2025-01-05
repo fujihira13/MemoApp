@@ -15,20 +15,26 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [loading, setLoading] = useState(true)
 
-  // loadExpenses関数をuseCallbackでメモ化
-  const loadExpenses = useCallback(async (): Promise<void> => {
+  // データ読み込みをuseCallbackでメモ化
+  const loadExpenses = useCallback(async () => {
     try {
+      setLoading(true)
       const savedExpenses = await getData<Expense[]>(STORAGE_KEYS.EXPENSES)
       if (savedExpenses) {
-        setExpenses(savedExpenses)
+        // 日付でソートして保存
+        const sortedExpenses = savedExpenses.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        )
+        setExpenses(sortedExpenses)
       }
-    } catch (error: unknown) {
+    } catch (error) {
       console.error('支出データの読み込みエラー:', error)
     } finally {
       setLoading(false)
     }
   }, [])
 
+  // 初回マウント時にデータを読み込む
   useEffect(() => {
     void loadExpenses()
   }, [loadExpenses])
@@ -37,7 +43,8 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
     try {
       const updatedExpenses = [newExpense, ...expenses]
       await storeData(STORAGE_KEYS.EXPENSES, updatedExpenses)
-      await loadExpenses() // 追加後に再読み込み
+      setExpenses(updatedExpenses) // 状態を即時更新
+      await loadExpenses() // データを再読み込み
     } catch (error) {
       console.error('支出の追加エラー:', error)
       throw error
@@ -50,7 +57,8 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
         (expense) => expense.id !== expenseId
       )
       await storeData(STORAGE_KEYS.EXPENSES, updatedExpenses)
-      await loadExpenses() // 削除後に再読み込み
+      setExpenses(updatedExpenses)
+      await loadExpenses() // データを再読み込み
     } catch (error) {
       console.error('支出の削除エラー:', error)
       throw error
@@ -63,7 +71,8 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
         expense.id === updatedExpense.id ? updatedExpense : expense
       )
       await storeData(STORAGE_KEYS.EXPENSES, updatedExpenses)
-      await loadExpenses() // 編集後に再読み込み
+      setExpenses(updatedExpenses)
+      await loadExpenses() // データを再読み込み
     } catch (error) {
       console.error('支出の編集エラー:', error)
       throw error
