@@ -19,6 +19,25 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [loading, setLoading] = useState(true)
 
+  const notifySubscribers = (): void => {
+    subscribers.forEach((callback) => callback())
+  }
+
+  // 共通処理を関数内に移動
+  const updateExpenses = useCallback(
+    async (updatedExpenses: Expense[]): Promise<void> => {
+      try {
+        await storeData(STORAGE_KEYS.EXPENSES, updatedExpenses)
+        setExpenses(updatedExpenses)
+        notifySubscribers()
+      } catch (error) {
+        console.error('支出の更新エラー:', error)
+        throw error
+      }
+    },
+    [notifySubscribers]
+  )
+
   // データ読み込みをuseCallbackでメモ化
   const loadExpenses = useCallback(async () => {
     try {
@@ -50,17 +69,10 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
     }
   }, [])
 
-  // 全てのサブスクライバーに通知
-  const notifySubscribers = useCallback(() => {
-    subscribers.forEach((callback) => callback())
-  }, [])
-
   const addExpense = async (newExpense: Expense): Promise<void> => {
     try {
-      const updatedExpenses = [newExpense, ...expenses]
-      await storeData(STORAGE_KEYS.EXPENSES, updatedExpenses)
-      setExpenses(updatedExpenses)
-      notifySubscribers() // 追加
+      const updatedExpenses = [...expenses, newExpense]
+      await updateExpenses(updatedExpenses)
     } catch (error) {
       console.error('支出の追加エラー:', error)
       throw error
@@ -72,9 +84,7 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
       const updatedExpenses = expenses.filter(
         (expense) => expense.id !== expenseId
       )
-      await storeData(STORAGE_KEYS.EXPENSES, updatedExpenses)
-      setExpenses(updatedExpenses)
-      notifySubscribers() // 追加
+      await updateExpenses(updatedExpenses)
     } catch (error) {
       console.error('支出の削除エラー:', error)
       throw error
@@ -86,9 +96,7 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
       const updatedExpenses = expenses.map((expense) =>
         expense.id === updatedExpense.id ? updatedExpense : expense
       )
-      await storeData(STORAGE_KEYS.EXPENSES, updatedExpenses)
-      setExpenses(updatedExpenses)
-      notifySubscribers() // 追加
+      await updateExpenses(updatedExpenses)
     } catch (error) {
       console.error('支出の編集エラー:', error)
       throw error
@@ -102,6 +110,6 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
     loadExpenses,
     deleteExpense,
     editExpense,
-    subscribe // 新しい関数を追加
+    subscribe
   }
 }

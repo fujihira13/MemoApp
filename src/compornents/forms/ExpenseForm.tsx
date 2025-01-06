@@ -3,31 +3,39 @@ import {
   View,
   Text,
   TextInput,
+  Switch,
   TouchableOpacity,
-  Platform,
   Alert,
-  ScrollView
+  ScrollView,
+  Platform
 } from 'react-native'
-import DateTimePicker from '@react-native-community/datetimepicker'
-import { Card } from '../common/Card'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
-import {
-  ExpenseCategory,
-  MealTime,
-  ExpenseFormData,
-  Expense
-} from '../../types/expense'
-import { styles } from '../../styles/components/forms/ExpenseForm.styles'
-import { Animated } from 'react-native'
-import { useExpenseStorage } from '../../hooks/useExpenseStorage'
 import { useRouter } from 'expo-router'
+import { Card } from '../common/Card'
+import { styles } from '../../styles/components/forms/ExpenseForm.styles'
+import { checkboxStyles } from '../../styles/components/forms/CheckboxStyles'
+import { amountInputStyles } from '../../styles/components/forms/AmountInputStyles'
+import { useExpenseStorage } from '../../hooks/useExpenseStorage'
+import { Expense, MealTime, ExpenseCategory } from '../../types/expense'
+import {
+  DateTimePickerEvent,
+  default as DateTimePicker
+} from '@react-native-community/datetimepicker'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+
+type ExpenseFormData = {
+  amount: string
+  category: ExpenseCategory
+  mealTime: MealTime
+  isHomeCooking: boolean
+  date: Date
+  note: string
+}
 
 export const ExpenseForm = (): React.JSX.Element => {
   const router = useRouter()
   const { addExpense } = useExpenseStorage()
   const [formData, setFormData] = useState<ExpenseFormData>({
-    amount: '',
+    amount: '0',
     category: 'grocery',
     mealTime: 'none',
     isHomeCooking: false,
@@ -38,21 +46,19 @@ export const ExpenseForm = (): React.JSX.Element => {
   const [showDatePicker, setShowDatePicker] = useState(false)
 
   const categories = [
-    { value: 'grocery', label: 'スーパー' },
-    { value: 'eating_out', label: '外食' },
-    { value: 'snack', label: '間食' },
-    { value: 'drinking', label: '飲み会' },
-    { value: 'convenience', label: 'コンビニ' },
-    { value: 'other', label: 'その他' }
+    { label: 'スーパー', value: 'grocery' },
+    { label: '外食', value: 'eating_out' },
+    { label: '間食', value: 'snack' },
+    { label: '飲み会', value: 'drinking' },
+    { label: 'コンビニ', value: 'convenience' },
+    { label: 'その他', value: 'other' }
   ]
 
   const mealTimes = [
-    { label: '朝食', value: 'breakfast' as const },
-    { label: '昼食', value: 'lunch' as const },
-    { label: '夕食', value: 'dinner' as const },
-    ...(formData.isHomeCooking
-      ? []
-      : [{ label: '間食', value: 'snack' as const }])
+    { label: '朝食', value: 'breakfast' },
+    { label: '昼食', value: 'lunch' },
+    { label: '夕食', value: 'dinner' },
+    { label: '間食', value: 'snack' }
   ]
 
   const onDateChange = (
@@ -67,7 +73,7 @@ export const ExpenseForm = (): React.JSX.Element => {
 
   const resetForm = (): void => {
     setFormData({
-      amount: '',
+      amount: '0',
       category: 'grocery',
       mealTime: 'none',
       isHomeCooking: false,
@@ -76,21 +82,26 @@ export const ExpenseForm = (): React.JSX.Element => {
     })
   }
 
-  const validateForm = (): boolean => {
-    if (!formData.mealTime || formData.mealTime === 'none') {
-      Alert.alert('エラー', '食事の時間帯を選択してください')
-      return false
-    }
-
-    if (
-      !formData.isHomeCooking &&
-      (!formData.amount || isNaN(Number(formData.amount)))
-    ) {
+  const validateAmount = (amount: string): boolean => {
+    if (!formData.isHomeCooking && (!amount || isNaN(Number(amount)))) {
       Alert.alert('エラー', '金額を正しく入力してください')
       return false
     }
-
     return true
+  }
+
+  const validateMealTime = (mealTime: string): boolean => {
+    if (!mealTime || mealTime === 'none') {
+      Alert.alert('エラー', '食事の時間帯を選択してください')
+      return false
+    }
+    return true
+  }
+
+  const validateForm = (): boolean => {
+    return (
+      validateMealTime(formData.mealTime) && validateAmount(formData.amount)
+    )
   }
 
   const handleSubmit = async (): Promise<void> => {
@@ -124,58 +135,32 @@ export const ExpenseForm = (): React.JSX.Element => {
   }
   return (
     <View style={styles.container}>
-      {/* 自炊チェックボックス */}
-      <Card style={styles.checkboxCard}>
-        <View style={styles.toggleContainer}>
-          <View>
-            <Text style={styles.toggleLabel}>自炊した</Text>
-            <Text style={styles.toggleDescription}>
-              自炊した場合はオンにしてください
-            </Text>
-          </View>
-          <TouchableOpacity
-            onPress={() =>
-              setFormData((prev) => ({
-                ...prev,
-                isHomeCooking: !prev.isHomeCooking,
-                amount: !prev.isHomeCooking ? '0' : prev.amount
-              }))
-            }
-          >
-            <View
-              style={[
-                styles.toggle,
-                formData.isHomeCooking && styles.toggleActive
-              ]}
-            >
-              <Animated.View
-                style={[
-                  styles.toggleKnob,
-                  formData.isHomeCooking && styles.toggleKnobActive
-                ]}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </Card>
+      <View style={checkboxStyles.checkboxContainer}>
+        <Switch
+          value={formData.isHomeCooking}
+          onValueChange={(value) =>
+            setFormData((prev) => ({ ...prev, isHomeCooking: value }))
+          }
+        />
+        <Text style={checkboxStyles.checkboxLabel}>自炊</Text>
+      </View>
+      <Text style={checkboxStyles.checkboxDescription}>
+        自炊の場合は金額を0円として記録します
+      </Text>
 
-      {/* 金額入力 */}
       {!formData.isHomeCooking && (
-        <Card style={styles.inputCard}>
-          <Text style={styles.label}>金額</Text>
-          <View style={styles.amountContainer}>
-            <Text style={styles.currency}>¥</Text>
-            <TextInput
-              style={styles.amountInput}
-              value={formData.amount}
-              onChangeText={(text) =>
-                setFormData((prev) => ({ ...prev, amount: text }))
-              }
-              keyboardType="numeric"
-              placeholder="1000"
-            />
-          </View>
-        </Card>
+        <View style={amountInputStyles.amountContainer}>
+          <Text>¥</Text>
+          <TextInput
+            style={amountInputStyles.amountInput}
+            value={formData.amount}
+            onChangeText={(text) =>
+              setFormData((prev) => ({ ...prev, amount: text }))
+            }
+            keyboardType="numeric"
+            placeholder="金額"
+          />
+        </View>
       )}
 
       {/* カテゴリー選択 */}
@@ -232,7 +217,7 @@ export const ExpenseForm = (): React.JSX.Element => {
               onPress={() =>
                 setFormData((prev) => ({
                   ...prev,
-                  mealTime: mealTime.value
+                  mealTime: mealTime.value as MealTime
                 }))
               }
             >

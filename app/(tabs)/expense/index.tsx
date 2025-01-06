@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, StyleSheet } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { Stack } from 'expo-router'
 import { ExpenseForm } from '../../../src/compornents/forms/ExpenseForm'
 import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage'
+import { styles } from './expense.styles'
 
 export default function ExpenseScreen(): React.JSX.Element {
   const { subscribe } = useExpenseStorage()
@@ -35,16 +36,3 @@ export default function ExpenseScreen(): React.JSX.Element {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5'
-  },
-  formContainer: {
-    padding: 16,
-    maxWidth: 600,
-    width: '100%',
-    alignSelf: 'center'
-  }
-})

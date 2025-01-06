@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, Modal } from 'react-native'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { styles } from '../../styles/components/stats/ExpenseHistory.styles'
 import { useExpenseStorage } from '../../hooks/useExpenseStorage'
-import { ExpenseEditModal } from '../modals/ExpenseEditModal'
 import { Expense, CategorySummaries } from '../../types/expense'
 import { ExpenseSummary } from './ExpenseSummary'
 
@@ -26,6 +25,53 @@ const mealTimeLabels: { [key: string]: string } = {
   dinner: '夕食',
   snack: '間食',
   none: 'なし'
+}
+
+// 編集モーダルを別のコンポーネントに分割
+const ExpenseEditModal = ({
+  expense,
+  visible,
+  onClose,
+  onSave
+}: {
+  expense: Expense | null
+  visible: boolean
+  onClose: () => void
+  onSave: (updatedExpense: Expense) => void
+}): React.JSX.Element => {
+  const [formData, setFormData] = useState<Expense | null>(null)
+
+  useEffect(() => {
+    if (expense) {
+      setFormData({ ...expense, mealTime: expense.mealTime || 'none' })
+    }
+  }, [expense])
+
+  const handleSave = (): void => {
+    if (formData) {
+      const updatedExpense: Expense = {
+        ...formData,
+        amount: Number(formData.amount.toString()),
+        date: new Date(formData.date).toISOString(),
+        mealTime: formData.mealTime
+      }
+      onSave(updatedExpense)
+      onClose()
+    }
+  }
+
+  if (!formData) return <></>
+
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      {/* ... */}
+    </Modal>
+  )
 }
 
 export const ExpenseHistory = (): React.JSX.Element => {
@@ -66,14 +112,28 @@ export const ExpenseHistory = (): React.JSX.Element => {
     .filter((expense) => !expense.isHomeCooking)
     .reduce((sum, expense) => sum + expense.amount, 0)
 
-  // 編集ハンドラー
-  const handleEdit = (expense: Expense): void => {
+  // 編集ハンドラーを別の関数に抽出
+  const openEditModal = (expense: Expense): void => {
     setSelectedExpense(expense)
     setIsEditModalVisible(true)
   }
 
-  // 削除ハンドラー
-  const handleDelete = (expenseId: string): void => {
+  const closeEditModal = (): void => {
+    setIsEditModalVisible(false)
+  }
+
+  const saveEditedExpense = async (updatedExpense: Expense): Promise<void> => {
+    try {
+      await editExpense(updatedExpense)
+      Alert.alert('成功', '支出記録を更新しました')
+    } catch (error) {
+      console.error('更新エラー:', error)
+      Alert.alert('エラー', '支出記録の更新に失敗しました')
+    }
+  }
+
+  // 削除ハンドラーを別の関数に抽出
+  const confirmDelete = (expenseId: string): void => {
     Alert.alert('削除の確認', 'この支出記録を削除してもよろしいですか？', [
       {
         text: 'キャンセル',
@@ -83,18 +143,20 @@ export const ExpenseHistory = (): React.JSX.Element => {
         text: '削除',
         style: 'destructive',
         onPress: (): void => {
-          void (async (): Promise<void> => {
-            try {
-              await deleteExpense(expenseId)
-              Alert.alert('成功', '支出記録を削除しました')
-            } catch (error) {
-              console.error('削除エラー:', error)
-              Alert.alert('エラー', '支出記録の削除に失敗しました')
-            }
-          })()
+          void deleteExpenseRecord(expenseId)
         }
       }
     ])
+  }
+
+  const deleteExpenseRecord = async (expenseId: string): Promise<void> => {
+    try {
+      await deleteExpense(expenseId)
+      Alert.alert('成功', '支出記録を削除しました')
+    } catch (error) {
+      console.error('削除エラー:', error)
+      Alert.alert('エラー', '支出記録の削除に失敗しました')
+    }
   }
 
   if (loading) {
@@ -184,7 +246,7 @@ export const ExpenseHistory = (): React.JSX.Element => {
               <View style={[styles.cell, styles.actionCell]}>
                 <TouchableOpacity
                   style={styles.iconButton}
-                  onPress={() => handleEdit(expense)}
+                  onPress={() => openEditModal(expense)}
                 >
                   <MaterialCommunityIcons
                     name="pencil"
@@ -194,7 +256,7 @@ export const ExpenseHistory = (): React.JSX.Element => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.iconButton}
-                  onPress={() => void handleDelete(expense.id)}
+                  onPress={() => confirmDelete(expense.id)}
                 >
                   <MaterialCommunityIcons
                     name="delete"
@@ -206,29 +268,16 @@ export const ExpenseHistory = (): React.JSX.Element => {
             </View>
           ))
         )}
-
-        {/* 編集モーダル */}
-        <ExpenseEditModal
-          visible={isEditModalVisible}
-          expense={selectedExpense}
-          onClose={() => {
-            setIsEditModalVisible(false)
-            setSelectedExpense(null)
-          }}
-          onSave={(updatedExpense: Expense): void => {
-            void (async (): Promise<void> => {
-              try {
-                await editExpense(updatedExpense)
-                setIsEditModalVisible(false)
-                setSelectedExpense(null)
-              } catch (error) {
-                console.error('編集エラー:', error)
-                Alert.alert('エラー', '支出の編集に失敗しました')
-              }
-            })()
-          }}
-        />
       </Card>
+
+      <ExpenseEditModal
+        expense={selectedExpense}
+        visible={isEditModalVisible}
+        onClose={closeEditModal}
+        onSave={(expense: Expense): void => {
+          void saveEditedExpense(expense)
+        }}
+      />
     </View>
   )
 }

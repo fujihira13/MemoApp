@@ -5,109 +5,30 @@ import { typography } from '../../theme/typography'
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: spacing.md,
-    gap: spacing.md,
-    backgroundColor: colors.background.main
-  },
-  inputCard: {
-    padding: spacing.md,
     backgroundColor: colors.background.card,
     borderRadius: 8,
-    elevation: 2,
-    shadowColor: colors.text.primary,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2
-  },
-  label: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-    marginBottom: spacing.sm
+    padding: spacing.md
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    paddingHorizontal: spacing.sm
+    marginBottom: spacing.md
   },
-  currency: {
-    fontSize: typography.fontSize.lg,
-    color: colors.text.secondary,
-    marginRight: spacing.xs
+  label: {
+    fontSize: typography.fontSize.md,
+    color: colors.text.primary,
+    marginBottom: spacing.xs
   },
   input: {
-    flex: 1,
-    fontSize: typography.fontSize.lg,
-    padding: spacing.sm
-  },
-  dateButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 8,
-    backgroundColor: colors.background.card
-  },
-  dateButtonText: {
+    padding: spacing.sm,
     fontSize: typography.fontSize.md,
     color: colors.text.primary
   },
-  categoryContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingVertical: 8,
-    justifyContent: 'space-between'
-  },
-  categoryButton: {
-    padding: 8,
-    margin: 4,
-    borderRadius: 20,
-    backgroundColor: '#f0f0f0',
-    flexBasis: '48%',
-    minWidth: 100
-  },
-  categoryButtonActive: {
-    backgroundColor: '#2196F3'
-  },
-  categoryButtonText: {
-    color: '#666'
-  },
-  categoryButtonTextActive: {
-    color: '#fff'
-  },
-  mealTimeContainer: {
-    flexDirection: 'row',
-    gap: spacing.sm
-  },
-  mealTimeButton: {
-    flex: 1,
-    padding: spacing.sm,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: colors.border,
-    alignItems: 'center'
-  },
-  mealTimeButtonActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary
-  },
-  mealTimeButtonText: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.primary
-  },
-  mealTimeButtonTextActive: {
-    color: colors.background.card
-  },
   switchContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: spacing.sm
+    marginBottom: spacing.md
   },
   switchLabel: {
     fontSize: typography.fontSize.md,
@@ -132,93 +53,63 @@ export const styles = StyleSheet.create({
     fontSize: typography.fontSize.md,
     fontWeight: typography.fontWeight.medium
   },
-  // チェックボックス関連のスタイル
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: spacing.sm
-  },
-  checkboxLabel: {
-    fontSize: typography.fontSize.md,
-    color: colors.text.primary,
-    marginLeft: spacing.sm
-  },
-  checkboxDescription: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-    marginTop: spacing.xs
-  },
-
-  // 金額入力関連のスタイル
-  amountContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.border,
+  mealTimeButton: {
+    padding: 8,
     borderRadius: 8,
-    paddingHorizontal: spacing.sm
+    backgroundColor: '#f5f5f5'
   },
-
-  amountInput: {
-    flex: 1,
-    fontSize: typography.fontSize.lg,
-    padding: spacing.sm
+  mealTimeButtonActive: {
+    backgroundColor: '#0891b2'
   },
-
-  // チェックボックス関連の追加スタイル
-  checkboxCard: {
-    padding: spacing.md,
+  mealTimeButtonText: {
+    fontSize: 14,
+    color: '#666'
+  },
+  mealTimeButtonTextActive: {
+    color: '#ffffff'
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingVertical: 8
+  },
+  categoryButton: {
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: '#f5f5f5'
+  },
+  categoryButtonActive: {
+    backgroundColor: '#0891b2'
+  },
+  categoryButtonText: {
+    fontSize: 14,
+    color: '#666'
+  },
+  categoryButtonTextActive: {
+    color: '#ffffff'
+  },
+  inputCard: {
     backgroundColor: colors.background.card,
     borderRadius: 8,
-    elevation: 2,
-    shadowColor: colors.text.primary,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2
+    padding: spacing.md,
+    marginBottom: spacing.md
   },
-  checkbox: {
+  mealTimeContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm
+    gap: 8,
+    flexWrap: 'wrap'
   },
-  toggleContainer: {
+  dateButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16
+    padding: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 8
   },
-  toggleLabel: {
-    fontSize: 16,
-    fontWeight: '500'
-  },
-  toggleDescription: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4
-  },
-  toggle: {
-    width: 51,
-    height: 31,
-    borderRadius: 15.5,
-    backgroundColor: '#e0e0e0',
-    justifyContent: 'center',
-    padding: 2
-  },
-  toggleActive: {
-    backgroundColor: '#0891b2'
-  },
-  toggleKnob: {
-    width: 27,
-    height: 27,
-    borderRadius: 13.5,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3
-  },
-  toggleKnobActive: {
-    transform: [{ translateX: 20 }]
+  dateButtonText: {
+    fontSize: typography.fontSize.md,
+    color: colors.text.primary
   }
 })
