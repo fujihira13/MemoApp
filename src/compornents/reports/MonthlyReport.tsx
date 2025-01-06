@@ -9,20 +9,25 @@ import { CategorySummaries } from '../../types/expense'
 import { MonthPicker } from '../common/MonthPicker'
 
 export const MonthlyReport = (): React.JSX.Element => {
-  const { expenses, loading, subscribe } = useExpenseStorage() // subscribe を追加
-  const { budgetSettings } = useBudgetStorage()
+  const { expenses, loading, subscribe } = useExpenseStorage()
+  const { budgetSettings, subscribe: subscribeBudget } = useBudgetStorage()
   const [selectedMonth, setSelectedMonth] = useState(new Date())
-  const [updateTrigger, setUpdateTrigger] = useState(0) // 追加
+  const [updateTrigger, setUpdateTrigger] = useState(0)
 
-  // 更新検知の追加
   useEffect(() => {
-    const unsubscribe = subscribe(() => {
+    const unsubscribeExpense = subscribe(() => {
       setUpdateTrigger((prev) => prev + 1)
     })
-    return (): void => {
-      unsubscribe()
+
+    const unsubscribeBudget = subscribeBudget(() => {
+      setUpdateTrigger((prev) => prev + 1)
+    })
+
+    return () => {
+      unsubscribeExpense()
+      unsubscribeBudget()
     }
-  }, [subscribe])
+  }, [subscribe, subscribeBudget])
 
   // カテゴリー名の日本語マッピング
   const categoryLabels: { [key: string]: string } = {
@@ -143,7 +148,7 @@ export const MonthlyReport = (): React.JSX.Element => {
     })
 
     return summaries
-  }, [expenses, selectedMonth, loading])
+  }, [expenses, selectedMonth, loading, monthlyData, updateTrigger])
 
   const monthlyBudget = budgetSettings?.monthlyBudget || 100000
 
@@ -157,8 +162,7 @@ export const MonthlyReport = (): React.JSX.Element => {
         selectedMonth={selectedMonth}
         onMonthChange={setSelectedMonth}
       />
-      {/* 支出サマリーカード */}
-      <View style={styles.summary}>
+      <View key={updateTrigger} style={styles.summary}>
         <Card style={styles.summaryCard}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>月間支出の推移</Text>
