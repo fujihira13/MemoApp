@@ -76,7 +76,7 @@ const Home = (): React.JSX.Element => {
           {renderTabContent[activeTab]}
         </View>
 
-        <ExpenseHistory />
+        <ExpenseHistory key={updateTrigger} />
       </ScrollView>
     </>
   )
