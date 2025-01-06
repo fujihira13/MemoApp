@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -29,10 +29,21 @@ const mealTimeLabels: { [key: string]: string } = {
 }
 
 export const ExpenseHistory = (): React.JSX.Element => {
-  const { expenses, loading, deleteExpense, editExpense } = useExpenseStorage()
+  const { expenses, loading, deleteExpense, editExpense, subscribe } =
+    useExpenseStorage()
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null)
   const [isEditModalVisible, setIsEditModalVisible] = useState(false)
   const [selectedMonth, setSelectedMonth] = useState(new Date())
+  const [updateTrigger, setUpdateTrigger] = useState(0)
+
+  useEffect(() => {
+    const unsubscribe = subscribe(() => {
+      setUpdateTrigger((prev) => prev + 1)
+    })
+    return (): void => {
+      unsubscribe()
+    }
+  }, [subscribe])
 
   // 月を変更する関数
   const changeMonth = (increment: number): void => {
@@ -92,10 +103,7 @@ export const ExpenseHistory = (): React.JSX.Element => {
 
   return (
     <View style={styles.pageContainer}>
-      <ExpenseSummary
-        expenses={filteredExpenses}
-        selectedMonth={selectedMonth}
-      />
+      <ExpenseSummary selectedMonth={selectedMonth} key={updateTrigger} />
       <Card style={styles.container}>
         {/* 月選択ヘッダー */}
         <View style={styles.header}>

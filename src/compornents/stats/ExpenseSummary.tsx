@@ -1,27 +1,33 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View, Text } from 'react-native'
 import { Card } from '../common/Card'
 import { styles } from '../../styles/components/stats/ExpenseSummary.styles'
 import { CategorySummaries, Expense } from '../../types/expense'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useExpenseStorage } from '../../hooks/useExpenseStorage'
 
 interface ExpenseSummaryProps {
-  expenses: Expense[]
   selectedMonth: Date
 }
 
 export const ExpenseSummary = ({
-  expenses,
   selectedMonth
 }: ExpenseSummaryProps): React.JSX.Element => {
-  // カテゴリー別の集計を計算
-  const calculateCategorySummaries = (): CategorySummaries => {
+  const { expenses, loading } = useExpenseStorage()
+
+  const categorySummaries = useMemo(() => {
+    if (loading) return {}
+
     const summaries: CategorySummaries = {}
     let grandTotal = 0
 
     expenses.forEach((expense) => {
-      if (!expense.isHomeCooking) {
-        // 自炊以外の支出のみ集計
+      const expenseDate = new Date(expense.date)
+      if (
+        expenseDate.getMonth() === selectedMonth.getMonth() &&
+        expenseDate.getFullYear() === selectedMonth.getFullYear() &&
+        !expense.isHomeCooking
+      ) {
         const amount = expense.amount
         grandTotal += amount
 
@@ -37,16 +43,21 @@ export const ExpenseSummary = ({
       }
     })
 
-    // パーセンテージを計算
     Object.keys(summaries).forEach((category) => {
       summaries[category].percentage =
         (summaries[category].total / grandTotal) * 100
     })
 
     return summaries
-  }
+  }, [expenses, loading, selectedMonth])
 
-  const categorySummaries = calculateCategorySummaries()
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>読み込み中...</Text>
+      </View>
+    )
+  }
 
   // カテゴリー名の日本語マッピング
   const categoryLabels: { [key: string]: string } = {
