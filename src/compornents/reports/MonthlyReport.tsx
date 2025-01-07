@@ -29,7 +29,6 @@ export const MonthlyReport = (): React.JSX.Element => {
     }
   }, [subscribe, subscribeBudget])
 
-  // カテゴリー名の日本語マッピング
   const categoryLabels: { [key: string]: string } = {
     grocery: 'スーパー',
     eating_out: '外食',
@@ -40,7 +39,6 @@ export const MonthlyReport = (): React.JSX.Element => {
     other: 'その他'
   }
 
-  // カテゴリーアイコンのマッピングを型安全に定義
   const categoryIcons: {
     [key: string]: keyof typeof MaterialCommunityIcons.glyphMap
   } = {

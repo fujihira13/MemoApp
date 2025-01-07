@@ -1,9 +1,10 @@
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView } from 'react-native'
 import { MonthlyReport } from '../../../src/compornents/reports/MonthlyReport'
 import { Stack } from 'expo-router'
-import React, { useState, useEffect } from 'react' // useState, useEffect を追加
-import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage' // 追加
-import { useBudgetStorage } from '../../../src/hooks/useBudgetStorage' // 追加
+import React, { useState, useEffect } from 'react'
+import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage'
+import { useBudgetStorage } from '../../../src/hooks/useBudgetStorage'
+import { styles } from './report.styles'
 
 export default function ReportScreen(): React.JSX.Element {
   const { subscribe: subscribeExpense } = useExpenseStorage()
@@ -19,7 +20,7 @@ export default function ReportScreen(): React.JSX.Element {
       setUpdateTrigger((prev) => prev + 1)
     })
 
-    return () => {
+    return (): void => {
       unsubscribeExpense()
       unsubscribeBudget()
     }
@@ -41,10 +42,3 @@ export default function ReportScreen(): React.JSX.Element {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5'
-  }
-})

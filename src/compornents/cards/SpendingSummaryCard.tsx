@@ -1,11 +1,9 @@
-// src/components/cards/SpendingSummaryCard.tsx
 import React, { useMemo } from 'react'
 import { View, Text } from 'react-native'
 import { styles } from '../../styles/components/cards/SpendingSummaryCard.styles'
 import { useBudgetStorage } from '../../hooks/useBudgetStorage'
 import { useExpenseStorage } from '../../hooks/useExpenseStorage' // 追加
 
-// Props型の簡略化
 interface SpendingSummaryCardProps {
   selectedMonth: Date
 }
@@ -13,7 +11,6 @@ interface SpendingSummaryCardProps {
 export const SpendingSummaryCard = ({
   selectedMonth
 }: SpendingSummaryCardProps): React.JSX.Element => {
-  // フックの追加
   const { expenses, loading } = useExpenseStorage()
   const { budgetSettings } = useBudgetStorage()
   const monthlyBudget = budgetSettings?.monthlyBudget || 0
