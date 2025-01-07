@@ -24,7 +24,7 @@ export const ExpenseEditModal = ({
   onClose,
   onSave
 }: ExpenseEditModalProps): React.JSX.Element | null => {
-  const [formData, setFormData] = useState<Expense | null>(null)
+  const [formData, setFormData] = useState<Expense | null>(expense)
 
   useEffect(() => {
     if (expense) {
@@ -38,16 +38,14 @@ export const ExpenseEditModal = ({
   if (!formData) return null
 
   const handleSave = (): void => {
-    if (formData && expense) {
-      const updatedExpense: Expense = {
-        ...formData,
-        amount: Number(formData.amount.toString()),
-        date: new Date(formData.date).toISOString(),
-        mealTime: formData.mealTime
-      }
-      onSave(updatedExpense)
-      onClose()
+    const updatedExpense: Expense = {
+      ...formData,
+      amount: Number(formData.amount.toString()),
+      date: new Date(formData.date).toISOString(),
+      mealTime: formData.mealTime
     }
+    onSave(updatedExpense)
+    onClose()
   }
 
   // 時間帯の選択肢を追加

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Alert, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import { Card } from '../common/Card'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { styles } from '../../styles/components/stats/ExpenseHistory.styles'
 import { useExpenseStorage } from '../../hooks/useExpenseStorage'
-import { Expense, CategorySummaries } from '../../types/expense'
+import { Expense } from '../../types/expense'
 import { ExpenseSummary } from './ExpenseSummary'
+import { ExpenseEditModal } from '../modals/ExpenseEditModal'
 
 // カテゴリーの日本語マッピング
 const categoryLabels: { [key: string]: string } = {
@@ -25,53 +26,6 @@ const mealTimeLabels: { [key: string]: string } = {
   dinner: '夕食',
   snack: '間食',
   none: 'なし'
-}
-
-// 編集モーダルを別のコンポーネントに分割
-const ExpenseEditModal = ({
-  expense,
-  visible,
-  onClose,
-  onSave
-}: {
-  expense: Expense | null
-  visible: boolean
-  onClose: () => void
-  onSave: (updatedExpense: Expense) => void
-}): React.JSX.Element => {
-  const [formData, setFormData] = useState<Expense | null>(null)
-
-  useEffect(() => {
-    if (expense) {
-      setFormData({ ...expense, mealTime: expense.mealTime || 'none' })
-    }
-  }, [expense])
-
-  const handleSave = (): void => {
-    if (formData) {
-      const updatedExpense: Expense = {
-        ...formData,
-        amount: Number(formData.amount.toString()),
-        date: new Date(formData.date).toISOString(),
-        mealTime: formData.mealTime
-      }
-      onSave(updatedExpense)
-      onClose()
-    }
-  }
-
-  if (!formData) return <></>
-
-  return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-    >
-      {/* ... */}
-    </Modal>
-  )
 }
 
 export const ExpenseHistory = (): React.JSX.Element => {
