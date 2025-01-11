@@ -71,16 +71,15 @@ export const styles = StyleSheet.create({
   categoryContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap', // 複数行に折り返し
-    gap: spacing.sm, // ボタン間の間隔
+    gap: spacing.sm,
     paddingVertical: spacing.sm
   },
   categoryButton: {
-    // 幅を計算して3つずつ表示 (コンテナの幅から間隔を引いて3等分)
-    width: '30%', // おおよその幅を指定
+    width: '30%',
     padding: spacing.sm,
     borderRadius: 8,
     backgroundColor: colors.background.main,
-    alignItems: 'center' // テキストを中央寄せ
+    alignItems: 'center'
   },
   categoryButtonActive: {
     backgroundColor: '#0891b2'

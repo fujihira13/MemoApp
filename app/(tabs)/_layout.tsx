@@ -7,7 +7,13 @@ export default function TabsLayout(): React.JSX.Element {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#0891b2',
-        tabBarInactiveTintColor: '#666666'
+        tabBarInactiveTintColor: '#666666',
+        headerShown: true,
+        headerTitleAlign: 'center',
+        tabBarLabelStyle: {
+          fontSize: 12
+        },
+        lazy: false
       }}
     >
       <Tabs.Screen
@@ -15,7 +21,6 @@ export default function TabsLayout(): React.JSX.Element {
         options={{
           title: 'ダッシュボード',
           tabBarLabel: 'ダッシュボード',
-          headerTitle: 'ダッシュボード',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="view-dashboard"
@@ -24,24 +29,24 @@ export default function TabsLayout(): React.JSX.Element {
             />
           )
         }}
+        initialParams={{ label: 'ダッシュボード' }}
       />
       <Tabs.Screen
         name="report"
         options={{
           title: 'レポート',
           tabBarLabel: 'レポート',
-          headerTitle: 'レポート',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="chart-box" size={24} color={color} />
           )
         }}
+        initialParams={{ label: 'レポート' }}
       />
       <Tabs.Screen
         name="expense"
         options={{
           title: '支出を記録',
           tabBarLabel: '支出を記録',
-          headerTitle: '支出を記録',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="plus-circle"
@@ -50,17 +55,18 @@ export default function TabsLayout(): React.JSX.Element {
             />
           )
         }}
+        initialParams={{ label: '支出を記録' }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: '設定',
           tabBarLabel: '設定',
-          headerTitle: '設定',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="cog" size={24} color={color} />
           )
         }}
+        initialParams={{ label: '設定' }}
       />
     </Tabs>
   )
