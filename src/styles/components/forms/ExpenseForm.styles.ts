@@ -70,13 +70,17 @@ export const styles = StyleSheet.create({
   },
   categoryContainer: {
     flexDirection: 'row',
-    gap: 8,
-    paddingVertical: 8
+    flexWrap: 'wrap', // 複数行に折り返し
+    gap: spacing.sm, // ボタン間の間隔
+    paddingVertical: spacing.sm
   },
   categoryButton: {
-    padding: 8,
+    // 幅を計算して3つずつ表示 (コンテナの幅から間隔を引いて3等分)
+    width: '30%', // おおよその幅を指定
+    padding: spacing.sm,
     borderRadius: 8,
-    backgroundColor: '#f5f5f5'
+    backgroundColor: colors.background.main,
+    alignItems: 'center' // テキストを中央寄せ
   },
   categoryButtonActive: {
     backgroundColor: '#0891b2'

@@ -173,11 +173,7 @@ export const ExpenseForm = (): React.JSX.Element => {
       {!formData.isHomeCooking && (
         <View style={styles.inputContainer}>
           <Text style={styles.label}>カテゴリー</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.categoryContainer}
-          >
+          <View style={styles.categoryContainer}>
             {categories.map((category) => (
               <TouchableOpacity
                 key={category.value}
@@ -204,7 +200,7 @@ export const ExpenseForm = (): React.JSX.Element => {
                 </Text>
               </TouchableOpacity>
             ))}
-          </ScrollView>
+          </View>
         </View>
       )}
 
