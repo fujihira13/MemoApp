@@ -41,7 +41,7 @@ export const ExpenseForm = (): React.JSX.Element => {
   const router = useRouter()
   const { addExpense } = useExpenseStorage()
   const [formData, setFormData] = useState<ExpenseFormData>({
-    amount: '0',
+    amount: '',
     category: 'grocery',
     mealTime: 'none',
     isHomeCooking: false,
@@ -79,7 +79,7 @@ export const ExpenseForm = (): React.JSX.Element => {
 
   const resetForm = (): void => {
     setFormData({
-      amount: '0',
+      amount: '',
       category: 'grocery',
       mealTime: 'none',
       isHomeCooking: false,
@@ -164,7 +164,7 @@ export const ExpenseForm = (): React.JSX.Element => {
               setFormData((prev) => ({ ...prev, amount: text }))
             }
             keyboardType="numeric"
-            placeholder="金額"
+            placeholder="金額を入力"
           />
         </View>
       )}
