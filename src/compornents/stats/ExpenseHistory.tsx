@@ -28,6 +28,7 @@ const mealTimeLabels: { [key: string]: string } = {
   none: 'なし'
 }
 
+// 支出履歴コンポーネント
 export const ExpenseHistory = (): React.JSX.Element => {
   const { expenses, loading, deleteExpense, editExpense, subscribe } =
     useExpenseStorage()
@@ -66,16 +67,18 @@ export const ExpenseHistory = (): React.JSX.Element => {
     .filter((expense) => !expense.isHomeCooking)
     .reduce((sum, expense) => sum + expense.amount, 0)
 
-  // 編集ハンドラーを別の関数に抽出
+  // 編集ハーダルを開く関数
   const openEditModal = (expense: Expense): void => {
     setSelectedExpense(expense)
     setIsEditModalVisible(true)
   }
 
+  // 編集モーダルを閉じる関数
   const closeEditModal = (): void => {
     setIsEditModalVisible(false)
   }
 
+  // 編集した支出を保存する関数
   const saveEditedExpense = async (updatedExpense: Expense): Promise<void> => {
     try {
       await editExpense(updatedExpense)
@@ -86,7 +89,7 @@ export const ExpenseHistory = (): React.JSX.Element => {
     }
   }
 
-  // 削除ハンドラーを別の関数に抽出
+  // 削除の確認ダイアログを表示する関数
   const confirmDelete = (expenseId: string): void => {
     Alert.alert('削除の確認', 'この支出記録を削除してもよろしいですか？', [
       {
@@ -103,6 +106,7 @@ export const ExpenseHistory = (): React.JSX.Element => {
     ])
   }
 
+  // 支出記録を削除する関数
   const deleteExpenseRecord = async (expenseId: string): Promise<void> => {
     try {
       await deleteExpense(expenseId)

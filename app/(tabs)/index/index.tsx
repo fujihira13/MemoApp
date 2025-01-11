@@ -12,10 +12,19 @@ import { MonthPicker } from '../../../src/compornents/common/MonthPicker'
 import { useBudgetStorage } from '../../../src/hooks/useBudgetStorage'
 import { styles } from './index.styles'
 
+/**
+ * Homeコンポーネント
+ * ダッシュボード画面を表示する
+ * @returns {React.JSX.Element} ダッシュボード画面のJSX要素
+ */
 const Home = (): React.JSX.Element => {
+  // 選択中のタブを管理するステート
   const [activeTab, setActiveTab] = useState('timeRange')
+  // 選択中の月を管理するステート
   const [selectedMonth, setSelectedMonth] = useState(new Date())
-  const { subscribe } = useExpenseStorage() // loadingとexpensesを削除
+  // useExpenseStorageフックからsubscribe関数を取得
+  const { subscribe } = useExpenseStorage()
+  // 更新トリガー用のステート
   const [updateTrigger, setUpdateTrigger] = useState(0)
 
   // データ更新を検知するためのサブスクリプション
@@ -41,8 +50,7 @@ const Home = (): React.JSX.Element => {
     }
   }, [selectedMonth, updateTrigger])
 
-  // calculateMonthlyDataを削除
-
+  // タブの定義
   const tabs = [
     { id: 'timeRange', label: '時間帯別' },
     { id: 'daily', label: '日別レポート' },
@@ -51,6 +59,7 @@ const Home = (): React.JSX.Element => {
 
   return (
     <>
+      {/* 画面のヘッダー設定 */}
       <Stack.Screen
         options={{
           title: '食費管理アプリ',
@@ -59,24 +68,31 @@ const Home = (): React.JSX.Element => {
         }}
       />
 
+      {/* スクロール可能なコンテナ */}
       <ScrollView style={styles.container}>
+        {/* 月選択コンポーネント */}
         <MonthPicker
           selectedMonth={selectedMonth}
           onMonthChange={(newMonth) => setSelectedMonth(newMonth)}
         />
+        {/* 支出サマリーカードのコンテナ */}
         <View style={styles.summaryContainer}>
+          {/* 支出サマリーカードコンポーネント */}
           <SpendingSummaryCard
             selectedMonth={selectedMonth}
             key={updateTrigger}
           />
         </View>
 
+        {/* タブビューコンポーネント */}
         <TabView tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
+        {/* タブコンテンツのコンテナ */}
         <View style={styles.contentContainer}>
           {renderTabContent[activeTab]}
         </View>
 
+        {/* 支出履歴コンポーネント */}
         <ExpenseHistory key={updateTrigger} />
       </ScrollView>
     </>

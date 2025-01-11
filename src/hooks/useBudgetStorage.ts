@@ -12,6 +12,9 @@ interface UseBudgetStorageReturn {
   subscribe: (callback: () => void) => () => void
 }
 
+/**
+ * 予算データの保存と取得を行うカスタムフック
+ */
 export const useBudgetStorage = (): UseBudgetStorageReturn => {
   const [budgetSettings, setBudgetSettings] = useState<BudgetFormData | null>(
     null

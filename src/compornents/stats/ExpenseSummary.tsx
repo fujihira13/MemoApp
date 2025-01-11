@@ -9,6 +9,12 @@ import { useExpenseStorage } from '../../hooks/useExpenseStorage'
 interface ExpenseSummaryProps {
   selectedMonth: Date
 }
+/**
+ * ExpenseSummaryコンポーネント
+ * 選択された月の支出サマリーを表示する
+ * @param {ExpenseSummaryProps} props コンポーネントのプロパティ
+ * @returns {React.JSX.Element} 支出サマリーのJSX要素
+ */
 
 export const ExpenseSummary = ({
   selectedMonth

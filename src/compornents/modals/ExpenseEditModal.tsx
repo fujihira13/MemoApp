@@ -18,6 +18,12 @@ interface ExpenseEditModalProps {
   onSave: (updatedExpense: Expense) => void
 }
 
+/**
+ * ExpenseEditModalコンポーネント
+ * 支出編集モーダルを表示する
+ * @param {ExpenseEditModalProps} props コンポーネントのプロパティ
+ * @returns {React.JSX.Element} 支出編集モーダルのJSX要素
+ */
 export const ExpenseEditModal = ({
   visible,
   expense,

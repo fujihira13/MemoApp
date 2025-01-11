@@ -8,6 +8,12 @@ interface MonthPickerProps {
   onMonthChange: (date: Date) => void
 }
 
+/**
+ * MonthPickerコンポーネント
+ * 月の選択を行うピッカーコンポーネント
+ * @param {MonthPickerProps} props コンポーネントのプロパティ
+ * @returns {React.JSX.Element} 月選択ピッカーのJSX要素
+ */
 export const MonthPicker = ({
   selectedMonth,
   onMonthChange
@@ -19,7 +25,7 @@ export const MonthPicker = ({
     onMonthChange(newDate)
   }
 
-  // 翌月へ
+  // 次の月に変更する関数
   const goToNextMonth = (): void => {
     const newDate = new Date(selectedMonth)
     newDate.setMonth(newDate.getMonth() + 1)

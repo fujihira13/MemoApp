@@ -18,6 +18,11 @@ interface BudgetFormData {
   warningThreshold: string
 }
 
+/**
+ * BudgetSettingsコンポーネント
+ * 予算設定フォームを表示する
+ * @returns {React.JSX.Element} 予算設定フォームのJSX要素
+ */
 export const BudgetSettings = (): React.JSX.Element => {
   const { budgetSettings, saveBudgetSettings, subscribe } = useBudgetStorage()
   const [formData, setFormData] = useState<BudgetFormData>({

@@ -12,7 +12,12 @@ interface TabViewProps {
   activeTab: string
   onTabChange: (tabId: string) => void
 }
-
+/**
+ * TabViewコンポーネント
+ * タブ切り替え機能を提供する
+ * @param {TabViewProps} props コンポーネントのプロパティ
+ * @returns {React.JSX.Element} タブビューのJSX要素
+ */
 export const TabView = ({
   tabs,
   activeTab,

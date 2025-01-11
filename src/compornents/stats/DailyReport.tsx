@@ -8,6 +8,11 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker'
 import { useExpenseStorage } from '../../hooks/useExpenseStorage'
 
+/**
+ * DailyReportコンポーネント
+ * 日別の支出レポートを表示する
+ * @returns {React.JSX.Element} 日別支出レポートのJSX要素
+ */
 export const DailyReport = (): React.JSX.Element => {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [showDatePicker, setShowDatePicker] = useState(false)

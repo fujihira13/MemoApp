@@ -1,7 +1,9 @@
 import type { MaterialCommunityIcons } from '@expo/vector-icons'
 
+// アイコン名の型定義
 export type IconName = keyof typeof MaterialCommunityIcons.glyphMap
 
+// 支出カテゴリーの型定義
 export type ExpenseCategory =
   | 'grocery'
   | 'eating_out'
@@ -11,8 +13,10 @@ export type ExpenseCategory =
   | 'other'
   | 'home_cooking'
 
+// 食事の時間帯の型定義
 export type MealTime = 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'none'
 
+// 支出データのインターフェース
 export interface Expense {
   id: string
   amount: number
@@ -23,6 +27,7 @@ export interface Expense {
   note?: string
 }
 
+// 支出フォームのデータインターフェース
 export interface ExpenseFormData {
   amount: string
   category: ExpenseCategory
@@ -32,6 +37,7 @@ export interface ExpenseFormData {
   note: string
 }
 
+// 支出アイテムのインターフェース
 export interface ExpenseItem {
   id: string
   date: string
@@ -42,12 +48,14 @@ export interface ExpenseItem {
   isHomeCooking?: boolean
 }
 
+// カテゴリーのインターフェース
 export interface Category {
   amount: number
   label: string
   icon: IconName
 }
 
+// 月次レポートのデータインターフェース
 export interface MonthlyReportData {
   total: number
   previousMonth: number
@@ -56,14 +64,14 @@ export interface MonthlyReportData {
   categories: Record<string, Category>
 }
 
-// カテゴリーごとの集計情報
+// カテゴリーごとの集計情報のインターフェース
 export interface CategorySummary {
   total: number
   count: number
   percentage: number
 }
 
-// カテゴリー別集計の型
+// カテゴリー別集計のインターフェース
 export interface CategorySummaries {
   [category: string]: CategorySummary
 }

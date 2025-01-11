@@ -5,6 +5,7 @@ import { Expense } from '../types/expense'
 // 更新イベントを管理するためのイベントエミッター
 const subscribers = new Set<() => void>()
 
+// useExpenseStorageフックの戻り値の型定義
 interface UseExpenseStorageReturn {
   expenses: Expense[]
   loading: boolean
@@ -15,15 +16,17 @@ interface UseExpenseStorageReturn {
   subscribe: (callback: () => void) => () => void
 }
 
+// 支出データの管理を行うカスタムフック
 export const useExpenseStorage = (): UseExpenseStorageReturn => {
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [loading, setLoading] = useState(true)
 
+  // 購読者に通知を送る関数
   const notifySubscribers = (): void => {
     subscribers.forEach((callback) => callback())
   }
 
-  // 共通処理を関数内に移動
+  // 支出データを更新する関数
   const updateExpenses = useCallback(
     async (updatedExpenses: Expense[]): Promise<void> => {
       try {
@@ -79,6 +82,7 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
     }
   }
 
+  // 支出を削除する関数
   const deleteExpense = async (expenseId: string): Promise<void> => {
     try {
       const updatedExpenses = expenses.filter(
@@ -91,6 +95,7 @@ export const useExpenseStorage = (): UseExpenseStorageReturn => {
     }
   }
 
+  // 支出を編集する関数
   const editExpense = async (updatedExpense: Expense): Promise<void> => {
     try {
       const updatedExpenses = expenses.map((expense) =>

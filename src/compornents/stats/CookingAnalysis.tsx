@@ -10,6 +10,12 @@ interface CookingAnalysisProps {
   selectedMonth: Date
 }
 
+/**
+ * CookingAnalysisコンポーネント
+ * 選択された月の自炊分析を表示する
+ * @param {CookingAnalysisProps} props コンポーネントのプロパティ
+ * @returns {React.JSX.Element} 自炊分析のJSX要素
+ */
 export const CookingAnalysis = ({
   selectedMonth
 }: CookingAnalysisProps): React.JSX.Element => {

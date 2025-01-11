@@ -8,6 +8,7 @@ import { useBudgetStorage } from '../../hooks/useBudgetStorage'
 import { CategorySummaries } from '../../types/expense'
 import { MonthPicker } from '../common/MonthPicker'
 
+// 月次レポートコンポーネント
 export const MonthlyReport = (): React.JSX.Element => {
   const { expenses, loading, subscribe } = useExpenseStorage()
   const { budgetSettings, subscribe: subscribeBudget } = useBudgetStorage()
@@ -15,6 +16,7 @@ export const MonthlyReport = (): React.JSX.Element => {
   const [updateTrigger, setUpdateTrigger] = useState(0)
 
   useEffect(() => {
+    // 支出データと予算設定の変更を購読
     const unsubscribeExpense = subscribe(() => {
       setUpdateTrigger((prev) => prev + 1)
     })
@@ -23,12 +25,14 @@ export const MonthlyReport = (): React.JSX.Element => {
       setUpdateTrigger((prev) => prev + 1)
     })
 
+    // コンポーネントのアンマウント時に購読を解除
     return () => {
       unsubscribeExpense()
       unsubscribeBudget()
     }
   }, [subscribe, subscribeBudget])
 
+  // カテゴリーラベルの日本語マッピング
   const categoryLabels: { [key: string]: string } = {
     grocery: 'スーパー',
     eating_out: '外食',
@@ -39,6 +43,7 @@ export const MonthlyReport = (): React.JSX.Element => {
     other: 'その他'
   }
 
+  // カテゴリーアイコンのマッピング
   const categoryIcons: {
     [key: string]: keyof typeof MaterialCommunityIcons.glyphMap
   } = {

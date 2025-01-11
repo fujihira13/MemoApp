@@ -6,12 +6,21 @@ import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage'
 import { useBudgetStorage } from '../../../src/hooks/useBudgetStorage'
 import { styles } from './report.styles'
 
+/**
+ * ReportScreenコンポーネント
+ * レポート画面を表示する
+ * @returns {React.JSX.Element} レポート画面のJSX要素
+ */
 export default function ReportScreen(): React.JSX.Element {
+  // useExpenseStorageフックからsubscribe関数を取得
   const { subscribe: subscribeExpense } = useExpenseStorage()
+  // useBudgetStorageフックからsubscribe関数を取得
   const { subscribe: subscribeBudget } = useBudgetStorage()
+  // 更新トリガー用のステート
   const [updateTrigger, setUpdateTrigger] = useState(0)
 
   useEffect(() => {
+    // 支出データと予算設定の変更を購読
     const unsubscribeExpense = subscribeExpense(() => {
       setUpdateTrigger((prev) => prev + 1)
     })
@@ -20,6 +29,7 @@ export default function ReportScreen(): React.JSX.Element {
       setUpdateTrigger((prev) => prev + 1)
     })
 
+    // コンポーネントのアンマウント時に購読を解除
     return (): void => {
       unsubscribeExpense()
       unsubscribeBudget()
@@ -28,6 +38,7 @@ export default function ReportScreen(): React.JSX.Element {
 
   return (
     <>
+      {/* 画面のヘッダー設定 */}
       <Stack.Screen
         options={{
           title: 'レポート',
@@ -36,7 +47,9 @@ export default function ReportScreen(): React.JSX.Element {
         }}
       />
 
+      {/* スクロール可能なコンテナ */}
       <ScrollView style={styles.container}>
+        {/* 月次レポートコンポーネント */}
         <MonthlyReport key={updateTrigger} />
       </ScrollView>
     </>

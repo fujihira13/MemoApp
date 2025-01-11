@@ -31,6 +31,12 @@ type ExpenseFormData = {
   note: string
 }
 
+/**
+ * ExpenseFormコンポーネント
+ * 支出記録フォームを表示する
+ * @returns {React.JSX.Element} 支出記録フォームのJSX要素
+ */
+
 export const ExpenseForm = (): React.JSX.Element => {
   const router = useRouter()
   const { addExpense } = useExpenseStorage()

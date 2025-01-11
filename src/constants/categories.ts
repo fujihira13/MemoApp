@@ -1,5 +1,8 @@
 import { ExpenseCategory } from '../types/expense'
 
+/**
+ * 支出カテゴリー
+ */
 export const EXPENSE_CATEGORIES: Array<{
   value: ExpenseCategory
   label: string

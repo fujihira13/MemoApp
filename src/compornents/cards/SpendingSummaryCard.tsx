@@ -8,6 +8,13 @@ interface SpendingSummaryCardProps {
   selectedMonth: Date
 }
 
+/**
+ * SpendingSummaryCardコンポーネント
+ * 選択された月の支出サマリーを表示するカード
+ * @param {SpendingSummaryCardProps} props コンポーネントのプロパティ
+ * @returns {React.JSX.Element} 支出サマリーカードのJSX要素
+ */
+
 export const SpendingSummaryCard = ({
   selectedMonth
 }: SpendingSummaryCardProps): React.JSX.Element => {

@@ -28,6 +28,12 @@ interface MealTimeStatsProps {
   selectedDate: Date
 }
 
+/**
+ * MealTimeStatsコンポーネント
+ * 選択された日付の時間帯別支出統計を表示する
+ * @param {MealTimeStatsProps} props コンポーネントのプロパティ
+ * @returns {React.JSX.Element} 時間帯別支出統計のJSX要素
+ */
 export const MealTimeStats = ({
   selectedDate
 }: MealTimeStatsProps): React.JSX.Element => {
