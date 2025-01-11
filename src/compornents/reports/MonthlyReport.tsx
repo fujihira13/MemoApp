@@ -26,7 +26,7 @@ export const MonthlyReport = (): React.JSX.Element => {
     })
 
     // コンポーネントのアンマウント時に購読を解除
-    return () => {
+    return (): void => {
       unsubscribeExpense()
       unsubscribeBudget()
     }
