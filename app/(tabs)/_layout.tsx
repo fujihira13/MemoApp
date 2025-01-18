@@ -1,5 +1,5 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import React from 'react'
 
 export default function TabsLayout(): React.JSX.Element {

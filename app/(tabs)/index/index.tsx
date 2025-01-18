@@ -17,7 +17,7 @@ import { styles } from './index.styles'
  * ダッシュボード画面を表示する
  * @returns {React.JSX.Element} ダッシュボード画面のJSX要素
  */
-const Home = (): React.JSX.Element => {
+export default function Home(): React.JSX.Element {
   // 選択中のタブを管理するステート
   const [activeTab, setActiveTab] = useState('timeRange')
   // 選択中の月を管理するステート
@@ -98,5 +98,3 @@ const Home = (): React.JSX.Element => {
     </>
   )
 }
-
-export default Home
