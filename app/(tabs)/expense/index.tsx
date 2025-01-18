@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, ScrollView } from 'react-native'
 import { Stack } from 'expo-router'
-import { ExpenseForm } from '../../../src/compornents/forms/ExpenseForm'
+import { ExpenseForm } from '../../../src/components/forms/ExpenseForm'
 import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage'
 import { styles } from './expense.styles'
 

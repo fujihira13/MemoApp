@@ -1,5 +1,5 @@
 import { ScrollView } from 'react-native'
-import { MonthlyReport } from '../../../src/compornents/reports/MonthlyReport'
+import { MonthlyReport } from '../../../src/components/reports/MonthlyReport'
 import { Stack } from 'expo-router'
 import React, { useState, useEffect } from 'react'
 import { useExpenseStorage } from '../../../src/hooks/useExpenseStorage'

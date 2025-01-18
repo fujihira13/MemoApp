@@ -1,6 +1,6 @@
 import { View, ScrollView } from 'react-native'
 import { Stack } from 'expo-router'
-import { BudgetSettings } from '../../../src/compornents/settings/BudgetSettings'
+import { BudgetSettings } from '../../../src/components/settings/BudgetSettings'
 import React from 'react'
 import { styles } from './settings.styles'
 
